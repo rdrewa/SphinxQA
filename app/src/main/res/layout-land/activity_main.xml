@@ -22,7 +22,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="28dp"
-                android:hint="@string/hintPickAFile"
+                android:hint="@string/hint_pick_a_file"
                 android:inputType="none"
                 android:textSize="40sp" />
 
@@ -33,7 +33,7 @@
                 android:layout_below="@+id/edtVideoFile"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="43dp"
-                android:text="@string/txtDots"
+                android:text="@string/txt_dots"
                 android:textSize="30sp" />
 
             <View
@@ -61,7 +61,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/edtDstFile"
                 android:layout_marginTop="40dp"
-                android:hint="@string/hintPickAFile"
+                android:hint="@string/hint_pick_a_file"
                 android:inputType="none"
                 android:textSize="35sp" />
 
@@ -72,7 +72,7 @@
                 android:layout_below="@+id/edtSrcFile"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:hint="@string/hintPickAFile"
+                android:hint="@string/hint_pick_a_file"
                 android:inputType="none"
                 android:textSize="35sp" />
 
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/txtPlay"
+            android:text="@string/txt_play"
             android:textSize="35sp" />
 
     </RelativeLayout>

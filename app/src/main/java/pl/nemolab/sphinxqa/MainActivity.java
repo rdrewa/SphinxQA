@@ -3,32 +3,37 @@ package pl.nemolab.sphinxqa;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    public static String VIDEO_FILE = "VIDEO_FILE";
+    public static String VIDEO_TITLE = "VIDEO_TITLE";
+    public static String SRC_FILE = "SRC_FILE";
+    public static String DST_FILE = "DST_FILE";
+
     private EditText edtVideoFile, edtSrcFile, edtDstFile;
-    private TextView txtVideoPath;
-    private Button btnPlay;
+    private Button btnVideo, btnSrc, btnDst, btnPlay;
     private List<String> listVideoFiles;
     private List<String> listVideoPaths;
+    private String videoFile, srcFile, dstFile, videoPath, videoDir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +43,23 @@ public class MainActivity extends ActionBarActivity {
         edtVideoFile = (EditText) findViewById(R.id.edtVideoFile);
         edtSrcFile = (EditText) findViewById(R.id.edtSrcFile);
         edtDstFile = (EditText) findViewById(R.id.edtDstFile);
-        txtVideoPath = (TextView) findViewById(R.id.txtVideoPath);
+        btnVideo = (Button) findViewById(R.id.btnVideo);
+        btnSrc = (Button) findViewById(R.id.btnSrc);
+        btnDst = (Button) findViewById(R.id.btnDst);
         btnPlay = (Button) findViewById(R.id.btnPlay);
-        edtVideoFile.setOnClickListener(new View.OnClickListener() {
+        btnVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPickVideoDialog();
             }
         });
-        edtSrcFile.setOnClickListener(new View.OnClickListener() {
+        btnSrc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPickSrcDialog();
             }
         });
-        edtDstFile.setOnClickListener(new View.OnClickListener() {
+        btnDst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPickDstDialog();
@@ -66,18 +73,9 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    private void startPlayerActivity() {
-    }
-
-    private void showPickDstDialog() {
-    }
-
-    private void showPickSrcDialog() {
-    }
-
     private void showPickVideoDialog() {
         String[] columns = {
-                MediaStore.Video.VideoColumns.TITLE,
+                MediaStore.Video.VideoColumns.DISPLAY_NAME,
                 MediaStore.Video.VideoColumns.DATA,
         };
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
@@ -96,17 +94,83 @@ public class MainActivity extends ActionBarActivity {
         }
         String[] arrVideoFiles = listVideoFiles.toArray(new String[listVideoFiles.size()]);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pick a video file");
+        builder.setTitle(getString(R.string.pick_video_title));
         builder.setItems(arrVideoFiles, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String msg = "Title: " + listVideoFiles.get(which) + "\n"
-                        + "Path: " + listVideoPaths.get(which);
+                videoFile = listVideoFiles.get(which);
+                videoPath = listVideoPaths.get(which);
+                videoDir = videoPath.replace(videoFile, "");
+                edtVideoFile.setText(videoFile);
+                String msg = "Title: " + videoFile + "\n"
+                        + "Path: " + videoPath;
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
             }
         });
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void showPickSrcDialog() {
+        final String[] files = findFiles();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.dlg_src_title));
+        builder.setItems(files, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String file = files[which];
+                srcFile = videoDir + "/" + file;
+                String msg = "Title: " + file + "\n"
+                        + "Path: " + srcFile;
+                edtSrcFile.setText(file);
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showPickDstDialog() {
+        final String[] files = findFiles();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.dlg_dst_title));
+        builder.setItems(files, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String file = files[which];
+                dstFile = videoDir + "/" + file;
+                String msg = "Title: " + file + "\n"
+                        + "Path: " + dstFile;
+                edtDstFile.setText(file);
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void startPlayerActivity() {
+        Intent intent = new Intent(this, PlayerActivity.class);
+        intent.putExtra(VIDEO_TITLE, videoFile);
+        intent.putExtra(VIDEO_FILE, videoPath);
+        intent.putExtra(SRC_FILE, srcFile);
+        intent.putExtra(DST_FILE, dstFile);
+        startActivity(intent);
+    }
+
+    private String[] findFiles() {
+        List<String> files = new ArrayList<>();
+        File file = new File(videoPath);
+        if (file != null && file.exists()) {
+            File parent = file.getParentFile();
+            parent.getAbsolutePath();
+            for (String item : parent.list()) {
+                if (item.endsWith(".srt")) {
+                    files.add(item);
+                }
+            }
+        }
+        return files.toArray(new String[files.size()]);
     }
 
 

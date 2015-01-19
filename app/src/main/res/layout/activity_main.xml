@@ -13,22 +13,15 @@
             android:id="@+id/edtVideoFile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="28dp"
-            android:hint="@string/hintPickAFile"
+            android:hint="@string/hint_pick_a_file"
+            android:clickable="false"
+            android:focusable="false"
+            android:maxLines="1"
             android:inputType="none"
-            android:textSize="40sp" />
-
-        <TextView
-            android:id="@+id/txtVideoPath"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/edtVideoFile"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="43dp"
-            android:text="@string/txtDots"
-            android:textSize="30sp" />
+            android:textSize="40sp"
+            android:ellipsize="start"
+            android:layout_below="@+id/btnVideo"
+            android:layout_centerHorizontal="true" />
 
         <View
             android:layout_width="fill_parent"
@@ -38,7 +31,17 @@
             android:layout_alignParentStart="true"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:background="#FF00FF00" />
+            android:background="#FF00FF00"
+            android:id="@+id/view2" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_video_title"
+            android:id="@+id/btnVideo"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="38dp" />
 
     </RelativeLayout>
 
@@ -51,24 +54,30 @@
             android:id="@+id/edtSrcFile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/edtDstFile"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/edtDstFile"
-            android:layout_marginTop="40dp"
-            android:hint="@string/hintPickAFile"
+            android:layout_marginTop="38dp"
+            android:hint="@string/hint_pick_a_file"
+            android:clickable="false"
+            android:focusable="false"
+            android:maxLines="1"
             android:inputType="none"
-            android:textSize="35sp" />
+            android:textSize="35sp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btnDst"
+            android:layout_toEndOf="@+id/btnDst" />
 
         <EditText
             android:id="@+id/edtDstFile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edtSrcFile"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:hint="@string/hintPickAFile"
+            android:hint="@string/hint_pick_a_file"
+            android:clickable="false"
+            android:focusable="false"
+            android:maxLines="1"
             android:inputType="none"
-            android:textSize="35sp" />
+            android:textSize="35sp"
+            android:layout_below="@+id/edtSrcFile"
+            android:layout_alignLeft="@+id/edtSrcFile"
+            android:layout_alignStart="@+id/edtSrcFile" />
 
         <View
             android:layout_width="fill_parent"
@@ -78,7 +87,26 @@
             android:layout_alignParentStart="true"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:background="#FF00FF00" />
+            android:background="#FF00FF00"
+            android:id="@+id/view" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_src_title"
+            android:id="@+id/btnSrc"
+            android:layout_alignTop="@+id/edtSrcFile"
+            android:layout_alignLeft="@+id/view"
+            android:layout_alignStart="@+id/view" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_dst_title"
+            android:id="@+id/btnDst"
+            android:layout_below="@+id/edtSrcFile"
+            android:layout_alignLeft="@+id/btnSrc"
+            android:layout_alignStart="@+id/btnSrc" />
 
     </RelativeLayout>
 
@@ -93,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/txtPlay"
+            android:text="@string/txt_play"
             android:textSize="35sp" />
 
     </RelativeLayout>
