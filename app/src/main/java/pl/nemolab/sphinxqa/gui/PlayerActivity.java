@@ -1,18 +1,29 @@
-package pl.nemolab.sphinxqa;
+package pl.nemolab.sphinxqa.gui;
 
 import android.app.ProgressDialog;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceHolder;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.List;
+
+import pl.nemolab.sphinxqa.R;
+import pl.nemolab.sphinxqa.subs.SrtParser;
+import pl.nemolab.sphinxqa.subs.Subtitle;
 
 
 public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.Callback {
@@ -28,6 +39,9 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private int position = 0;
     private Runnable subtitlesPlayer;
     private Handler subtitlesDisplayHandler = new Handler();
+    private List<Subtitle> subtitles;
+    private SubtitleProcessorTask subtitleProcessor;
+    private int currentSubtitleIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +65,35 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             public void run() {
                 if (video != null && video.isPlaying()) {
                     int currentPos = video.getCurrentPosition();
-                    int minute = 60000;
-                    int minutes = currentPos / minute;
-                    txtSubtitles.setText("Minutes: " + minutes);
+                    if (subtitles != null && !subtitles.isEmpty()) {
+                        for (Subtitle subtitle : subtitles) {
+                            if (currentPos >= subtitle.getStartMs()
+                                && currentPos <= subtitle.getStopMs()) {
+                                currentSubtitleIndex = subtitles.indexOf(subtitle);
+                                txtSubtitles.setText(Html.fromHtml(subtitle.getText()));
+                                txtSubtitles.setVisibility(View.VISIBLE);
+                                break;
+                            } else if (currentPos > subtitle.getStopMs()) {
+                                txtSubtitles.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    }
                 }
                 subtitlesDisplayHandler.postDelayed(this, 100);
             }
         };
+    }
+
+    @Override
+    protected void onPause() {
+        if (subtitlesDisplayHandler != null) {
+            subtitlesDisplayHandler.removeCallbacks(subtitlesPlayer);
+            subtitlesDisplayHandler = null;
+            if (subtitleProcessor != null) {
+                subtitleProcessor.cancel(true);
+            }
+        }
+        super.onPause();
     }
 
     private void readParams(Bundle bundle) {
@@ -160,9 +196,10 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             @Override
             public void onPrepared(MediaPlayer mp) {
                 progressDialog.dismiss();
+                subtitleProcessor = new SubtitleProcessorTask();
+                subtitleProcessor.execute();
                 video.seekTo(position);
                 video.start();
-                subtitlesDisplayHandler.post(subtitlesPlayer);
             }
         });
         video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -171,5 +208,30 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
                 // TODO
             }
         });
+    }
+
+    private class SubtitleProcessorTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            SrtParser parser = new SrtParser();
+            try {
+                subtitles = parser.parseFile(fileSrc);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (subtitles != null && !subtitles.isEmpty()) {
+                txtSubtitles.setText("");
+                subtitlesDisplayHandler.post(subtitlesPlayer);
+            }
+            super.onPostExecute(aVoid);
+        }
     }
 }

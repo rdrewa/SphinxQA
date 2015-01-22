@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/Base.Theme.AppCompat.Light" >
         <activity
-            android:name=".MainActivity"
+            android:name=".gui.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PlayerActivity"
+            android:name=".gui.PlayerActivity"
             android:label="@string/title_activity_player" >
         </activity>
     </application>

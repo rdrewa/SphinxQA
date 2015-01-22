@@ -1,4 +1,4 @@
-package pl.nemolab.sphinxqa;
+package pl.nemolab.sphinxqa.gui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,12 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.nemolab.sphinxqa.R;
 
 
 public class MainActivity extends ActionBarActivity {
