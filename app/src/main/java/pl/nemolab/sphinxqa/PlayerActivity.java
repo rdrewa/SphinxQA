@@ -134,6 +134,18 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
 
     }
 
+    @Override
+    public void finish() {
+        cleanUp();
+        super.finish();
+    }
+
+    private void cleanUp() {
+        if (subtitlesDisplayHandler != null) {
+            subtitlesDisplayHandler.removeCallbacks(subtitlesPlayer);
+        }
+    }
+
     private void playVideo() {
         try {
             mediaController.setAnchorView(video);
@@ -147,11 +159,16 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-//                mp.prepareAsync();
                 progressDialog.dismiss();
                 video.seekTo(position);
                 video.start();
                 subtitlesDisplayHandler.post(subtitlesPlayer);
+            }
+        });
+        video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                // TODO
             }
         });
     }
