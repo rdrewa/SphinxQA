@@ -48,10 +48,10 @@ public class Subtitle implements Serializable {
     }
 
     public int getStartMs() {
-        return start.getMiliSecond();
+        return start.getMilliSecond();
     }
 
     public int getStopMs() {
-        return stop.getMiliSecond();
+        return stop.getMilliSecond();
     }
 }

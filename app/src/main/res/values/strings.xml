@@ -12,8 +12,10 @@
     <string name="pick_dst_title">Destination</string>
     <string name="dlg_src_title">Pick a source subtitle file</string>
     <string name="dlg_dst_title">Pick a destination subtitle file</string>
-    <string name="title_activity_player">PlayerActivity</string>
+    <string name="title_activity_player">Player</string>
     <string name="sample_text">ADFSAFDAS</string>
     <string name="sample_media_route_activity_presentation">Sample media...</string>
+    <string name="title_activity_marked">Marked Subtitles</string>
+    <string name="action_marked">Marked</string>
 
 </resources>

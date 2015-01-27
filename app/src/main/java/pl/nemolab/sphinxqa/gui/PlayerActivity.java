@@ -1,6 +1,7 @@
 package pl.nemolab.sphinxqa.gui;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,6 +21,7 @@ import android.widget.VideoView;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.nemolab.sphinxqa.R;
@@ -28,11 +31,17 @@ import pl.nemolab.sphinxqa.subs.Subtitle;
 
 public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.Callback {
 
+    public static final String MARKED = "MARKED";
+    public static final String TITLE = "TITLE";
+    public static final String SRC = "SRC";
+    public static final String DST = "DST";
+
     private static final String TAG = "SphinxQA:PlayerActivity";
     private static final String POSITION = "POSITION";
+    private static final String EMPTY_STRING = "";
 
     private VideoView video;
-    private TextView txtSubtitles;
+    private TextView txtSubtitles, txtMarked;
     private ProgressDialog progressDialog;
     private String titleVideo, fileVideo, fileSrc, fileDst;
     private MediaController mediaController;
@@ -40,8 +49,10 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private Runnable subtitlesPlayer;
     private Handler subtitlesDisplayHandler = new Handler();
     private List<Subtitle> subtitles;
+    private ArrayList<Integer> marked;
     private SubtitleProcessorTask subtitleProcessor;
-    private int currentSubtitleIndex = -1;
+    private int subtitleIndex = 0;
+    private String subtitleText = EMPTY_STRING;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +66,21 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         video = (VideoView) findViewById(R.id.video);
         video.getHolder().addCallback(this);
         txtSubtitles = (TextView) findViewById(R.id.txtSubtitles);
+        txtMarked = (TextView) findViewById(R.id.txtMarked);
+        marked = new ArrayList<>();
+        video.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (txtMarked != null) {
+                    if (!subtitleText.isEmpty()) {
+                        marked.add(subtitleIndex);
+                        String text = subtitleIndex + ": " + subtitleText + "\n";
+                        txtMarked.setText(text + txtMarked.getText());
+                    }
+                }
+                return false;
+            }
+        });
         progressDialog = new ProgressDialog(PlayerActivity.this);
         progressDialog.setTitle("PLAYER");
         progressDialog.setCancelable(false);
@@ -66,15 +92,21 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
                 if (video != null && video.isPlaying()) {
                     int currentPos = video.getCurrentPosition();
                     if (subtitles != null && !subtitles.isEmpty()) {
-                        for (Subtitle subtitle : subtitles) {
+                        int length = subtitles.size();
+                        Subtitle subtitle;
+                        int i;
+                        for (i = subtitleIndex; i < length; i++) {
+                            subtitle = subtitles.get(i);
                             if (currentPos >= subtitle.getStartMs()
-                                && currentPos <= subtitle.getStopMs()) {
-                                currentSubtitleIndex = subtitles.indexOf(subtitle);
+                                    && currentPos <= subtitle.getStopMs()) {
                                 txtSubtitles.setText(Html.fromHtml(subtitle.getText()));
                                 txtSubtitles.setVisibility(View.VISIBLE);
+                                subtitleIndex = i;
+                                subtitleText = subtitle.getText();
                                 break;
                             } else if (currentPos > subtitle.getStopMs()) {
                                 txtSubtitles.setVisibility(View.INVISIBLE);
+                                subtitleText = EMPTY_STRING;
                             }
                         }
                     }
@@ -129,6 +161,10 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_marked) {
+            cleanUp();
+            startMarkedActivity();
+        }
         if (id == R.id.action_settings) {
             return true;
         }
@@ -205,9 +241,20 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                // TODO
+                startMarkedActivity();
             }
         });
+    }
+
+
+
+    private void startMarkedActivity() {
+        Intent intent = new Intent(this, MarkedActivity.class);
+        intent.putExtra(TITLE, titleVideo);
+        intent.putExtra(SRC, fileSrc);
+        intent.putExtra(DST, fileDst);
+        intent.putIntegerArrayListExtra(MARKED, marked);
+        startActivity(intent);
     }
 
     private class SubtitleProcessorTask extends AsyncTask<Void, Void, Void> {
@@ -224,7 +271,6 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             }
             return null;
         }
-
         @Override
         protected void onPostExecute(Void aVoid) {
             if (subtitles != null && !subtitles.isEmpty()) {
@@ -233,5 +279,6 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             }
             super.onPostExecute(aVoid);
         }
+
     }
 }

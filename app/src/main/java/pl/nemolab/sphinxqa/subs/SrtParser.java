@@ -43,7 +43,6 @@ public class SrtParser {
 
     private String prepareText(BufferedReader reader) throws IOException {
         StringBuffer sb = new StringBuffer();
-        String text = "";
         String line = reader.readLine();
         while (line != null && !line.isEmpty()) {
             sb.append(line);
@@ -54,8 +53,8 @@ public class SrtParser {
 
     private TimeCode prepareStart(String line) {
         String string = line.substring(0,12);
-        int milisecond = parseTime(string);
-        return new TimeCode(string.substring(0, 8), milisecond);
+        int millisecond = parseTime(string);
+        return new TimeCode(string.substring(0, 8), millisecond);
     }
 
     private TimeCode prepareStop(String line) {

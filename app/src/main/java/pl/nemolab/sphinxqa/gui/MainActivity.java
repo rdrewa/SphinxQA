@@ -25,6 +25,7 @@ import pl.nemolab.sphinxqa.R;
 
 public class MainActivity extends ActionBarActivity {
 
+    public static final int TOAST_LENGTH = Toast.LENGTH_SHORT;
     public static String VIDEO_FILE = "VIDEO_FILE";
     public static String VIDEO_TITLE = "VIDEO_TITLE";
     public static String SRC_FILE = "SRC_FILE";
@@ -124,7 +125,7 @@ public class MainActivity extends ActionBarActivity {
                 String msg = "Title: " + file + "\n"
                         + "Path: " + srcFile;
                 edtSrcFile.setText(file);
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
             }
         });
         Dialog dialog = builder.create();
@@ -143,7 +144,7 @@ public class MainActivity extends ActionBarActivity {
                 String msg = "Title: " + file + "\n"
                         + "Path: " + dstFile;
                 edtDstFile.setText(file);
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
             }
         });
         Dialog dialog = builder.create();

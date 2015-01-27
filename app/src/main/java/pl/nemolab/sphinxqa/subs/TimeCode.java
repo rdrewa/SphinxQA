@@ -5,11 +5,11 @@ import java.io.Serializable;
 public class TimeCode implements Serializable {
 
     private String text;
-    private int miliSecond;
+    private int milliSecond;
 
-    public TimeCode(String text, int miliSecond) {
+    public TimeCode(String text, int milliSecond) {
         this.text = text;
-        this.miliSecond = miliSecond;
+        this.milliSecond = milliSecond;
     }
 
     public String getText() {
@@ -20,11 +20,11 @@ public class TimeCode implements Serializable {
         this.text = text;
     }
 
-    public int getMiliSecond() {
-        return miliSecond;
+    public int getMilliSecond() {
+        return milliSecond;
     }
 
-    public void setMiliSecond(int miliSecond) {
-        this.miliSecond = miliSecond;
+    public void setMilliSecond(int milliSecond) {
+        this.milliSecond = milliSecond;
     }
 }
