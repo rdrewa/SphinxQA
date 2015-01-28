@@ -45,7 +45,7 @@ public class CardCreator {
 
     private Subtitle matchSubs(Subtitle subtitle) {
         int i;
-        int currentPos = subtitle.getStartMs();
+        int currentPos = (subtitle.getStartMs() + subtitle.getStopMs()) / 2;
         for (i = lastIndex; i < length; i++) {
             Subtitle item = dst.get(i);
             if (isIn(currentPos, item)) {
@@ -58,7 +58,7 @@ public class CardCreator {
     }
 
     private boolean isIn(int currentPos, Subtitle subtitle) {
-        return currentPos >= (subtitle.getStartMs() - THRESHOLD)
-                && currentPos <= (subtitle.getStopMs() + THRESHOLD);
+        return currentPos >= (subtitle.getStartMs())
+                && currentPos <= (subtitle.getStopMs());
     }
 }

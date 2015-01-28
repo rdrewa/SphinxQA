@@ -106,7 +106,7 @@ public class MainActivity extends ActionBarActivity {
                 edtVideoFile.setText(videoFile);
                 String msg = "Title: " + videoFile + "\n"
                         + "Path: " + videoPath;
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
             }
         });
         Dialog dialog = builder.create();

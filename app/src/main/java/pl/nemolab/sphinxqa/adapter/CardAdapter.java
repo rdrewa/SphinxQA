@@ -1,6 +1,7 @@
 package pl.nemolab.sphinxqa.adapter;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,14 +33,21 @@ public class CardAdapter extends ArrayAdapter<Card> {
             holder.back = (TextView) item.findViewById(R.id.txtBack);
             holder.nr = (TextView) item.findViewById(R.id.txtNr);
             holder.export = (CheckBox) item.findViewById(R.id.checkExport);
+            holder.times = (TextView) item.findViewById(R.id.txtTimes);
             item.setTag(holder);
         }
         Holder holder = (Holder) item.getTag();
         Card card = getItem(position);
-        holder.front.setText(card.getFront());
-        holder.back.setText(card.getBack());
+        String frontStart = card.getPointerFront().getStart().getText();
+        String frontStop = card.getPointerFront().getStop().getText();
+        String backStart = card.getPointerBack().getStart().getText();
+        String backStop = card.getPointerBack().getStop().getText();
+        String times = frontStart + " (" + backStart + ") --> " + frontStop + " (" + backStop + ")";
+        holder.front.setText(Html.fromHtml(card.getFront()));
+        holder.back.setText(Html.fromHtml(card.getBack()));
         holder.nr.setText(String.valueOf(card.getNr()));
         holder.export.setChecked(card.isExport());
+        holder.times.setText(times);
         return item;
     }
 
@@ -48,5 +56,6 @@ public class CardAdapter extends ArrayAdapter<Card> {
         public TextView back;
         public TextView nr;
         public CheckBox export;
+        public TextView times;
     }
 }
