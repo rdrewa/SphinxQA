@@ -4,126 +4,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/imageView"
+        android:layout_weight="3"
+        android:src="@drawable/ic_launcher"/>
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="4">
 
-        <EditText
-            android:id="@+id/edtVideoFile"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_pick_a_file"
-            android:clickable="false"
-            android:focusable="false"
-            android:maxLines="1"
-            android:inputType="none"
-            android:textSize="40sp"
-            android:ellipsize="start"
-            android:layout_below="@+id/btnVideo"
-            android:layout_centerHorizontal="true" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/textView" />
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="#FF00FF00"
-            android:id="@+id/view2" />
-
-        <Button
-            android:layout_width="wrap_content"
+        <ExpandableListView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pick_video_title"
-            android:id="@+id/btnVideo"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="38dp" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4">
-
-        <EditText
-            android:id="@+id/edtSrcFile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:hint="@string/hint_pick_a_file"
-            android:clickable="false"
-            android:focusable="false"
-            android:maxLines="1"
-            android:inputType="none"
-            android:textSize="35sp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/btnDst"
-            android:layout_toEndOf="@+id/btnDst" />
-
-        <EditText
-            android:id="@+id/edtDstFile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_pick_a_file"
-            android:clickable="false"
-            android:focusable="false"
-            android:maxLines="1"
-            android:inputType="none"
-            android:textSize="35sp"
-            android:layout_below="@+id/edtSrcFile"
-            android:layout_alignLeft="@+id/edtSrcFile"
-            android:layout_alignStart="@+id/edtSrcFile" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="#FF00FF00"
-            android:id="@+id/view" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pick_src_title"
-            android:id="@+id/btnSrc"
-            android:layout_alignTop="@+id/edtSrcFile"
-            android:layout_alignLeft="@+id/view"
-            android:layout_alignStart="@+id/view" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pick_dst_title"
-            android:id="@+id/btnDst"
-            android:layout_below="@+id/edtSrcFile"
-            android:layout_alignLeft="@+id/btnSrc"
-            android:layout_alignStart="@+id/btnSrc" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3">
-
-        <Button
-            android:id="@+id/btnPlay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="@string/txt_play"
-            android:textSize="35sp" />
-
-    </RelativeLayout>
-
+            android:id="@+id/expandList" />
+    </LinearLayout>
 </LinearLayout>

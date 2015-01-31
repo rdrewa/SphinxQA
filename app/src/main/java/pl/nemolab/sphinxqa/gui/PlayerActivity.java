@@ -249,6 +249,10 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
 
 
     private void startMarkedActivity() {
+        marked = new ArrayList<>();
+        for (int i = 0; i < subtitles.size(); i++) {
+            marked.add(i);
+        }
         Intent intent = new Intent(this, MarkedActivity.class);
         intent.putExtra(TITLE, titleVideo);
         intent.putExtra(SRC, fileSrc);

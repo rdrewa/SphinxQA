@@ -1,11 +1,13 @@
 package pl.nemolab.sphinxqa.gui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -21,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.nemolab.sphinxqa.R;
+import pl.nemolab.sphinxqa.adapter.VideoExpandableAdapter;
+import pl.nemolab.sphinxqa.model.Video;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -36,49 +41,58 @@ public class MainActivity extends ActionBarActivity {
     private List<String> listVideoFiles;
     private List<String> listVideoPaths;
     private String videoFile, srcFile, dstFile, videoPath, videoDir;
+    private List<Video> listVideos;
+    private ExpandableListView expandList;
+    private VideoExpandableAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        edtVideoFile = (EditText) findViewById(R.id.edtVideoFile);
-        edtSrcFile = (EditText) findViewById(R.id.edtSrcFile);
-        edtDstFile = (EditText) findViewById(R.id.edtDstFile);
-        btnVideo = (Button) findViewById(R.id.btnVideo);
-        btnSrc = (Button) findViewById(R.id.btnSrc);
-        btnDst = (Button) findViewById(R.id.btnDst);
-        btnPlay = (Button) findViewById(R.id.btnPlay);
-        btnVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPickVideoDialog();
-            }
-        });
-        btnSrc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPickSrcDialog();
-            }
-        });
-        btnDst.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPickDstDialog();
-            }
-        });
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startPlayerActivity();
-            }
-        });
+//        edtVideoFile = (EditText) findViewById(R.id.edtVideoFile);
+//        edtSrcFile = (EditText) findViewById(R.id.edtSrcFile);
+//        edtDstFile = (EditText) findViewById(R.id.edtDstFile);
+//        btnVideo = (Button) findViewById(R.id.btnVideo);
+//        btnSrc = (Button) findViewById(R.id.btnSrc);
+//        btnDst = (Button) findViewById(R.id.btnDst);
+//        btnPlay = (Button) findViewById(R.id.btnPlay);
+//        btnVideo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showPickVideoDialog();
+//            }
+//        });
+//        btnSrc.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showPickSrcDialog();
+//            }
+//        });
+//        btnDst.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showPickDstDialog();
+//            }
+//        });
+//        btnPlay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startPlayerActivity();
+//            }
+//        });
+        expandList = (ExpandableListView) findViewById(R.id.expandList);
+        new LoadVideosTask().execute();
     }
 
     private void showPickVideoDialog() {
         String[] columns = {
                 MediaStore.Video.VideoColumns.DISPLAY_NAME,
                 MediaStore.Video.VideoColumns.DATA,
+                MediaStore.Video.VideoColumns.DURATION,
+                MediaStore.Video.VideoColumns.TITLE,
+                MediaStore.Video.VideoColumns.SIZE,
+                MediaStore.Video.VideoColumns.RESOLUTION,
         };
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         String selection = MediaStore.Video.VideoColumns.SIZE + " > ? AND "
@@ -196,5 +210,63 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private Activity getActivity() {
+        return this;
+    }
+
+    private class LoadVideosTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String[] columns = {
+                MediaStore.Video.VideoColumns.DISPLAY_NAME,
+                MediaStore.Video.VideoColumns.DATA,
+                MediaStore.Video.VideoColumns.DURATION,
+                MediaStore.Video.VideoColumns.TITLE,
+                MediaStore.Video.VideoColumns.SIZE,
+                MediaStore.Video.VideoColumns.RESOLUTION,
+            };
+            Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+            String selection = MediaStore.Video.VideoColumns.SIZE + " > ? AND "
+                    + MediaStore.Video.VideoColumns.DURATION + " > ?";
+            String[] params = {"100000000", "1200000"};
+            String orderBy = MediaStore.Video.VideoColumns.TITLE + " ASC";
+            Cursor cursor = getContentResolver().query(uri, columns, selection, params, orderBy);
+            listVideos = new ArrayList<>();
+            if (cursor != null && cursor.getCount() > 0) {
+                while (cursor.moveToNext()) {
+                    Video video = new Video();
+                    video.setName(cursor.getString(0));
+                    video.setPath(cursor.getString(1));
+                    video.setDuration(cursor.getString(2));
+                    video.setTitle(cursor.getString(3));
+                    video.setSize(cursor.getString(4));
+                    video.setResolution(cursor.getString(5));
+                    listVideos.add(video);
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            adapter = new VideoExpandableAdapter(getActivity(), listVideos);
+            expandList.setAdapter(adapter);
+            expandList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                @Override
+                public void onGroupExpand(int groupPosition) {
+                    int size = adapter.getGroupCount();
+                    for (int i=0; i < size; i++) {
+                        if (i != groupPosition) {
+                            expandList.collapseGroup(i);
+                        }
+                    }
+                }
+            });
+            super.onPostExecute(aVoid);
+        }
     }
 }

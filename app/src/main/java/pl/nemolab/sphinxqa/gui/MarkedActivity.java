@@ -15,7 +15,7 @@ import java.util.List;
 import pl.nemolab.sphinxqa.R;
 import pl.nemolab.sphinxqa.adapter.CardAdapter;
 import pl.nemolab.sphinxqa.subs.SrtParser;
-import pl.nemolab.sphinxqa.subs.Card;
+import pl.nemolab.sphinxqa.model.Card;
 import pl.nemolab.sphinxqa.subs.CardCreator;
 import pl.nemolab.sphinxqa.subs.Subtitle;
 

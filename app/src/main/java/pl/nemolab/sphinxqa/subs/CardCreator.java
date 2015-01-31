@@ -3,6 +3,8 @@ package pl.nemolab.sphinxqa.subs;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.nemolab.sphinxqa.model.Card;
+
 /**
  * Created by senator on 2015-01-24.
  */

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import pl.nemolab.sphinxqa.R;
-import pl.nemolab.sphinxqa.subs.Card;
+import pl.nemolab.sphinxqa.model.Card;
 
 public class CardAdapter extends ArrayAdapter<Card> {
     public static final int LAYOUT = R.layout.item_card;

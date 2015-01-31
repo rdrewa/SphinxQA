@@ -1,4 +1,6 @@
-package pl.nemolab.sphinxqa.subs;
+package pl.nemolab.sphinxqa.model;
+
+import pl.nemolab.sphinxqa.subs.Subtitle;
 
 /**
  * Created by senator on 2015-01-24.
