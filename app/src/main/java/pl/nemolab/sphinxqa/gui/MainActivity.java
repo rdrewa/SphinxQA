@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -37,6 +38,7 @@ public class MainActivity extends ActionBarActivity {
     public static String DST_FILE = "DST_FILE";
 
     private EditText edtVideoFile, edtSrcFile, edtDstFile;
+    private TextView txtVideo, txtSrc, txtDst;
     private Button btnVideo, btnSrc, btnDst, btnPlay;
     private List<String> listVideoFiles;
     private List<String> listVideoPaths;
@@ -50,39 +52,40 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        edtVideoFile = (EditText) findViewById(R.id.edtVideoFile);
-//        edtSrcFile = (EditText) findViewById(R.id.edtSrcFile);
-//        edtDstFile = (EditText) findViewById(R.id.edtDstFile);
-//        btnVideo = (Button) findViewById(R.id.btnVideo);
-//        btnSrc = (Button) findViewById(R.id.btnSrc);
-//        btnDst = (Button) findViewById(R.id.btnDst);
-//        btnPlay = (Button) findViewById(R.id.btnPlay);
-//        btnVideo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showPickVideoDialog();
-//            }
-//        });
-//        btnSrc.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showPickSrcDialog();
-//            }
-//        });
-//        btnDst.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showPickDstDialog();
-//            }
-//        });
-//        btnPlay.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startPlayerActivity();
-//            }
-//        });
-        expandList = (ExpandableListView) findViewById(R.id.expandList);
-        new LoadVideosTask().execute();
+        edtVideoFile = (EditText) findViewById(R.id.edtVideoFile);
+        edtSrcFile = (EditText) findViewById(R.id.edtSrcFile);
+        edtDstFile = (EditText) findViewById(R.id.edtDstFile);
+        txtVideo = (TextView) findViewById(R.id.txtVideo);
+        txtSrc = (TextView) findViewById(R.id.txtSrc);
+        txtDst = (TextView) findViewById(R.id.txtDst);
+        btnVideo = (Button) findViewById(R.id.btnVideo);
+        btnSrc = (Button) findViewById(R.id.btnSrc);
+        btnDst = (Button) findViewById(R.id.btnDst);
+        btnPlay = (Button) findViewById(R.id.btnPlay);
+        btnVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPickVideoDialog();
+            }
+        });
+        btnSrc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPickSrcDialog();
+            }
+        });
+        btnDst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPickDstDialog();
+            }
+        });
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startPlayerActivity();
+            }
+        });
     }
 
     private void showPickVideoDialog() {
@@ -117,7 +120,7 @@ public class MainActivity extends ActionBarActivity {
                 videoFile = listVideoFiles.get(which);
                 videoPath = listVideoPaths.get(which);
                 videoDir = videoPath.replace(videoFile, "");
-                edtVideoFile.setText(videoFile);
+                txtVideo.setText(videoFile);
                 String msg = "Title: " + videoFile + "\n"
                         + "Path: " + videoPath;
                 Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
@@ -138,7 +141,7 @@ public class MainActivity extends ActionBarActivity {
                 srcFile = videoDir + "/" + file;
                 String msg = "Title: " + file + "\n"
                         + "Path: " + srcFile;
-                edtSrcFile.setText(file);
+                txtSrc.setText(file);
                 Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
             }
         });
@@ -157,7 +160,7 @@ public class MainActivity extends ActionBarActivity {
                 dstFile = videoDir + "/" + file;
                 String msg = "Title: " + file + "\n"
                         + "Path: " + dstFile;
-                edtDstFile.setText(file);
+                txtDst.setText(file);
                 Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
             }
         });
@@ -210,63 +213,5 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private Activity getActivity() {
-        return this;
-    }
-
-    private class LoadVideosTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            String[] columns = {
-                MediaStore.Video.VideoColumns.DISPLAY_NAME,
-                MediaStore.Video.VideoColumns.DATA,
-                MediaStore.Video.VideoColumns.DURATION,
-                MediaStore.Video.VideoColumns.TITLE,
-                MediaStore.Video.VideoColumns.SIZE,
-                MediaStore.Video.VideoColumns.RESOLUTION,
-            };
-            Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-            String selection = MediaStore.Video.VideoColumns.SIZE + " > ? AND "
-                    + MediaStore.Video.VideoColumns.DURATION + " > ?";
-            String[] params = {"100000000", "1200000"};
-            String orderBy = MediaStore.Video.VideoColumns.TITLE + " ASC";
-            Cursor cursor = getContentResolver().query(uri, columns, selection, params, orderBy);
-            listVideos = new ArrayList<>();
-            if (cursor != null && cursor.getCount() > 0) {
-                while (cursor.moveToNext()) {
-                    Video video = new Video();
-                    video.setName(cursor.getString(0));
-                    video.setPath(cursor.getString(1));
-                    video.setDuration(cursor.getString(2));
-                    video.setTitle(cursor.getString(3));
-                    video.setSize(cursor.getString(4));
-                    video.setResolution(cursor.getString(5));
-                    listVideos.add(video);
-                }
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            adapter = new VideoExpandableAdapter(getActivity(), listVideos);
-            expandList.setAdapter(adapter);
-            expandList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-                @Override
-                public void onGroupExpand(int groupPosition) {
-                    int size = adapter.getGroupCount();
-                    for (int i=0; i < size; i++) {
-                        if (i != groupPosition) {
-                            expandList.collapseGroup(i);
-                        }
-                    }
-                }
-            });
-            super.onPostExecute(aVoid);
-        }
     }
 }

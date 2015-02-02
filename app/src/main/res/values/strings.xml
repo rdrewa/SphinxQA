@@ -10,12 +10,14 @@
     <string name="pick_video_title">Pick a video file</string>
     <string name="pick_src_title">Source</string>
     <string name="pick_dst_title">Destination</string>
-    <string name="dlg_src_title">Pick a source subtitle file</string>
-    <string name="dlg_dst_title">Pick a destination subtitle file</string>
+    <string name="dlg_src_title">Pick a foreign subtitle file</string>
+    <string name="dlg_dst_title">Pick a native subtitle file</string>
     <string name="title_activity_player">Player</string>
     <string name="sample_text">ADFSAFDAS</string>
     <string name="sample_media_route_activity_presentation">Sample media...</string>
     <string name="title_activity_marked">Marked Subtitles</string>
     <string name="action_marked">Marked</string>
+    <string name="txt_welcome">Welcome to SphinxQA</string>
+    <string name="txt_app_desc">Get started now with SphinxQA and start to creating your personal flashcards from series or movies</string>
 
 </resources>
