@@ -123,7 +123,7 @@ public class MainActivity extends ActionBarActivity {
                 txtVideo.setText(videoFile);
                 String msg = "Title: " + videoFile + "\n"
                         + "Path: " + videoPath;
-                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
+//                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
             }
         });
         Dialog dialog = builder.create();
@@ -142,7 +142,7 @@ public class MainActivity extends ActionBarActivity {
                 String msg = "Title: " + file + "\n"
                         + "Path: " + srcFile;
                 txtSrc.setText(file);
-                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
+//                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
             }
         });
         Dialog dialog = builder.create();
@@ -161,7 +161,7 @@ public class MainActivity extends ActionBarActivity {
                 String msg = "Title: " + file + "\n"
                         + "Path: " + dstFile;
                 txtDst.setText(file);
-                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
+//                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
             }
         });
         Dialog dialog = builder.create();

@@ -4,18 +4,37 @@
     android:layout_height="match_parent"
     android:layout_gravity="center">
 
+
     <VideoView
         android:id="@+id/video"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center" />
 
-    <TextView
-        android:id="@+id/txtSubtitles"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:ellipsize="middle"
-        android:gravity="center"
-        android:text="@string/sample_text" />
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/txtSrcSubtitles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:ellipsize="middle"
+            android:gravity="center"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/txtDstSubtitles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:ellipsize="middle"
+            android:gravity="center"
+            android:textColor="#F00" />
+    </LinearLayout>
+
 </FrameLayout>

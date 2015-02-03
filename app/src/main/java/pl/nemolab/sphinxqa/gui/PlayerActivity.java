@@ -41,18 +41,19 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private static final String EMPTY_STRING = "";
 
     private VideoView video;
-    private TextView txtSubtitles, txtMarked;
+    private TextView txtSrcSubtitles, txtDstSubtitles, txtMarked;
     private ProgressDialog progressDialog;
     private String titleVideo, fileVideo, fileSrc, fileDst;
     private MediaController mediaController;
     private int position = 0;
     private Runnable subtitlesPlayer;
     private Handler subtitlesDisplayHandler = new Handler();
-    private List<Subtitle> subtitles;
+    private List<Subtitle> srcSubtitles, dstSubtitles;
     private ArrayList<Integer> marked;
     private SubtitleProcessorTask subtitleProcessor;
-    private int subtitleIndex = 0;
-    private String subtitleText = EMPTY_STRING;
+    private int subtitleSrcIndex = 0, subtitleDstIndex = 0;
+    private int lastSrcPosition = 0, lastDstPosition = 0;
+    private String subtitleSrcText = EMPTY_STRING, subtitleDstText = EMPTY_STRING;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +66,17 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         readParams(getIntent().getExtras());
         video = (VideoView) findViewById(R.id.video);
         video.getHolder().addCallback(this);
-        txtSubtitles = (TextView) findViewById(R.id.txtSubtitles);
+        txtSrcSubtitles = (TextView) findViewById(R.id.txtSrcSubtitles);
+        txtDstSubtitles = (TextView) findViewById(R.id.txtDstSubtitles);
         txtMarked = (TextView) findViewById(R.id.txtMarked);
         marked = new ArrayList<>();
         video.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (txtMarked != null) {
-                    if (!subtitleText.isEmpty()) {
-                        marked.add(subtitleIndex);
-                        String text = subtitleIndex + ": " + subtitleText + "\n";
+                    if (!subtitleSrcText.isEmpty()) {
+                        marked.add(subtitleSrcIndex);
+                        String text = subtitleSrcIndex + ": " + subtitleSrcText + "\n";
                         txtMarked.setText(text + txtMarked.getText());
                     }
                 }
@@ -85,28 +87,58 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         progressDialog.setTitle("PLAYER");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        txtSubtitles.setText(titleVideo);
+        txtSrcSubtitles.setText(titleVideo);
         subtitlesPlayer = new Runnable() {
             @Override
             public void run() {
                 if (video != null && video.isPlaying()) {
                     int currentPos = video.getCurrentPosition();
-                    if (subtitles != null && !subtitles.isEmpty()) {
-                        int length = subtitles.size();
+                    if (currentPos < lastSrcPosition) {
+                        subtitleSrcIndex = 0;
+                    }
+                    lastSrcPosition = currentPos;
+                    if (srcSubtitles != null && !srcSubtitles.isEmpty()) {
+                        int length = srcSubtitles.size();
                         Subtitle subtitle;
                         int i;
-                        for (i = subtitleIndex; i < length; i++) {
-                            subtitle = subtitles.get(i);
+                        for (i = subtitleSrcIndex; i < length; i++) {
+                            subtitle = srcSubtitles.get(i);
                             if (currentPos >= subtitle.getStartMs()
                                     && currentPos <= subtitle.getStopMs()) {
-                                txtSubtitles.setText(Html.fromHtml(subtitle.getText()));
-                                txtSubtitles.setVisibility(View.VISIBLE);
-                                subtitleIndex = i;
-                                subtitleText = subtitle.getText();
+                                txtSrcSubtitles.setText(Html.fromHtml(subtitle.getText()));
+                                txtSrcSubtitles.setVisibility(View.VISIBLE);
+                                subtitleSrcIndex = i;
+                                subtitleSrcText = subtitle.getText();
                                 break;
                             } else if (currentPos > subtitle.getStopMs()) {
-                                txtSubtitles.setVisibility(View.INVISIBLE);
-                                subtitleText = EMPTY_STRING;
+                                txtSrcSubtitles.setVisibility(View.INVISIBLE);
+                                subtitleSrcText = EMPTY_STRING;
+                            }
+                        }
+                    }
+
+
+
+                    if (currentPos < lastDstPosition) {
+                        subtitleDstIndex = 0;
+                    }
+                    lastDstPosition = currentPos;
+                    if (dstSubtitles != null && !dstSubtitles.isEmpty()) {
+                        int length = dstSubtitles.size();
+                        Subtitle subtitle;
+                        int i;
+                        for (i = subtitleDstIndex; i < length; i++) {
+                            subtitle = dstSubtitles.get(i);
+                            if (currentPos >= subtitle.getStartMs()
+                                    && currentPos <= subtitle.getStopMs()) {
+                                txtDstSubtitles.setText(Html.fromHtml(subtitle.getText()));
+                                txtDstSubtitles.setVisibility(View.VISIBLE);
+                                subtitleDstIndex = i;
+                                subtitleDstText = subtitle.getText();
+                                break;
+                            } else if (currentPos > subtitle.getStopMs()) {
+                                txtDstSubtitles.setVisibility(View.INVISIBLE);
+                                subtitleDstText = EMPTY_STRING;
                             }
                         }
                     }
@@ -250,7 +282,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
 
     private void startMarkedActivity() {
         marked = new ArrayList<>();
-        for (int i = 0; i < subtitles.size(); i++) {
+        for (int i = 0; i < srcSubtitles.size(); i++) {
             marked.add(i);
         }
         Intent intent = new Intent(this, MarkedActivity.class);
@@ -267,7 +299,8 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         protected Void doInBackground(Void... params) {
             SrtParser parser = new SrtParser();
             try {
-                subtitles = parser.parseFile(fileSrc);
+                srcSubtitles = parser.parseFile(fileSrc);
+                dstSubtitles = parser.parseFile(fileDst);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ParseException e) {
@@ -277,10 +310,13 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            if (subtitles != null && !subtitles.isEmpty()) {
-                txtSubtitles.setText("");
-                subtitlesDisplayHandler.post(subtitlesPlayer);
+            if (srcSubtitles != null && !srcSubtitles.isEmpty()) {
+                txtSrcSubtitles.setText("");
             }
+            if (dstSubtitles != null && !dstSubtitles.isEmpty()) {
+                txtDstSubtitles.setText("");
+            }
+            subtitlesDisplayHandler.post(subtitlesPlayer);
             super.onPostExecute(aVoid);
         }
 

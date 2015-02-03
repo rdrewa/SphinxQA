@@ -71,7 +71,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dlg_src_title" />
+            android:text="@string/dlg_dst_title" />
 
         <TextView
             android:id="@+id/txtDst"
