@@ -22,14 +22,9 @@
         android:textColor="#F00"
         android:text="@string/sample_text" />
 
-    <ScrollView
+    <ListView
+        android:id="@+id/listSubs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/txtMarked"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </ScrollView>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

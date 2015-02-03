@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.nemolab.sphinxqa.R;
+import pl.nemolab.sphinxqa.adapter.SubsAdapter;
+import pl.nemolab.sphinxqa.model.Subs;
 import pl.nemolab.sphinxqa.subs.SrtParser;
 import pl.nemolab.sphinxqa.subs.Subtitle;
 
@@ -41,7 +44,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private static final String EMPTY_STRING = "";
 
     private VideoView video;
-    private TextView txtSrcSubtitles, txtDstSubtitles, txtMarked;
+    private TextView txtSrcSubtitles, txtDstSubtitles;
     private ProgressDialog progressDialog;
     private String titleVideo, fileVideo, fileSrc, fileDst;
     private MediaController mediaController;
@@ -54,6 +57,9 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private int subtitleSrcIndex = 0, subtitleDstIndex = 0;
     private int lastSrcPosition = 0, lastDstPosition = 0;
     private String subtitleSrcText = EMPTY_STRING, subtitleDstText = EMPTY_STRING;
+    private SubsAdapter adapter;
+    private ListView listSubs;
+    private Subs lastSubs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +74,14 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         video.getHolder().addCallback(this);
         txtSrcSubtitles = (TextView) findViewById(R.id.txtSrcSubtitles);
         txtDstSubtitles = (TextView) findViewById(R.id.txtDstSubtitles);
-        txtMarked = (TextView) findViewById(R.id.txtMarked);
+        listSubs = (ListView) findViewById(R.id.listSubs);
         marked = new ArrayList<>();
         video.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (txtMarked != null) {
-                    if (!subtitleSrcText.isEmpty()) {
-                        marked.add(subtitleSrcIndex);
-                        String text = subtitleSrcIndex + ": " + subtitleSrcText + "\n";
-                        txtMarked.setText(text + txtMarked.getText());
-                    }
+                if (!subtitleSrcText.isEmpty()) {
+                    marked.add(subtitleSrcIndex);
+                    adapter.insert(lastSubs, 0);
                 }
                 return false;
             }
@@ -88,6 +91,8 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         progressDialog.setCancelable(false);
         progressDialog.show();
         txtSrcSubtitles.setText(titleVideo);
+        adapter = new SubsAdapter(this, new ArrayList<Subs>());
+        listSubs.setAdapter(adapter);
         subtitlesPlayer = new Runnable() {
             @Override
             public void run() {
@@ -97,51 +102,50 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
                         subtitleSrcIndex = 0;
                     }
                     lastSrcPosition = currentPos;
+                    Subtitle srcSubtitle = null;
                     if (srcSubtitles != null && !srcSubtitles.isEmpty()) {
                         int length = srcSubtitles.size();
-                        Subtitle subtitle;
                         int i;
                         for (i = subtitleSrcIndex; i < length; i++) {
-                            subtitle = srcSubtitles.get(i);
-                            if (currentPos >= subtitle.getStartMs()
-                                    && currentPos <= subtitle.getStopMs()) {
-                                txtSrcSubtitles.setText(Html.fromHtml(subtitle.getText()));
+                            srcSubtitle = srcSubtitles.get(i);
+                            if (currentPos >= srcSubtitle.getStartMs()
+                                    && currentPos <= srcSubtitle.getStopMs()) {
+                                txtSrcSubtitles.setText(Html.fromHtml(srcSubtitle.getText()));
                                 txtSrcSubtitles.setVisibility(View.VISIBLE);
                                 subtitleSrcIndex = i;
-                                subtitleSrcText = subtitle.getText();
+                                subtitleSrcText = srcSubtitle.getText();
                                 break;
-                            } else if (currentPos > subtitle.getStopMs()) {
+                            } else if (currentPos > srcSubtitle.getStopMs()) {
                                 txtSrcSubtitles.setVisibility(View.INVISIBLE);
                                 subtitleSrcText = EMPTY_STRING;
                             }
                         }
                     }
 
-
-
                     if (currentPos < lastDstPosition) {
                         subtitleDstIndex = 0;
                     }
                     lastDstPosition = currentPos;
+                    Subtitle dstSubtitle = null;
                     if (dstSubtitles != null && !dstSubtitles.isEmpty()) {
                         int length = dstSubtitles.size();
-                        Subtitle subtitle;
                         int i;
                         for (i = subtitleDstIndex; i < length; i++) {
-                            subtitle = dstSubtitles.get(i);
-                            if (currentPos >= subtitle.getStartMs()
-                                    && currentPos <= subtitle.getStopMs()) {
-                                txtDstSubtitles.setText(Html.fromHtml(subtitle.getText()));
+                            dstSubtitle = dstSubtitles.get(i);
+                            if (currentPos >= dstSubtitle.getStartMs()
+                                    && currentPos <= dstSubtitle.getStopMs()) {
+                                txtDstSubtitles.setText(Html.fromHtml(dstSubtitle.getText()));
                                 txtDstSubtitles.setVisibility(View.VISIBLE);
                                 subtitleDstIndex = i;
-                                subtitleDstText = subtitle.getText();
+                                subtitleDstText = dstSubtitle.getText();
                                 break;
-                            } else if (currentPos > subtitle.getStopMs()) {
+                            } else if (currentPos > dstSubtitle.getStopMs()) {
                                 txtDstSubtitles.setVisibility(View.INVISIBLE);
                                 subtitleDstText = EMPTY_STRING;
                             }
                         }
                     }
+                    lastSubs = new Subs(srcSubtitle, dstSubtitle);
                 }
                 subtitlesDisplayHandler.postDelayed(this, 100);
             }
