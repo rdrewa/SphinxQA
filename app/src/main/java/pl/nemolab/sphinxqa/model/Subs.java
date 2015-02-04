@@ -10,6 +10,7 @@ public class Subs {
     private String stop;
     private String src;
     private String dst;
+    private int position;
 
     public String getStart() {
         return start;
@@ -43,12 +44,21 @@ public class Subs {
         this.dst = dst;
     }
 
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
     public Subs(Subtitle pointerSrc, Subtitle pointerDst) {
         String pattern = "\\<.*?\\>";
         if (pointerSrc != null) {
             src = pointerSrc.getText().replaceAll(pattern, "");
             start = pointerSrc.getStart().getText().replaceAll(pattern, "");
             stop = pointerSrc.getStop().getText().replaceAll(pattern, "");
+            position = pointerSrc.getStartMs();
         }
         if (pointerDst != null) {
             dst = pointerDst.getText().replaceAll(pattern, "");

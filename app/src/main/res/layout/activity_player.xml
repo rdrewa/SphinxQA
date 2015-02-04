@@ -13,14 +13,13 @@
         android:id="@+id/txtSrcSubtitles"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sample_text" />
+        android:textColor="#00F" />
 
     <TextView
         android:id="@+id/txtDstSubtitles"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColor="#F00"
-        android:text="@string/sample_text" />
+        android:textColor="#F00" />
 
     <ListView
         android:id="@+id/listSubs"

@@ -20,9 +20,6 @@ import java.util.List;
 import pl.nemolab.sphinxqa.R;
 import pl.nemolab.sphinxqa.model.Video;
 
-/**
- * Created by senator on 2015-01-29.
- */
 public class VideoExpandableAdapter extends BaseExpandableListAdapter {
 
     private static final int GROUP_LAYOUT = R.layout.group_video;

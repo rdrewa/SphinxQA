@@ -37,24 +37,17 @@ public class MainActivity extends ActionBarActivity {
     public static String SRC_FILE = "SRC_FILE";
     public static String DST_FILE = "DST_FILE";
 
-    private EditText edtVideoFile, edtSrcFile, edtDstFile;
     private TextView txtVideo, txtSrc, txtDst;
     private Button btnVideo, btnSrc, btnDst, btnPlay;
     private List<String> listVideoFiles;
     private List<String> listVideoPaths;
     private String videoFile, srcFile, dstFile, videoPath, videoDir;
-    private List<Video> listVideos;
-    private ExpandableListView expandList;
-    private VideoExpandableAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        edtVideoFile = (EditText) findViewById(R.id.edtVideoFile);
-        edtSrcFile = (EditText) findViewById(R.id.edtSrcFile);
-        edtDstFile = (EditText) findViewById(R.id.edtDstFile);
         txtVideo = (TextView) findViewById(R.id.txtVideo);
         txtSrc = (TextView) findViewById(R.id.txtSrc);
         txtDst = (TextView) findViewById(R.id.txtDst);
@@ -117,6 +110,7 @@ public class MainActivity extends ActionBarActivity {
         builder.setItems(arrVideoFiles, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String prevVideo = videoFile;
                 videoFile = listVideoFiles.get(which);
                 videoPath = listVideoPaths.get(which);
                 videoDir = videoPath.replace(videoFile, "");
@@ -124,6 +118,15 @@ public class MainActivity extends ActionBarActivity {
                 String msg = "Title: " + videoFile + "\n"
                         + "Path: " + videoPath;
 //                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
+                if (!videoFile.equals(prevVideo)) {
+                    srcFile = null;
+                    dstFile = null;
+                    txtSrc.setText("");
+                    txtDst.setText("");
+                    btnPlay.setEnabled(false);
+                }
+                btnSrc.setEnabled(true);
+                btnDst.setEnabled(true);
             }
         });
         Dialog dialog = builder.create();
@@ -142,6 +145,7 @@ public class MainActivity extends ActionBarActivity {
                 String msg = "Title: " + file + "\n"
                         + "Path: " + srcFile;
                 txtSrc.setText(file);
+                checkFiles();
 //                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
             }
         });
@@ -161,11 +165,23 @@ public class MainActivity extends ActionBarActivity {
                 String msg = "Title: " + file + "\n"
                         + "Path: " + dstFile;
                 txtDst.setText(file);
+                checkFiles();
 //                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
             }
         });
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void checkFiles() {
+        if (srcFile != null && dstFile != null) {
+            if (!srcFile.equals(dstFile)) {
+                btnPlay.setEnabled(true);
+            } else {
+                String msg = getString(R.string.the_same_files);
+                Toast.makeText(getApplicationContext(), msg, TOAST_LENGTH).show();
+            }
+        }
     }
 
     private void startPlayerActivity() {

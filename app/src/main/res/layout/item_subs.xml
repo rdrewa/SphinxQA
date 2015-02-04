@@ -5,51 +5,54 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/txtStart"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:layout_gravity="left"
-            android:layout_marginRight="20dp"
-            android:id="@+id/txtStart" />
+            android:layout_weight="1"
+            android:gravity="start"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/txtSrc"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:layout_gravity="end"
+            android:layout_weight="4"
+            android:ellipsize="end"
             android:gravity="end"
-            android:id="@+id/txtSrc" />
+            android:singleLine="true"
+            android:textColor="#0F0"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/txtDst"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:layout_gravity="left"
-            android:id="@+id/txtDst" />
+            android:layout_weight="4"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/txtStop"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:layout_gravity="end"
+            android:layout_weight="1"
             android:gravity="end"
-            android:layout_marginLeft="20dp"
-            android:id="@+id/txtStop" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
 </LinearLayout>

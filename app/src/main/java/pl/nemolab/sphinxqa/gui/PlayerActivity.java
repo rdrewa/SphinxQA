@@ -2,9 +2,12 @@ package pl.nemolab.sphinxqa.gui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -15,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -60,6 +64,9 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private SubsAdapter adapter;
     private ListView listSubs;
     private Subs lastSubs;
+    private ActionBarDrawerToggle drawerToggle;
+    private DrawerLayout drawerLayout;
+    private boolean useDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +157,35 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
                 subtitlesDisplayHandler.postDelayed(this, 100);
             }
         };
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        listSubs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                seekToItem(position);
+            }
+        });
+        useDrawer = drawerLayout != null;
+        if (useDrawer) {
+            drawerToggle = new ActionBarDrawerToggle(
+                    this,
+                    drawerLayout,
+                    R.drawable.ic_launcher,
+                    R.string.drawer_open,
+                    R.string.drawer_close
+            );
+            drawerLayout.setDrawerListener(drawerToggle);
+        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    private void seekToItem(int position) {
+        Subs subs = adapter.getItem(position);
+        video.seekTo(subs.getPosition());
+        listSubs.setItemChecked(position, true);
+        if (useDrawer) {
+            drawerLayout.closeDrawer(listSubs);
+        }
     }
 
     @Override
@@ -248,6 +284,22 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         super.finish();
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (useDrawer) {
+            drawerToggle.syncState();
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (useDrawer) {
+            drawerToggle.onConfigurationChanged(newConfig);
+        }
+    }
+
     private void cleanUp() {
         if (subtitlesDisplayHandler != null) {
             subtitlesDisplayHandler.removeCallbacks(subtitlesPlayer);
@@ -320,7 +372,9 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             if (dstSubtitles != null && !dstSubtitles.isEmpty()) {
                 txtDstSubtitles.setText("");
             }
-            subtitlesDisplayHandler.post(subtitlesPlayer);
+            if (subtitlesDisplayHandler != null && subtitlesPlayer != null) {
+                subtitlesDisplayHandler.post(subtitlesPlayer);
+            }
             super.onPostExecute(aVoid);
         }
 

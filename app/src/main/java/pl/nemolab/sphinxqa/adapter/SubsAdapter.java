@@ -12,9 +12,6 @@ import java.util.List;
 import pl.nemolab.sphinxqa.R;
 import pl.nemolab.sphinxqa.model.Subs;
 
-/**
- * Created by senator on 2015-02-03.
- */
 public class SubsAdapter extends ArrayAdapter<Subs> {
     public static final int LAYOUT = R.layout.item_subs;
 

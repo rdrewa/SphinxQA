@@ -19,5 +19,8 @@
     <string name="action_marked">Marked</string>
     <string name="txt_welcome">Welcome to SphinxQA</string>
     <string name="txt_app_desc">Get started now with SphinxQA and start to creating your personal flashcards from series or movies</string>
+    <string name="drawer_open">drawer open</string>
+    <string name="drawer_close">drawer close</string>
+    <string name="the_same_files">The same files has been picked</string>
 
 </resources>
