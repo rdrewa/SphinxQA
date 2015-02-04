@@ -6,6 +6,8 @@ import pl.nemolab.sphinxqa.subs.Subtitle;
  * Created by senator on 2015-02-03.
  */
 public class Subs {
+    public static final String PATTERN_CLEAN = "\\<.*?\\>";
+    public static final String PATTERN_SPLIT =  "/\\r?\\n/g";
     private String start;
     private String stop;
     private String src;
@@ -53,15 +55,23 @@ public class Subs {
     }
 
     public Subs(Subtitle pointerSrc, Subtitle pointerDst) {
-        String pattern = "\\<.*?\\>";
         if (pointerSrc != null) {
-            src = pointerSrc.getText().replaceAll(pattern, "");
-            start = pointerSrc.getStart().getText().replaceAll(pattern, "");
-            stop = pointerSrc.getStop().getText().replaceAll(pattern, "");
+            src = cleanText(pointerSrc.getText());
+            start = pointerSrc.getStart().getText();
+            stop = pointerSrc.getStop().getText();
             position = pointerSrc.getStartMs();
         }
         if (pointerDst != null) {
-            dst = pointerDst.getText().replaceAll(pattern, "");
+            dst = cleanText(pointerDst.getText());
         }
+    }
+
+    private String cleanText(String input) {
+        String[] lines = input.split(PATTERN_SPLIT);
+        StringBuilder sb = new StringBuilder();
+        for (String line : lines) {
+            sb.append(line.replaceAll(PATTERN_CLEAN, ""));
+        }
+        return sb.toString();
     }
 }

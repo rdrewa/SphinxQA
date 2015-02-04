@@ -117,7 +117,8 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
                             srcSubtitle = srcSubtitles.get(i);
                             if (currentPos >= srcSubtitle.getStartMs()
                                     && currentPos <= srcSubtitle.getStopMs()) {
-                                txtSrcSubtitles.setText(Html.fromHtml(srcSubtitle.getText()));
+                                String htmlSrc = srcSubtitle.getText().replace("\n", "<br />");
+                                txtSrcSubtitles.setText(Html.fromHtml(htmlSrc));
                                 txtSrcSubtitles.setVisibility(View.VISIBLE);
                                 subtitleSrcIndex = i;
                                 subtitleSrcText = srcSubtitle.getText();
@@ -141,7 +142,8 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
                             dstSubtitle = dstSubtitles.get(i);
                             if (currentPos >= dstSubtitle.getStartMs()
                                     && currentPos <= dstSubtitle.getStopMs()) {
-                                txtDstSubtitles.setText(Html.fromHtml(dstSubtitle.getText()));
+                                String htmlDst = dstSubtitle.getText().replace("\n", "<br />");
+                                txtDstSubtitles.setText(Html.fromHtml(htmlDst));
                                 txtDstSubtitles.setVisibility(View.VISIBLE);
                                 subtitleDstIndex = i;
                                 subtitleDstText = dstSubtitle.getText();
@@ -334,13 +336,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         });
     }
 
-
-
     private void startMarkedActivity() {
-        marked = new ArrayList<>();
-        for (int i = 0; i < srcSubtitles.size(); i++) {
-            marked.add(i);
-        }
         Intent intent = new Intent(this, MarkedActivity.class);
         intent.putExtra(TITLE, titleVideo);
         intent.putExtra(SRC, fileSrc);

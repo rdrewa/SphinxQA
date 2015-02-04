@@ -17,6 +17,8 @@ import java.util.TreeMap;
  */
 public class SrtParser {
 
+    public static final String EOL = "\n";
+
     public List<Subtitle> parseFile(String filePath) throws IOException, ParseException {
         InputStream inputStream = new FileInputStream(filePath);
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -45,10 +47,11 @@ public class SrtParser {
         StringBuffer sb = new StringBuffer();
         String line = reader.readLine();
         while (line != null && !line.isEmpty()) {
-            sb.append(line);
+            sb.append(line + EOL);
             line = reader.readLine();
         }
-        return sb.toString();
+        int eol = sb.lastIndexOf(EOL);
+        return sb.substring(0, eol);
     }
 
     private TimeCode prepareStart(String line) {
@@ -59,8 +62,8 @@ public class SrtParser {
 
     private TimeCode prepareStop(String line) {
         String string = line.substring(line.length() - 12, line.length());
-        int milisecond = parseTime(string);
-        return new TimeCode(string.substring(0, 8), milisecond);
+        int millisecond = parseTime(string);
+        return new TimeCode(string.substring(0, 8), millisecond);
     }
 
     private int parseTime(String time) {

@@ -5,17 +5,18 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/txtTimes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
         android:gravity="center_horizontal"
-        android:id="@+id/txtTimes" />
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="gone" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -26,8 +27,9 @@
                 android:id="@+id/txtNr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="111"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:layout_gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#000" />
 
             <CheckBox
                 android:id="@+id/checkExport"
@@ -46,10 +48,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_margin="4dp"
-                android:padding="2dp"
-                android:text="Medium Text"
                 android:layout_marginRight="20dp"
                 android:background="@color/material_blue_grey_800"
+                android:padding="2dp"
+                android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -57,11 +59,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="Medium Text"
                 android:layout_margin="4dp"
-                android:padding="2dp"
                 android:layout_marginLeft="20dp"
                 android:background="@color/material_blue_grey_900"
+                android:padding="2dp"
+                android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
     </LinearLayout>

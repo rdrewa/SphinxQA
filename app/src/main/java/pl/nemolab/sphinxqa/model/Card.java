@@ -7,6 +7,9 @@ import pl.nemolab.sphinxqa.subs.Subtitle;
  */
 public class Card {
 
+    public static final String PATTERN_CLEAN = "\\<.*?\\>";
+    public static final String PATTERN_SPLIT =  "/\\r?\\n/g";
+
     private int nr;
     private String front;
     private String back;
@@ -22,8 +25,10 @@ public class Card {
         this.pointerFront = pointerFront;
         this.pointerBack = pointerBack;
         nr = pointerBack.getNr();
-        front = pointerFront.getText();
-        back = pointerBack.getText();
+//        front = pointerFront.getText();
+//        back = pointerBack.getText();
+        front = cleanText(pointerFront.getText());
+        back = cleanText(pointerBack.getText());
         start = pointerBack.getStart().getText();
         stop = pointerBack.getStart().getText();
         startMs = pointerBack.getStartMs();
@@ -108,5 +113,14 @@ public class Card {
 
     public void setExport(boolean export) {
         this.export = export;
+    }
+
+    private String cleanText(String input) {
+        String[] lines = input.split(PATTERN_SPLIT);
+        StringBuilder sb = new StringBuilder();
+        for (String line : lines) {
+            sb.append(line.replaceAll(PATTERN_CLEAN, ""));
+        }
+        return sb.toString();
     }
 }

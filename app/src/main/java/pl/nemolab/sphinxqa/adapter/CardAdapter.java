@@ -43,8 +43,10 @@ public class CardAdapter extends ArrayAdapter<Card> {
         String backStart = card.getPointerBack().getStart().getText();
         String backStop = card.getPointerBack().getStop().getText();
         String times = frontStart + " (" + backStart + ") --> " + frontStop + " (" + backStop + ")";
-        holder.front.setText(Html.fromHtml(card.getFront()));
-        holder.back.setText(Html.fromHtml(card.getBack()));
+//        holder.front.setText(Html.fromHtml(card.getFront()));
+//        holder.back.setText(Html.fromHtml(card.getBack()));
+        holder.front.setText(card.getFront());
+        holder.back.setText(card.getBack());
         holder.nr.setText(String.valueOf(card.getNr()));
         holder.export.setChecked(card.isExport());
         holder.times.setText(times);
