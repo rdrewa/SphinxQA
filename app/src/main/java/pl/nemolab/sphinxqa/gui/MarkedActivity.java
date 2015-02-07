@@ -138,9 +138,16 @@ public class MarkedActivity extends ActionBarActivity {
             return null;
         }
 
+        private File getPath() {
+            File file = new File(fileSrc);
+            File folder = file.getParentFile();
+            return folder;
+        }
+
         private String getOutputFile(String title) {
             String file = null;
-            File dir = getDir();
+//            File dir = getDir();
+            File dir = getPath();
             try {
                 file = dir.getCanonicalPath() + "/" + title + ".qa.txt";
             } catch (IOException e) {

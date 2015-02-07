@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -12,9 +13,6 @@ import java.util.List;
 
 import pl.nemolab.sphinxqa.SubtitleInput;
 
-/**
- * Created by senator on 2015-01-08.
- */
 public class SrtParser implements SubtitleInput {
 
     public static final String EOL = "\n";
@@ -22,7 +20,7 @@ public class SrtParser implements SubtitleInput {
     @Override
     public List<Subtitle> parseFile(String filePath) throws IOException, ParseException {
         InputStream inputStream = new FileInputStream(filePath);
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("windows-1250"));
         BufferedReader reader = new BufferedReader(inputStreamReader);
         List<Subtitle> subtitleList = new ArrayList<>();
         String line = reader.readLine();
@@ -42,6 +40,15 @@ public class SrtParser implements SubtitleInput {
             }
         }
         return subtitleList;
+    }
+
+    private String readLine(BufferedReader reader) throws IOException {
+        String line = reader.readLine();
+        if (line == null) {
+            return null;
+        }
+        byte[]  array = line.getBytes(Charset.forName("Cp1252"));
+        return new String(array, Charset.forName("UTF-8"));
     }
 
     private String prepareText(BufferedReader reader) throws IOException {
