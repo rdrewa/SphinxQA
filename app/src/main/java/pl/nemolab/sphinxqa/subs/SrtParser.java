@@ -9,16 +9,17 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+
+import pl.nemolab.sphinxqa.SubtitleInput;
 
 /**
  * Created by senator on 2015-01-08.
  */
-public class SrtParser {
+public class SrtParser implements SubtitleInput {
 
     public static final String EOL = "\n";
 
+    @Override
     public List<Subtitle> parseFile(String filePath) throws IOException, ParseException {
         InputStream inputStream = new FileInputStream(filePath);
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);

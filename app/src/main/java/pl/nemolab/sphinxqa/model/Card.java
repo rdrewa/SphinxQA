@@ -25,8 +25,8 @@ public class Card {
         this.pointerFront = pointerFront;
         this.pointerBack = pointerBack;
         nr = pointerBack.getNr();
-//        front = pointerFront.getText();
-//        back = pointerBack.getText();
+        front = pointerFront.getText();
+        back = pointerBack.getText();
         front = cleanText(pointerFront.getText());
         back = cleanText(pointerBack.getText());
         start = pointerBack.getStart().getText();

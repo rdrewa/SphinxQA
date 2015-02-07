@@ -22,5 +22,11 @@
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
     <string name="the_same_files">The same files has been picked</string>
+    <string name="subs_time_arrow"><![CDATA[- - >]]></string>
+    <string name="btn_export">Export</string>
+    <string name="save_file_progress_title">Wait</string>
+    <string name="save_file_progress_info">Saving file...</string>
+    <string name="save_file_final_message_ok">"Cards have been saved to "</string>
+    <string name="save_file_final_message_fail">Something went wrong...</string>
 
 </resources>

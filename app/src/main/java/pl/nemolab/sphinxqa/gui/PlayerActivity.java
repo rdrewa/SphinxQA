@@ -97,7 +97,6 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         progressDialog.setTitle("PLAYER");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        txtSrcSubtitles.setText(titleVideo);
         adapter = new SubsAdapter(this, new ArrayList<Subs>());
         listSubs.setAdapter(adapter);
         subtitlesPlayer = new Runnable() {
@@ -337,6 +336,11 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     }
 
     private void startMarkedActivity() {
+        marked = new ArrayList<>();
+        int size = 65;
+        for (int i = 45; i < size; i++) {
+            marked.add(i);
+        }
         Intent intent = new Intent(this, MarkedActivity.class);
         intent.putExtra(TITLE, titleVideo);
         intent.putExtra(SRC, fileSrc);

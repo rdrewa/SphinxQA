@@ -41,7 +41,8 @@ public class MainActivity extends ActionBarActivity {
     private Button btnVideo, btnSrc, btnDst, btnPlay;
     private List<String> listVideoFiles;
     private List<String> listVideoPaths;
-    private String videoFile, srcFile, dstFile, videoPath, videoDir;
+    private List<Video> videos;
+    private String videoFile, srcFile, dstFile, videoPath, videoDir, videoTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,10 +99,18 @@ public class MainActivity extends ActionBarActivity {
         Cursor cursor = getContentResolver().query(uri, columns, selection, params, orderBy);
         listVideoFiles = new ArrayList<>();
         listVideoPaths = new ArrayList<>();
+        videos = new ArrayList<>();
         if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                listVideoFiles.add(cursor.getString(0));
-                listVideoPaths.add(cursor.getString(1));
+                Video video = new Video();
+                video.setName(cursor.getString(0));
+                video.setPath(cursor.getString(1));
+                video.setDuration(cursor.getString(2));
+                video.setTitle(cursor.getString(3));
+                video.setSize(cursor.getString(4));
+                video.setResolution(cursor.getString(5));
+                videos.add(video);
+                listVideoFiles.add(video.getName());
             }
         }
         String[] arrVideoFiles = listVideoFiles.toArray(new String[listVideoFiles.size()]);
@@ -111,8 +120,10 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String prevVideo = videoFile;
-                videoFile = listVideoFiles.get(which);
-                videoPath = listVideoPaths.get(which);
+                Video video = videos.get(which);
+                videoFile = video.getName();
+                videoPath = video.getPath();
+                videoTitle = video.getTitle();
                 videoDir = videoPath.replace(videoFile, "");
                 txtVideo.setText(videoFile);
                 String msg = "Title: " + videoFile + "\n"
@@ -186,7 +197,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void startPlayerActivity() {
         Intent intent = new Intent(this, PlayerActivity.class);
-        intent.putExtra(VIDEO_TITLE, videoFile);
+        intent.putExtra(VIDEO_TITLE, videoTitle);
         intent.putExtra(VIDEO_FILE, videoPath);
         intent.putExtra(SRC_FILE, srcFile);
         intent.putExtra(DST_FILE, dstFile);

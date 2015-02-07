@@ -1,12 +1,18 @@
 package pl.nemolab.sphinxqa.gui;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -14,12 +20,15 @@ import java.util.List;
 
 import pl.nemolab.sphinxqa.R;
 import pl.nemolab.sphinxqa.adapter.CardAdapter;
+import pl.nemolab.sphinxqa.export.QATextExporter;
 import pl.nemolab.sphinxqa.subs.SrtParser;
 import pl.nemolab.sphinxqa.model.Card;
 import pl.nemolab.sphinxqa.subs.CardCreator;
 import pl.nemolab.sphinxqa.subs.Subtitle;
 
 public class MarkedActivity extends ActionBarActivity {
+
+    public static final String APP_PATH = "SphinxQA";
 
     private String fileSrc, fileDst, titleVideo;
     private ArrayList<Integer> marked;
@@ -28,6 +37,8 @@ public class MarkedActivity extends ActionBarActivity {
     private List<Card> cards;
     private CardAdapter adapter;
     private ListView list;
+    private Button btnExport;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +48,13 @@ public class MarkedActivity extends ActionBarActivity {
         list = (ListView) findViewById(R.id.list);
         SubtitleProcessorTask subtitleProcessor = new SubtitleProcessorTask();
         subtitleProcessor.execute();
-
+        btnExport = (Button) findViewById(R.id.btnExport);
+        btnExport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SaveFileTask().execute();
+            }
+        });
     }
 
     private void readParams(Bundle bundle) {
@@ -97,6 +114,71 @@ public class MarkedActivity extends ActionBarActivity {
                 list.setAdapter(adapter);
             }
             super.onPostExecute(aVoid);
+        }
+    }
+
+    private class SaveFileTask extends AsyncTask<Void, Void, Void> {
+
+        private String fileName;
+        private boolean result;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            String title = getString(R.string.save_file_progress_title);
+            String info = getString(R.string.save_file_progress_info);
+            progressDialog = ProgressDialog.show(MarkedActivity.this, title, info);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            fileName = getOutputFile(titleVideo);
+            QATextExporter exporter = new QATextExporter();
+            result = exporter.export(cards, fileName);
+            return null;
+        }
+
+        private String getOutputFile(String title) {
+            String file = null;
+            File dir = getDir();
+            try {
+                file = dir.getCanonicalPath() + "/" + title + ".qa.txt";
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return file;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            String text;
+            if (result) {
+                text = getString(R.string.save_file_final_message_ok) + fileName;
+            } else {
+                text = getString(R.string.save_file_final_message_fail);
+            }
+            Toast.makeText(MarkedActivity.this, text, Toast.LENGTH_LONG).show();
+        }
+
+        private File getDir() {
+            File root = Environment.getExternalStorageDirectory();
+            if (root.exists()) {
+                try {
+                    String strDir = root.getCanonicalPath();
+                    File fileDir = new File(strDir + "/" + APP_PATH);
+                    if (!fileDir.exists()) {
+                        if (!fileDir.mkdir()) {
+                            return null;
+                        }
+                    }
+                    return fileDir;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
         }
     }
 }

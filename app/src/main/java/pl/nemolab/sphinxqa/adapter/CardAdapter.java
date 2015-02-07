@@ -32,24 +32,23 @@ public class CardAdapter extends ArrayAdapter<Card> {
             holder.front = (TextView) item.findViewById(R.id.txtFront);
             holder.back = (TextView) item.findViewById(R.id.txtBack);
             holder.nr = (TextView) item.findViewById(R.id.txtNr);
-            holder.export = (CheckBox) item.findViewById(R.id.checkExport);
-            holder.times = (TextView) item.findViewById(R.id.txtTimes);
+//            holder.export = (CheckBox) item.findViewById(R.id.checkExport);
+            holder.start = (TextView) item.findViewById(R.id.txtStart);
+            holder.stop = (TextView) item.findViewById(R.id.txtStop);
             item.setTag(holder);
         }
         Holder holder = (Holder) item.getTag();
         Card card = getItem(position);
-        String frontStart = card.getPointerFront().getStart().getText();
-        String frontStop = card.getPointerFront().getStop().getText();
-        String backStart = card.getPointerBack().getStart().getText();
-        String backStop = card.getPointerBack().getStop().getText();
-        String times = frontStart + " (" + backStart + ") --> " + frontStop + " (" + backStop + ")";
-//        holder.front.setText(Html.fromHtml(card.getFront()));
-//        holder.back.setText(Html.fromHtml(card.getBack()));
+        String start = card.getPointerFront().getStart().getText();
+        String stop = card.getPointerFront().getStop().getText();
+        holder.front.setText(Html.fromHtml(card.getFront()));
+        holder.back.setText(Html.fromHtml(card.getBack()));
         holder.front.setText(card.getFront());
         holder.back.setText(card.getBack());
         holder.nr.setText(String.valueOf(card.getNr()));
-        holder.export.setChecked(card.isExport());
-        holder.times.setText(times);
+//        holder.export.setChecked(card.isExport());
+        holder.start.setText(start);
+        holder.stop.setText(stop);
         return item;
     }
 
@@ -58,6 +57,7 @@ public class CardAdapter extends ArrayAdapter<Card> {
         public TextView back;
         public TextView nr;
         public CheckBox export;
-        public TextView times;
+        public TextView start;
+        public TextView stop;
     }
 }
