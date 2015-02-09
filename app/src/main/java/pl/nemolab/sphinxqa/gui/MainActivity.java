@@ -1,22 +1,20 @@
 package pl.nemolab.sphinxqa.gui;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +22,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.nemolab.sphinxqa.Config;
 import pl.nemolab.sphinxqa.R;
-import pl.nemolab.sphinxqa.adapter.VideoExpandableAdapter;
 import pl.nemolab.sphinxqa.model.Video;
 
 
@@ -43,12 +41,14 @@ public class MainActivity extends ActionBarActivity {
     private List<String> listVideoPaths;
     private List<Video> videos;
     private String videoFile, srcFile, dstFile, videoPath, videoDir, videoTitle;
+    private SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
         txtVideo = (TextView) findViewById(R.id.txtVideo);
         txtSrc = (TextView) findViewById(R.id.txtSrc);
         txtDst = (TextView) findViewById(R.id.txtDst);
@@ -94,7 +94,15 @@ public class MainActivity extends ActionBarActivity {
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         String selection = MediaStore.Video.VideoColumns.SIZE + " > ? AND "
                 + MediaStore.Video.VideoColumns.DURATION + " > ?";
-        String[]  params = {"100000000", "1200000"};
+        String minDuration = prepareMinDuration();
+        String minSize = prepareMinSize();
+        String charset = settings.getString(
+                Config.KEY_CHARSET,
+                Config.DEFAULT_CHARSET
+        );
+        String msg = "duration: " + minDuration + "\nsize: " + minSize + "\ncharset: " + charset;
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+        String[]  params = {minSize, minDuration};
         String orderBy = MediaStore.Video.VideoColumns.TITLE + " ASC";
         Cursor cursor = getContentResolver().query(uri, columns, selection, params, orderBy);
         listVideoFiles = new ArrayList<>();
@@ -142,6 +150,22 @@ public class MainActivity extends ActionBarActivity {
         });
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    private String prepareMinSize() {
+        int minSize = 1000000 * Integer.parseInt(settings.getString(
+                Config.KEY_MOVIE_MIN_SIZE,
+                Config.DEFAULT_MOVIE_MIN_SIZE
+        ));
+        return String.valueOf(minSize);
+    }
+
+    private String prepareMinDuration() {
+        String duration = settings.getString(
+                Config.KEY_MOVIE_MIN_DURATION,
+                Config.DEFAULT_MOVIE_MIN_DURATION
+        );
+        return duration;
     }
 
     private void showPickSrcDialog() {
@@ -236,6 +260,8 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 

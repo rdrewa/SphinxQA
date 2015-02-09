@@ -2,10 +2,12 @@ package pl.nemolab.sphinxqa.gui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -29,6 +31,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.nemolab.sphinxqa.Config;
 import pl.nemolab.sphinxqa.R;
 import pl.nemolab.sphinxqa.adapter.SubsAdapter;
 import pl.nemolab.sphinxqa.model.Subs;
@@ -67,6 +70,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private boolean useDrawer;
+    private SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             mediaController = new MediaController(PlayerActivity.this);
         }
         readParams(getIntent().getExtras());
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
         video = (VideoView) findViewById(R.id.video);
         video.getHolder().addCallback(this);
         txtSrcSubtitles = (TextView) findViewById(R.id.txtSrcSubtitles);
@@ -316,12 +321,16 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             Log.d(TAG, e.getMessage());
             Log.d(TAG, e.getLocalizedMessage());
         }
+        final String charsetName = settings.getString(
+                Config.KEY_CHARSET,
+                Config.DEFAULT_CHARSET
+        );
         video.requestFocus();
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 progressDialog.dismiss();
-                subtitleProcessor = new SubtitleProcessorTask();
+                subtitleProcessor = new SubtitleProcessorTask(charsetName);
                 subtitleProcessor.execute();
                 video.seekTo(position);
                 video.start();
@@ -351,9 +360,15 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
 
     private class SubtitleProcessorTask extends AsyncTask<Void, Void, Void> {
 
+        private String charsetName;
+
+        private SubtitleProcessorTask(String charsetName) {
+            this.charsetName = charsetName;
+        }
+
         @Override
         protected Void doInBackground(Void... params) {
-            SrtParser parser = new SrtParser();
+            SrtParser parser = new SrtParser(charsetName);
             try {
                 srcSubtitles = parser.parseFile(fileSrc);
                 dstSubtitles = parser.parseFile(fileDst);

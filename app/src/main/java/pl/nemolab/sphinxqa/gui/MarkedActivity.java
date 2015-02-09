@@ -1,8 +1,10 @@
 package pl.nemolab.sphinxqa.gui;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.nemolab.sphinxqa.Config;
 import pl.nemolab.sphinxqa.R;
 import pl.nemolab.sphinxqa.adapter.CardAdapter;
 import pl.nemolab.sphinxqa.export.QATextExporter;
@@ -39,6 +42,7 @@ public class MarkedActivity extends ActionBarActivity {
     private ListView list;
     private Button btnExport;
     private ProgressDialog progressDialog;
+    private SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,12 @@ public class MarkedActivity extends ActionBarActivity {
         setContentView(R.layout.activity_marked);
         readParams(getIntent().getExtras());
         list = (ListView) findViewById(R.id.list);
-        SubtitleProcessorTask subtitleProcessor = new SubtitleProcessorTask();
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String charset = settings.getString(
+                Config.KEY_CHARSET,
+                Config.DEFAULT_CHARSET
+        );
+        SubtitleProcessorTask subtitleProcessor = new SubtitleProcessorTask(charset);
         subtitleProcessor.execute();
         btnExport = (Button) findViewById(R.id.btnExport);
         btnExport.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +100,15 @@ public class MarkedActivity extends ActionBarActivity {
 
     private class SubtitleProcessorTask extends AsyncTask<Void, Void, Void> {
 
+        private String charsetName;
+
+        public SubtitleProcessorTask(String charset) {
+            charsetName = charset;
+        }
+
         @Override
         protected Void doInBackground(Void... params) {
-            SrtParser parser = new SrtParser();
+            SrtParser parser = new SrtParser(charsetName);
             try {
                 subsSrc = parser.parseFile(fileSrc);
                 subsDst = parser.parseFile(fileDst);

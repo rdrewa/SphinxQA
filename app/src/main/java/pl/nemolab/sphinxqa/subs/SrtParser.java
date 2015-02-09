@@ -17,10 +17,16 @@ public class SrtParser implements SubtitleInput {
 
     public static final String EOL = "\n";
 
+    private Charset charset;
+
+    public SrtParser(String charsetName) {
+        charset = Charset.forName(charsetName);
+    }
+
     @Override
     public List<Subtitle> parseFile(String filePath) throws IOException, ParseException {
         InputStream inputStream = new FileInputStream(filePath);
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("windows-1250"));
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, charset);
         BufferedReader reader = new BufferedReader(inputStreamReader);
         List<Subtitle> subtitleList = new ArrayList<>();
         String line = reader.readLine();

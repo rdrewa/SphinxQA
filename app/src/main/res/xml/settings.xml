@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_cat_movie_searching">
+        <EditTextPreference
+            android:defaultValue="100"
+            android:inputType="number"
+            android:key="prefMovieMinSize"
+            android:summary="@string/pref_MovieMinSize_summary"
+            android:title="@string/pref_MovieMinSize_title" />
+        <EditTextPreference
+            android:defaultValue="20"
+            android:inputType="number"
+            android:key="prefMovieMinDuration"
+            android:summary="@string/pref_MovieMinDuration_summary"
+            android:title="@string/pref_MovieMinDuration_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_cat_charset">
+        <ListPreference
+            android:defaultValue="@string/default_charset"
+            android:entries="@array/charset_entries"
+            android:entryValues="@array/charset_values"
+            android:key="prefCharset"
+            android:title="Select Your charset" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

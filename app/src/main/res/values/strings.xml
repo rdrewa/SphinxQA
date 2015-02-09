@@ -28,5 +28,12 @@
     <string name="save_file_progress_info">Saving file...</string>
     <string name="save_file_final_message_ok">"Cards have been saved to "</string>
     <string name="save_file_final_message_fail">Something went wrong...</string>
+    <string name="pref_MovieMinSize_title">Greater then [MB]</string>
+    <string name="pref_MovieMinSize_summary">Series are usually file greater than 100 MB</string>
+    <string name="pref_MovieMinDuration_title">Greater then [min]</string>
+    <string name="pref_MovieMinDuration_summary">Series are usually movie longer than 15 minutes</string>
+    <string name="pref_cat_movie_searching">MOVIE SEARCHING</string>
+    <string name="pref_cat_charset">CHARSET</string>
+    <string name="title_activity_settings">Settings</string>
 
 </resources>

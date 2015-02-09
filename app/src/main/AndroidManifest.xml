@@ -26,6 +26,10 @@
             android:name=".gui.MarkedActivity"
             android:label="@string/title_activity_marked" >
         </activity>
+        <activity
+            android:name=".gui.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>

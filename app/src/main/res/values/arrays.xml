@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="charset_entries">
+        <item>@string/default_charset</item>
+        <item>UTF-8</item>
+        <item>windows-1250</item>
+        <item>windows-1251</item>
+        <item>windows-1252</item>
+        <item>windows-1253</item>
+        <item>windows-1254</item>
+        <item>windows-1255</item>
+        <item>windows-1256</item>
+        <item>ISO-8859-1</item>
+        <item>ISO-8859-2</item>
+        <item>ISO-8859-5</item>
+        <item>ISO-8859-6</item>
+        <item>ISO-8859-7</item>
+        <item>ISO-8859-8</item>
+        <item>ISO-8859-9</item>
+        <item>ISO-2022-JP</item>
+        <item>ISO-2022-CN</item>
+        <item>ISO-2022-KR</item>
+    </string-array>
+    <string-array name="charset_values">
+        <item>@string/default_charset</item>
+        <item>UTF-8</item>
+        <item>windows-1250</item>
+        <item>windows-1251</item>
+        <item>windows-1252</item>
+        <item>windows-1253</item>
+        <item>windows-1254</item>
+        <item>windows-1255</item>
+        <item>windows-1256</item>
+        <item>ISO-8859-1</item>
+        <item>ISO-8859-2</item>
+        <item>ISO-8859-5</item>
+        <item>ISO-8859-6</item>
+        <item>ISO-8859-7</item>
+        <item>ISO-8859-8</item>
+        <item>ISO-8859-9</item>
+        <item>ISO-2022-JP</item>
+        <item>ISO-2022-CN</item>
+        <item>ISO-2022-KR</item>
+    </string-array>
+    <string name="default_charset">Auto Detect</string>
+</resources>
