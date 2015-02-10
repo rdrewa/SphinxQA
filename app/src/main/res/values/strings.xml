@@ -35,5 +35,7 @@
     <string name="pref_cat_movie_searching">MOVIE SEARCHING</string>
     <string name="pref_cat_charset">CHARSET</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="dialog_number_picker_up_text">+</string>
+    <string name="dialog_number_picker_down_text">-</string>
 
 </resources>

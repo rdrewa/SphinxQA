@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/pref_cat_movie_searching">
         <EditTextPreference
@@ -23,6 +24,17 @@
             android:entryValues="@array/charset_values"
             android:key="prefCharset"
             android:title="Select Your charset" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="NUMBER PICKER">
+        <pl.nemolab.sphinxqa.NumberPickerPreference
+            android:key="picker"
+            android:title="Number Picker"
+            android:summary="Number Picker Summary"
+            android:defaultValue="20"
+            app:min="10"
+            app:max="100"
+            app:interval="5" />
     </PreferenceCategory>
 
 </PreferenceScreen>
