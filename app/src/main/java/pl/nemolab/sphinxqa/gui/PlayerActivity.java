@@ -70,18 +70,18 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private boolean useDrawer;
-    private SharedPreferences settings;
+    private Config config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prepareLayoutParams();
         setContentView(R.layout.activity_player);
+        config = new Config(this);
         if (mediaController == null) {
             mediaController = new MediaController(PlayerActivity.this);
         }
         readParams(getIntent().getExtras());
-        settings = PreferenceManager.getDefaultSharedPreferences(this);
         video = (VideoView) findViewById(R.id.video);
         video.getHolder().addCallback(this);
         txtSrcSubtitles = (TextView) findViewById(R.id.txtSrcSubtitles);
@@ -321,10 +321,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             Log.d(TAG, e.getMessage());
             Log.d(TAG, e.getLocalizedMessage());
         }
-        final String charsetName = settings.getString(
-                Config.KEY_CHARSET,
-                Config.DEFAULT_CHARSET
-        );
+        final String charsetName = config.retrieveCharset();
         video.requestFocus();
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override

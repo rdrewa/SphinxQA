@@ -41,14 +41,13 @@ public class MainActivity extends ActionBarActivity {
     private List<String> listVideoPaths;
     private List<Video> videos;
     private String videoFile, srcFile, dstFile, videoPath, videoDir, videoTitle;
-    private SharedPreferences settings;
+    private Config config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        settings = PreferenceManager.getDefaultSharedPreferences(this);
+        config = new Config(this);
         txtVideo = (TextView) findViewById(R.id.txtVideo);
         txtSrc = (TextView) findViewById(R.id.txtSrc);
         txtDst = (TextView) findViewById(R.id.txtDst);
@@ -94,12 +93,9 @@ public class MainActivity extends ActionBarActivity {
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         String selection = MediaStore.Video.VideoColumns.SIZE + " > ? AND "
                 + MediaStore.Video.VideoColumns.DURATION + " > ?";
-        String minDuration = prepareMinDuration();
-        String minSize = prepareMinSize();
-        String charset = settings.getString(
-                Config.KEY_CHARSET,
-                Config.DEFAULT_CHARSET
-        );
+        String minDuration = config.retrieveMinDuration();
+        String minSize = config.retrieveMinSize();
+        String charset = config.retrieveCharset();
         String msg = "duration: " + minDuration + "\nsize: " + minSize + "\ncharset: " + charset;
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         String[]  params = {minSize, minDuration};
@@ -150,22 +146,6 @@ public class MainActivity extends ActionBarActivity {
         });
         Dialog dialog = builder.create();
         dialog.show();
-    }
-
-    private String prepareMinSize() {
-        int minSize = 1000000 * Integer.parseInt(settings.getString(
-                Config.KEY_MOVIE_MIN_SIZE,
-                Config.DEFAULT_MOVIE_MIN_SIZE
-        ));
-        return String.valueOf(minSize);
-    }
-
-    private String prepareMinDuration() {
-        String duration = settings.getString(
-                Config.KEY_MOVIE_MIN_DURATION,
-                Config.DEFAULT_MOVIE_MIN_DURATION
-        );
-        return duration;
     }
 
     private void showPickSrcDialog() {

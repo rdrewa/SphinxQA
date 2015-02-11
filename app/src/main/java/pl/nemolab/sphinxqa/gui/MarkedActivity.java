@@ -42,19 +42,16 @@ public class MarkedActivity extends ActionBarActivity {
     private ListView list;
     private Button btnExport;
     private ProgressDialog progressDialog;
-    private SharedPreferences settings;
+    private Config config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marked);
         readParams(getIntent().getExtras());
+        config = new Config(this);
         list = (ListView) findViewById(R.id.list);
-        settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String charset = settings.getString(
-                Config.KEY_CHARSET,
-                Config.DEFAULT_CHARSET
-        );
+        String charset = config.retrieveCharset();
         SubtitleProcessorTask subtitleProcessor = new SubtitleProcessorTask(charset);
         subtitleProcessor.execute();
         btnExport = (Button) findViewById(R.id.btnExport);

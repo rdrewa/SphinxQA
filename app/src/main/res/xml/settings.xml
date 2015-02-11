@@ -3,38 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/pref_cat_movie_searching">
-        <EditTextPreference
+        <pl.nemolab.sphinxqa.NumberPickerPreference
             android:defaultValue="100"
-            android:inputType="number"
             android:key="prefMovieMinSize"
             android:summary="@string/pref_MovieMinSize_summary"
-            android:title="@string/pref_MovieMinSize_title" />
-        <EditTextPreference
+            android:title="@string/pref_MovieMinSize_title"
+            app:interval="25"
+            app:max="1000"
+            app:min="25" />
+        <pl.nemolab.sphinxqa.NumberPickerPreference
             android:defaultValue="20"
-            android:inputType="number"
-            android:key="prefMovieMinDuration"
+            android:key="picker"
             android:summary="@string/pref_MovieMinDuration_summary"
-            android:title="@string/pref_MovieMinDuration_title" />
+            android:title="@string/pref_MovieMinDuration_title"
+            app:interval="5"
+            app:max="100"
+            app:min="10" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_cat_charset">
+    <PreferenceCategory android:title="@string/pref_cat_subtitles">
         <ListPreference
             android:defaultValue="@string/default_charset"
             android:entries="@array/charset_entries"
-            android:entryValues="@array/charset_values"
+            android:entryValues="@array/charset_entries"
             android:key="prefCharset"
-            android:title="Select Your charset" />
+            android:title="@string/pref_Charset_title" />
+
+        <ListPreference
+            android:defaultValue="@string/subtitles_showing_never"
+            android:entries="@array/subtitles_showing_entries"
+            android:entryValues="@array/subtitles_showing_values"
+            android:key="prefPlayerShowSecondSubtitles"
+            android:title="@string/pref_PlayerShowSecondSubtitles_title" />
+
+        <CheckBoxPreference
+            android:key="prefListShowSecondSubtitles"
+            android:title="@string/pref_ListShowSecondSubtitles_title"
+            android:defaultValue="true" />
+
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="NUMBER PICKER">
-        <pl.nemolab.sphinxqa.NumberPickerPreference
-            android:key="picker"
-            android:title="Number Picker"
-            android:summary="Number Picker Summary"
-            android:defaultValue="20"
-            app:min="10"
-            app:max="100"
-            app:interval="5" />
+    <PreferenceCategory android:title="@string/pref_cat_saving_data" android:key="prefCatSaving">
+        <ListPreference
+            android:defaultValue="@string/storage_type_default_folder"
+            android:entries="@array/storage_type_entries"
+            android:entryValues="@array/storage_type_values"
+            android:key="prefStorageType"
+            android:title="@string/pref_StorageType_title" />
+
+        <EditTextPreference
+            android:key="prefStorageFolder"
+            android:title="@string/pref_StorageUserFolder_title"
+            android:defaultValue="@string/pref_StorageFolder_default" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
