@@ -41,6 +41,13 @@
                 android:textColor="#F00" />
         </LinearLayout>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/btnMark"
+            android:background="@android:color/transparent"
+            android:layout_gravity="right|center_vertical" />
+
     </FrameLayout>
 
     <ListView

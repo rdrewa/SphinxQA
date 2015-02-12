@@ -3,16 +3,14 @@ package pl.nemolab.sphinxqa.gui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +20,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -76,12 +75,32 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private boolean useDrawer, hasTouched, shouldRestore, showSecondLine;
     private Config config;
     private Context context;
+    private Button btnMark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prepareLayoutParams();
         setContentView(R.layout.activity_player);
+        btnMark = (Button) findViewById(R.id.btnMark);
+        btnMark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!subtitleSrcText.isEmpty()) {
+                    marked.add(subtitleSrcIndex);
+                    adapter.insert(lastSubs, 0);
+                    hasTouched = true;
+                }
+            }
+        });
+        btnMark.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                btnMark.setVisibility(View.GONE);
+                mediaController.show();
+                return false;
+            }
+        });
         config = new Config(this);
         context = this;
         playerShowSubs = config.retrievePlayerShowSubtitles();
@@ -98,11 +117,8 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         video.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (!subtitleSrcText.isEmpty()) {
-                    marked.add(subtitleSrcIndex);
-                    adapter.insert(lastSubs, 0);
-                    hasTouched = true;
-                }
+                btnMark.setVisibility(View.VISIBLE);
+                mediaController.hide();
                 return false;
             }
         });
