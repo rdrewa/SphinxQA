@@ -44,8 +44,9 @@ public class Config {
     }
 
     public String retrieveMinDuration() {
-        int duration = settings.getInt(KEY_MOVIE_MIN_DURATION, DEFAULT_MOVIE_MIN_DURATION);
-        return String.valueOf(duration);
+        int intDuration = settings.getInt(KEY_MOVIE_MIN_DURATION, DEFAULT_MOVIE_MIN_DURATION);
+        int minDuration = 60000 * intDuration;
+        return String.valueOf(minDuration);
     }
 
     public String retrieveCharset() {

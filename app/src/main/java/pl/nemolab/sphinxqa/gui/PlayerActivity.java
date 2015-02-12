@@ -384,6 +384,8 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
 
     private void startMarkedActivity() {
         marked = new ArrayList<>();
+        // @TODO! only for test
+        // @FIXME!
         int size = 65;
         for (int i = 45; i < size; i++) {
             marked.add(i);
