@@ -33,23 +33,23 @@
         <item>MOVIE_FOLDER</item>
         <!--<item>FLASHCARDS_APP_FOLDER</item>-->
     </string-array>
-    <string-array name="subtitles_showing_entries">
-        <item>@string/subtitles_showing_never</item>
-        <item>@string/subtitles_showing_on_marked</item>
+    <string-array name="player_show_subtitles_entries">
+        <item>@string/player_show_subtitles_never</item>
+        <item>@string/subtitles_showing_marked</item>
         <item>@string/subtitles_showing_always</item>
     </string-array>
-    <string-array name="subtitles_showing_values">
+    <string-array name="player_show_subtitles_values">
         <item>never</item>
-        <item>on_marked</item>
+        <item>marked</item>
         <item>always</item>
     </string-array>
     <string name="default_charset">Auto Detect</string>
-    <string name="storage_type_default_folder">App folder</string>
+    <string name="storage_type_default_folder">APP_FOLDER</string>
     <string name="storage_app_folder">App folder</string>
     <string name="storage_user_folder">User folder</string>
     <string name="storage_movie_folder">Movie folder</string>
     <string name="storage_flashcards_app_folder">Flashcards app folder</string>
     <string name="subtitles_showing_never">never</string>
-    <string name="subtitles_showing_on_marked">on marked</string>
+    <string name="subtitles_showing_marked">on marked</string>
     <string name="subtitles_showing_always">always</string>
 </resources>

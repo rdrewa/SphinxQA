@@ -150,24 +150,6 @@ public class MarkedActivity extends ActionBarActivity {
             return null;
         }
 
-        private File getPath() {
-            File file = new File(fileSrc);
-            File folder = file.getParentFile();
-            return folder;
-        }
-
-        private String getOutputFile(String title) {
-            String file = null;
-//            File dir = getDir();
-            File dir = getPath();
-            try {
-                file = dir.getCanonicalPath() + "/" + title + ".qa.txt";
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return file;
-        }
-
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
@@ -181,23 +163,39 @@ public class MarkedActivity extends ActionBarActivity {
             Toast.makeText(MarkedActivity.this, text, Toast.LENGTH_LONG).show();
         }
 
+        private File getPath() {
+            File file = new File(fileSrc);
+            File folder = file.getParentFile();
+            return folder;
+        }
+
+        private String getOutputFile(String title) {
+            String storageType = config.retrieveStorageType();
+            String file = null;
+            File dir;
+            if (storageType.equals(Config.STORAGE_TYPE_MOVIE_FOLDER)) {
+                dir = getPath();
+            } else {
+                dir = getDir();
+            }
+            try {
+                file = dir.getCanonicalPath() + "/" + title + ".qa.txt";
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return file;
+        }
+
         private File getDir() {
-            File root = Environment.getExternalStorageDirectory();
-            if (root.exists()) {
-                try {
-                    String strDir = root.getCanonicalPath();
-                    File fileDir = new File(strDir + "/" + APP_PATH);
-                    if (!fileDir.exists()) {
-                        if (!fileDir.mkdir()) {
-                            return null;
-                        }
-                    }
-                    return fileDir;
-                } catch (IOException e) {
-                    e.printStackTrace();
+            String storageFolder = config.retrieveStorageFolder();
+            String storageType = config.retrieveStorageType();
+            File fileDir = new File(storageFolder);
+            if (storageType.equals(Config.STORAGE_TYPE_APP_FOLDER) && !fileDir.exists()) {
+                if (!fileDir.mkdir()) {
+                    return null;
                 }
             }
-            return null;
+            return fileDir;
         }
     }
 }

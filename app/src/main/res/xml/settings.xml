@@ -13,11 +13,11 @@
             app:min="25" />
         <pl.nemolab.sphinxqa.NumberPickerPreference
             android:defaultValue="20"
-            android:key="picker"
+            android:key="prefMovieMinSize"
             android:summary="@string/pref_MovieMinDuration_summary"
             android:title="@string/pref_MovieMinDuration_title"
             app:interval="5"
-            app:max="100"
+            app:max="200"
             app:min="10" />
     </PreferenceCategory>
 
@@ -30,15 +30,15 @@
             android:title="@string/pref_Charset_title" />
 
         <ListPreference
-            android:defaultValue="@string/subtitles_showing_never"
-            android:entries="@array/subtitles_showing_entries"
-            android:entryValues="@array/subtitles_showing_values"
-            android:key="prefPlayerShowSecondSubtitles"
-            android:title="@string/pref_PlayerShowSecondSubtitles_title" />
+            android:defaultValue="@string/player_show_subtitles_never"
+            android:entries="@array/player_show_subtitles_entries"
+            android:entryValues="@array/player_show_subtitles_values"
+            android:key="prefPlayerShowSubtitles"
+            android:title="@string/pref_PlayerShowSubtitles_title" />
 
         <CheckBoxPreference
-            android:key="prefListShowSecondSubtitles"
-            android:title="@string/pref_ListShowSecondSubtitles_title"
+            android:key="prefListShowSubtitles"
+            android:title="@string/pref_ListShowSubtitles_title"
             android:defaultValue="true" />
 
     </PreferenceCategory>
@@ -53,8 +53,7 @@
 
         <EditTextPreference
             android:key="prefStorageFolder"
-            android:title="@string/pref_StorageUserFolder_title"
-            android:defaultValue="@string/pref_StorageFolder_default" />
+            android:title="@string/pref_StorageUserFolder_title" />
 
     </PreferenceCategory>
 

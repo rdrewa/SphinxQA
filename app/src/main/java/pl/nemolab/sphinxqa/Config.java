@@ -2,23 +2,32 @@ package pl.nemolab.sphinxqa;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 
 public class Config {
     public static final String KEY_MOVIE_MIN_SIZE = "prefMovieMinSize";
     public static final String KEY_MOVIE_MIN_DURATION = "prefMovieMinDuration";
-    public static final String KEY_SUBTITLES_SHOWING = "prefSubtitlesShowing";
+    public static final String KEY_PLAYER_SHOW_SUBTITLES = "prefPlayerShowSubtitles";
+    public static final String KEY_LIST_SHOW_SUBTITLES = "prefListShowSubtitles";
     public static final String KEY_STORAGE_TYPE = "prefStorageType";
     public static final String KEY_STORAGE_FOLDER = "prefStorageFolder";
     public static final String KEY_STORAGE_USER_FOLDER = "prefStorageUserFolder";
     public static final String KEY_CHARSET = "prefCharset";
-    public static final String DEFAULT_MOVIE_MIN_SIZE = "100";
-    public static final String DEFAULT_MOVIE_MIN_DURATION = "20";
-    public static final String DEFAULT_SUBTITLES_SHOWING = "never";
+    public static final int DEFAULT_MOVIE_MIN_SIZE = 100;
+    public static final int DEFAULT_MOVIE_MIN_DURATION = 20;
+    public static final String DEFAULT_PLAYER_SHOW_SUBTITLES = "never";
+    public static final boolean DEFAULT_LIST_SHOW_SUBTITLES = false;
     public static final String DEFAULT_STORAGE_TYPE = "APP_FOLDER";
-    public static final String DEFAULT_STORAGE_FOLDER = "/sdcard/SphinxQA/";
+    public static final String DEFAULT_STORAGE_FOLDER = "/SphinxQA";
     public static final String DEFAULT_CHARSET = "Auto Detect";
     public static final String ALTERNATIVE_CHARSET = "UTF-8";
+    public static final String PLAYER_SHOW_SUBTITLES_NEVER = "never";
+    public static final String PLAYER_SHOW_SUBTITLES_MARKED = "marked";
+    public static final String PLAYER_SHOW_SUBTITLES_ALWAYS = "always";
+    public static final String STORAGE_TYPE_APP_FOLDER = "APP_FOLDER";
+    public static final String STORAGE_TYPE_USER_FOLDER = "USER_FOLDER";
+    public static final String STORAGE_TYPE_MOVIE_FOLDER = "MOVIE_FOLDER";
 
     private Context context;
     private SharedPreferences settings;
@@ -29,19 +38,14 @@ public class Config {
     }
 
     public String retrieveMinSize() {
-        int minSize = 1000000 * Integer.parseInt(settings.getString(
-            KEY_MOVIE_MIN_SIZE,
-            DEFAULT_MOVIE_MIN_SIZE
-        ));
+        int intSize = settings.getInt(KEY_MOVIE_MIN_SIZE, DEFAULT_MOVIE_MIN_SIZE);
+        int minSize = 1000000 * intSize;
         return String.valueOf(minSize);
     }
 
     public String retrieveMinDuration() {
-        String duration = settings.getString(
-            KEY_MOVIE_MIN_DURATION,
-            DEFAULT_MOVIE_MIN_DURATION
-        );
-        return duration;
+        int duration = settings.getInt(KEY_MOVIE_MIN_DURATION, DEFAULT_MOVIE_MIN_DURATION);
+        return String.valueOf(duration);
     }
 
     public String retrieveCharset() {
@@ -57,12 +61,20 @@ public class Config {
         return charset;
     }
 
-    public String retrieveSubtitlesShowing() {
-        String subtitlesShowing = settings.getString(
-                KEY_SUBTITLES_SHOWING,
-                DEFAULT_SUBTITLES_SHOWING
+    public String retrievePlayerShowSubtitles() {
+        String showSubtitles = settings.getString(
+                KEY_PLAYER_SHOW_SUBTITLES,
+                DEFAULT_PLAYER_SHOW_SUBTITLES
         );
-        return subtitlesShowing;
+        return showSubtitles;
+    }
+
+    public boolean retrieveListShowSubtitles() {
+        boolean showSubtitles = settings.getBoolean(
+                KEY_LIST_SHOW_SUBTITLES,
+                DEFAULT_LIST_SHOW_SUBTITLES
+        );
+        return showSubtitles;
     }
 
     public String retrieveStorageType() {
@@ -74,9 +86,10 @@ public class Config {
     }
 
     public String retrieveStorageFolder() {
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath();
         String storageFolder = settings.getString(
                 KEY_STORAGE_FOLDER,
-                DEFAULT_STORAGE_FOLDER
+                root + DEFAULT_STORAGE_FOLDER
         );
         return storageFolder;
     }

@@ -41,10 +41,13 @@
     <string name="pref_StorageType_title">Select a folder for output file storage</string>
     <string name="pref_StorageAppFolder_summary">/sdcard/SphinxQA/</string>
     <string name="pref_Charset_title">Select Your charset</string>
-    <string name="pref_PlayerShowSecondSubtitles_title">Player: Show second subtitles</string>
-    <string name="pref_ListShowSecondSubtitles_title">List: Show second subtitles</string>
+    <string name="pref_PlayerShowSubtitles_title">Player: Show second subtitles</string>
+    <string name="pref_ListShowSubtitles_title">List: Show second subtitles</string>
     <string name="pref_StorageAppFolder_title">Storage app folder</string>
     <string name="pref_StorageUserFolder_title">Choose storage folder</string>
     <string name="pref_StorageFolder_default">/sdcard/SphinxQA/</string>
+    <string name="player_show_subtitles_never">never</string>
+    <string name="storage_folder_created">"Folder has been created: "</string>
+    <string name="storage_folder_fail">"Strorage folder doesn't exists or cannot  be created: "</string>
 
 </resources>

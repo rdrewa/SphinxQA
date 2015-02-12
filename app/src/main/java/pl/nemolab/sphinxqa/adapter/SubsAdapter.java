@@ -14,9 +14,11 @@ import pl.nemolab.sphinxqa.model.Subs;
 
 public class SubsAdapter extends ArrayAdapter<Subs> {
     public static final int LAYOUT = R.layout.item_subs;
+    private int secondLineVisibility;
 
-    public SubsAdapter(Context context, List<Subs> items) {
+    public SubsAdapter(Context context, List<Subs> items, boolean showSecondLine) {
         super(context, LAYOUT, items);
+        secondLineVisibility = showSecondLine ? View.VISIBLE : View.GONE;
     }
 
     @Override
@@ -31,6 +33,7 @@ public class SubsAdapter extends ArrayAdapter<Subs> {
             holder.dst = (TextView) view.findViewById(R.id.txtDst);
             holder.start = (TextView) view.findViewById(R.id.txtStart);
             holder.stop = (TextView) view.findViewById(R.id.txtStop);
+            holder.second = view.findViewById(R.id.secondLine);
             view.setTag(holder);
         } else {
             holder = (Holder) view.getTag();
@@ -40,6 +43,7 @@ public class SubsAdapter extends ArrayAdapter<Subs> {
         holder.dst.setText(item.getDst());
         holder.start.setText(item.getStart());
         holder.stop.setText(item.getStop());
+        holder.second.setVisibility(secondLineVisibility);
         return view;
     }
 
@@ -48,5 +52,6 @@ public class SubsAdapter extends ArrayAdapter<Subs> {
         public TextView dst;
         public TextView start;
         public TextView stop;
+        public View second;
     }
 }

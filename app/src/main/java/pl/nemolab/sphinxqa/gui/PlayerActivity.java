@@ -63,13 +63,13 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private SubtitleProcessorTask subtitleProcessor;
     private int subtitleSrcIndex = 0, subtitleDstIndex = 0;
     private int lastSrcPosition = 0, lastDstPosition = 0;
-    private String subtitleSrcText = EMPTY_STRING, subtitleDstText = EMPTY_STRING;
+    private String subtitleSrcText = EMPTY_STRING, subtitleDstText = EMPTY_STRING, playerShowSubs;
     private SubsAdapter adapter;
     private ListView listSubs;
     private Subs lastSubs;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
-    private boolean useDrawer;
+    private boolean useDrawer, hasTouched;
     private Config config;
 
     @Override
@@ -78,6 +78,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         prepareLayoutParams();
         setContentView(R.layout.activity_player);
         config = new Config(this);
+        playerShowSubs = config.retrievePlayerShowSubtitles();
         if (mediaController == null) {
             mediaController = new MediaController(PlayerActivity.this);
         }
@@ -94,6 +95,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
                 if (!subtitleSrcText.isEmpty()) {
                     marked.add(subtitleSrcIndex);
                     adapter.insert(lastSubs, 0);
+                    hasTouched = true;
                 }
                 return false;
             }
@@ -102,7 +104,8 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         progressDialog.setTitle("PLAYER");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        adapter = new SubsAdapter(this, new ArrayList<Subs>());
+        boolean showSecondLine = config.retrieveListShowSubtitles();
+        adapter = new SubsAdapter(this, new ArrayList<Subs>(), showSecondLine);
         listSubs.setAdapter(adapter);
         subtitlesPlayer = new Runnable() {
             @Override
@@ -147,14 +150,17 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
                             if (currentPos >= dstSubtitle.getStartMs()
                                     && currentPos <= dstSubtitle.getStopMs()) {
                                 String htmlDst = dstSubtitle.getText().replace("\n", "<br />");
-                                txtDstSubtitles.setText(Html.fromHtml(htmlDst));
-                                txtDstSubtitles.setVisibility(View.VISIBLE);
+                                if (shouldShow()) {
+                                    txtDstSubtitles.setText(Html.fromHtml(htmlDst));
+                                    txtDstSubtitles.setVisibility(View.VISIBLE);
+                                    subtitleDstText = dstSubtitle.getText();
+                                }
                                 subtitleDstIndex = i;
-                                subtitleDstText = dstSubtitle.getText();
                                 break;
                             } else if (currentPos > dstSubtitle.getStopMs()) {
                                 txtDstSubtitles.setVisibility(View.INVISIBLE);
                                 subtitleDstText = EMPTY_STRING;
+                                hasTouched = false;
                             }
                         }
                     }
@@ -181,8 +187,16 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             );
             drawerLayout.setDrawerListener(drawerToggle);
         }
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    private boolean shouldShow() {
+        if (playerShowSubs.equals(Config.PLAYER_SHOW_SUBTITLES_ALWAYS)) {
+            return true;
+        }
+        if (playerShowSubs.equals(Config.PLAYER_SHOW_SUBTITLES_MARKED) && hasTouched) {
+            return true;
+        }
+        return false;
     }
 
     private void seekToItem(int position) {
