@@ -8,6 +8,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     private Preference prefStorageType;
     private PreferenceCategory prefCatSaving;
     private String defaultStorageFolder;
+    private final static String TAG = "PREFS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(Config.KEY_STORAGE_TYPE)) {
             serveStorage(sharedPreferences);
+            String folder = sharedPreferences.getString(Config.KEY_STORAGE_FOLDER, defaultStorageFolder);
+            String msg = "on" + key + "changed, folder: " + folder;
+            Log.i(TAG, msg);
         }
     }
 

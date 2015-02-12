@@ -1,6 +1,7 @@
 package pl.nemolab.sphinxqa.gui;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -29,12 +30,15 @@ import android.widget.VideoView;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import pl.nemolab.sphinxqa.Config;
 import pl.nemolab.sphinxqa.R;
 import pl.nemolab.sphinxqa.adapter.SubsAdapter;
+import pl.nemolab.sphinxqa.model.Card;
 import pl.nemolab.sphinxqa.model.Subs;
+import pl.nemolab.sphinxqa.subs.CardCreator;
 import pl.nemolab.sphinxqa.subs.SrtParser;
 import pl.nemolab.sphinxqa.subs.Subtitle;
 
@@ -69,8 +73,9 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private Subs lastSubs;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
-    private boolean useDrawer, hasTouched;
+    private boolean useDrawer, hasTouched, shouldRestore, showSecondLine;
     private Config config;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         prepareLayoutParams();
         setContentView(R.layout.activity_player);
         config = new Config(this);
+        context = this;
         playerShowSubs = config.retrievePlayerShowSubtitles();
         if (mediaController == null) {
             mediaController = new MediaController(PlayerActivity.this);
@@ -104,8 +110,8 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         progressDialog.setTitle("PLAYER");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        boolean showSecondLine = config.retrieveListShowSubtitles();
-        adapter = new SubsAdapter(this, new ArrayList<Subs>(), showSecondLine);
+        showSecondLine = config.retrieveListShowSubtitles();
+        adapter = new SubsAdapter(context, new ArrayList<Subs>(), showSecondLine);
         listSubs.setAdapter(adapter);
         subtitlesPlayer = new Runnable() {
             @Override
@@ -268,12 +274,19 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(POSITION, video.getCurrentPosition());
+        outState.putIntegerArrayList(MARKED, marked);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         position = savedInstanceState.getInt(POSITION);
+        marked = savedInstanceState.getIntegerArrayList(MARKED);
+        if (srcSubtitles != null && dstSubtitles != null) {
+            new RestoreMarkedTask().execute();
+        } else {
+            shouldRestore = true;
+        }
         video.seekTo(position);
         video.start();
     }
@@ -290,12 +303,10 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
     }
 
     @Override
@@ -390,6 +401,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             }
             return null;
         }
+
         @Override
         protected void onPostExecute(Void aVoid) {
             if (srcSubtitles != null && !srcSubtitles.isEmpty()) {
@@ -401,8 +413,39 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             if (subtitlesDisplayHandler != null && subtitlesPlayer != null) {
                 subtitlesDisplayHandler.post(subtitlesPlayer);
             }
+            if (srcSubtitles!= null && dstSubtitles != null && shouldRestore) {
+                new RestoreMarkedTask().execute();
+            }
             super.onPostExecute(aVoid);
         }
+    }
 
+    private class RestoreMarkedTask extends AsyncTask<Void, Void, Void> {
+
+        private List<Subs> list;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            CardCreator creator = new CardCreator(srcSubtitles, dstSubtitles);
+            List<Card> cards = creator.create(marked);
+            list = new ArrayList<>();
+            for (Card card : cards) {
+                Subtitle subsSrc = card.getPointerBack();
+                Subtitle subsDst = card.getPointerFront();
+                Subs subs = new Subs(subsSrc, subsDst);
+                list.add(subs);
+            }
+            shouldRestore = false;
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Collections.reverse(list);
+            adapter = new SubsAdapter(context, list, showSecondLine);
+            listSubs.setAdapter(adapter);
+            shouldRestore = false;
+        }
     }
 }
