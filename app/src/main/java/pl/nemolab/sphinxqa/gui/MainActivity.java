@@ -95,9 +95,6 @@ public class MainActivity extends ActionBarActivity {
                 + MediaStore.Video.VideoColumns.DURATION + " > ?";
         String minDuration = config.retrieveMinDuration();
         String minSize = config.retrieveMinSize();
-        String charset = config.retrieveCharset();
-        String msg = "duration: " + minDuration + "\nsize: " + minSize + "\ncharset: " + charset;
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         String[]  params = {minSize, minDuration};
         String orderBy = MediaStore.Video.VideoColumns.TITLE + " ASC";
         Cursor cursor = getContentResolver().query(uri, columns, selection, params, orderBy);
