@@ -16,6 +16,7 @@ import pl.nemolab.sphinxqa.SubtitleInput;
 public class SrtParser implements SubtitleInput {
 
     public static final String EOL = "\n";
+    public static final String UTF8_BOM = "\uFEFF";
 
     private Charset charset;
 
@@ -30,6 +31,7 @@ public class SrtParser implements SubtitleInput {
         BufferedReader reader = new BufferedReader(inputStreamReader);
         List<Subtitle> subtitleList = new ArrayList<>();
         String line = reader.readLine();
+        line = serveBOM(line);
         while (line != null) {
             line = line.trim();
             if (!line.isEmpty()) {
@@ -46,6 +48,21 @@ public class SrtParser implements SubtitleInput {
             }
         }
         return subtitleList;
+    }
+
+    private String serveBOM(String line) {
+        int length = line.length();
+        int i;
+        char c;
+        String result = null;
+        for (i = 0; i < length; i++) {
+            c = line.charAt(i);
+            if ('0' <= c && c <= '9') {
+                result = line.substring(i);
+                break;
+            }
+        }
+        return result;
     }
 
     private String readLine(BufferedReader reader) throws IOException {
