@@ -19,7 +19,7 @@ public class Card {
     private int stopMs;
     private Subtitle pointerFront;
     private Subtitle pointerBack;
-    private boolean export = true;
+    private boolean checked = false;
 
     public Card(Subtitle pointerFront, Subtitle pointerBack) {
         this.pointerFront = pointerFront;
@@ -107,12 +107,12 @@ public class Card {
         this.pointerBack = pointerBack;
     }
 
-    public boolean isExport() {
-        return export;
+    public boolean isChecked() {
+        return checked;
     }
 
-    public void setExport(boolean export) {
-        this.export = export;
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     private String cleanText(String input) {

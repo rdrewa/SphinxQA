@@ -32,7 +32,7 @@ public class CardAdapter extends ArrayAdapter<Card> {
             holder.front = (TextView) item.findViewById(R.id.txtFront);
             holder.back = (TextView) item.findViewById(R.id.txtBack);
             holder.nr = (TextView) item.findViewById(R.id.txtNr);
-//            holder.export = (CheckBox) item.findViewById(R.id.checkExport);
+            holder.checked = (CheckBox) item.findViewById(R.id.checkBox);
             holder.start = (TextView) item.findViewById(R.id.txtStart);
             holder.stop = (TextView) item.findViewById(R.id.txtStop);
             item.setTag(holder);
@@ -46,7 +46,7 @@ public class CardAdapter extends ArrayAdapter<Card> {
         holder.front.setText(card.getFront());
         holder.back.setText(card.getBack());
         holder.nr.setText(String.valueOf(card.getNr()));
-//        holder.export.setChecked(card.isExport());
+        holder.checked.setChecked(card.isChecked());
         holder.start.setText(start);
         holder.stop.setText(stop);
         return item;
@@ -56,7 +56,7 @@ public class CardAdapter extends ArrayAdapter<Card> {
         public TextView front;
         public TextView back;
         public TextView nr;
-        public CheckBox export;
+        public CheckBox checked;
         public TextView start;
         public TextView stop;
     }

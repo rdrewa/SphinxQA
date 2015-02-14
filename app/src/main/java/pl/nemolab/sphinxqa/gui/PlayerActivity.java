@@ -49,7 +49,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     public static final String SRC = "SRC";
     public static final String DST = "DST";
 
-    private static final String TAG = "SphinxQA:PlayerActivity";
+    private static final String TAG = "SphinxQA:PLAYER";
     private static final String POSITION = "POSITION";
     private static final String EMPTY_STRING = "";
 

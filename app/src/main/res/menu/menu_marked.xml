@@ -1,7 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="pl.nemolab.sphinxqa.gui.MarkedActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    tools:context=".MainActivity">
+    <item
+        android:id="@+id/menu_overflow"
+        android:icon="@drawable/ic_action_overflow"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_export"
+                android:orderInCategory="100"
+                android:title="@string/action_export"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_email"
+                android:orderInCategory="200"
+                android:title="@string/action_email"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
 </menu>

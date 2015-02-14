@@ -30,6 +30,10 @@
             android:name=".gui.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name=".gui.EditActivity"
+            android:label="@string/title_activity_edit">
+        </activity>
     </application>
 
 </manifest>

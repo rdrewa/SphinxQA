@@ -49,5 +49,11 @@
     <string name="player_show_subtitles_never">never</string>
     <string name="storage_folder_created">"Folder has been created: "</string>
     <string name="storage_folder_fail">"Strorage folder doesn't exists or cannot  be created: "</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_edit">Edit</string>
+    <string name="btn_merge">Merge</string>
+    <string name="action_export">Export to file</string>
+    <string name="action_email">Send by email</string>
+    <string name="title_activity_edit">EditActivity</string>
 
 </resources>

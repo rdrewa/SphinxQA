@@ -18,8 +18,20 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_export"
-            android:id="@+id/btnExport" />
+            android:text="@string/btn_edit"
+            android:id="@+id/btnEdit" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_merge"
+            android:id="@+id/btnMerge" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_delete"
+            android:id="@+id/btnDelete" />
     </LinearLayout>
 
 </LinearLayout>

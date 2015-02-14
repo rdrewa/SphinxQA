@@ -9,6 +9,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox"
+            android:focusable="false"
+            android:clickable="false"/>
+
         <TextView
             android:id="@+id/txtNr"
             android:layout_width="0dp"
@@ -40,6 +47,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/sample_text"
             android:id="@+id/txtStop" />
+
     </LinearLayout>
 
     <LinearLayout

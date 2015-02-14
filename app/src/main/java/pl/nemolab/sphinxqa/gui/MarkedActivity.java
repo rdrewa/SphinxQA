@@ -1,16 +1,19 @@
 package pl.nemolab.sphinxqa.gui;
 
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,7 +34,12 @@ import pl.nemolab.sphinxqa.subs.Subtitle;
 
 public class MarkedActivity extends ActionBarActivity {
 
+    public static final int EDIT_REQUEST = 1;
+    public static final int MERGE_REQUEST = 2;
+    public static final String POSITION = "POSITION";
+
     public static final String APP_PATH = "SphinxQA";
+    private static final String TAG = "SphinxQA:MARK";
 
     private String fileSrc, fileDst, titleVideo;
     private ArrayList<Integer> marked;
@@ -40,9 +48,9 @@ public class MarkedActivity extends ActionBarActivity {
     private List<Card> cards;
     private CardAdapter adapter;
     private ListView list;
-    private Button btnExport;
     private ProgressDialog progressDialog;
     private Config config;
+    private Button btnEdit, btnMerge, btnDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +58,56 @@ public class MarkedActivity extends ActionBarActivity {
         setContentView(R.layout.activity_marked);
         readParams(getIntent().getExtras());
         config = new Config(this);
+        btnEdit = (Button) findViewById(R.id.btnEdit);
+        btnMerge = (Button) findViewById(R.id.btnMerge);
+        btnDelete = (Button) findViewById(R.id.btnDelete);
         list = (ListView) findViewById(R.id.list);
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = list.getCheckedItemPosition();
+                Card card = adapter.getItem(position);
+                if (card != null && card.isChecked()) {
+                    Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+                    intent.putExtra(POSITION, position);
+                    intent.putExtra(EditActivity.QUESTION, card.getFront());
+                    intent.putExtra(EditActivity.ANSWER, card.getBack());
+                    startActivityForResult(intent, EDIT_REQUEST);
+                }
+            }
+        });
+        btnMerge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Card card = (Card) parent.getItemAtPosition(position);
+                CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+                if (card.isChecked()) {
+                    card.setChecked(false);
+                    view.setBackgroundColor(Color.WHITE);
+                    checkBox.setChecked(false);
+                } else {
+                    card.setChecked(true);
+                    view.setBackgroundColor(Color.GRAY);
+                    checkBox.setChecked(true);
+                }
+            }
+        });
         String charset = config.retrieveCharset();
         SubtitleProcessorTask subtitleProcessor = new SubtitleProcessorTask(charset);
         subtitleProcessor.execute();
-        btnExport = (Button) findViewById(R.id.btnExport);
-        btnExport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SaveFileTask().execute();
-            }
-        });
     }
 
     private void readParams(Bundle bundle) {
@@ -71,7 +118,6 @@ public class MarkedActivity extends ActionBarActivity {
             marked = bundle.getIntegerArrayList(PlayerActivity.MARKED);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -88,11 +134,32 @@ public class MarkedActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_export) {
+            new SaveFileTask().execute();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, "resultCode: '" + resultCode + "'");
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case EDIT_REQUEST:
+                    int position = data.getExtras().getInt(POSITION);
+                    String front = data.getStringExtra(EditActivity.QUESTION);
+                    String back = data.getStringExtra(EditActivity.ANSWER);
+                    Card card = adapter.getItem(position);
+                    if (card != null) {
+                        card.setFront(front);
+                        card.setBack(back);
+                        adapter.notifyDataSetChanged();
+                    }
+                    break;
+            }
+        }
     }
 
     private class SubtitleProcessorTask extends AsyncTask<Void, Void, Void> {

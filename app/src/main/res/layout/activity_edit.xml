@@ -7,41 +7,43 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginRight="50dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView" />
+            android:text="Question:" />
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:inputType="textMultiLine"
+            android:padding="5dp"
             android:ems="10"
-            android:id="@+id/editText" />
+            android:id="@+id/edtQuestion" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginLeft="50dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView4" />
+            android:text="Answer:" />
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:inputType="textMultiLine"
+            android:padding="5dp"
             android:ems="10"
-            android:id="@+id/editText2" />
+            android:id="@+id/edtAnswer" />
     </LinearLayout>
 </LinearLayout>
