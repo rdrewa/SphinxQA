@@ -1,6 +1,9 @@
 package pl.nemolab.sphinxqa.gui;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -21,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import pl.nemolab.sphinxqa.Config;
@@ -51,6 +55,9 @@ public class MarkedActivity extends ActionBarActivity {
     private ProgressDialog progressDialog;
     private Config config;
     private Button btnEdit, btnMerge, btnDelete;
+    private int lastCheckedPosition;
+    private List<Integer> checkedPositions;
+    private boolean isOneByOneChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,30 +72,33 @@ public class MarkedActivity extends ActionBarActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = list.getCheckedItemPosition();
-                Card card = adapter.getItem(position);
-                if (card != null && card.isChecked()) {
-                    Intent intent = new Intent(getApplicationContext(), EditActivity.class);
-                    intent.putExtra(POSITION, position);
-                    intent.putExtra(EditActivity.QUESTION, card.getFront());
-                    intent.putExtra(EditActivity.ANSWER, card.getBack());
-                    startActivityForResult(intent, EDIT_REQUEST);
-                }
+                startEditActivity();
             }
         });
         btnMerge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                SparseBooleanArray checked = list.getCheckedItemPositions();
+                StringBuilder sb = new StringBuilder("");
+                int size = checked.size();
+                for (int i = 0; i < size; i++ ) {
+                    String val;
+                    if (checked.valueAt(i)) {
+                        val = "1";
+                    } else {
+                        val = "0";
+                    }
+                    sb.append(i + ": " + checked.keyAt(i) + " = " + val + "\n");
+                }
+                Toast.makeText(getApplicationContext(), sb.toString(), Toast.LENGTH_LONG).show();
             }
         });
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showDeleteDialog();
             }
         });
-        list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -96,18 +106,125 @@ public class MarkedActivity extends ActionBarActivity {
                 CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
                 if (card.isChecked()) {
                     card.setChecked(false);
-                    view.setBackgroundColor(Color.WHITE);
                     checkBox.setChecked(false);
                 } else {
                     card.setChecked(true);
-                    view.setBackgroundColor(Color.GRAY);
                     checkBox.setChecked(true);
+                    lastCheckedPosition = position;
                 }
+                serveMultipleChoice();
+            }
+        });
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Card card = (Card) parent.getItemAtPosition(position);
+                CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+                String eol = "\n";
+                StringBuilder sb = new StringBuilder("item " + position + " / " + id + eol);
+                sb.append("nr " + card.getNr() + eol);
+                sb.append("card ");
+                if (card.isChecked()) {
+                    sb.append("1");
+                } else {
+                    sb.append("0");
+                }
+                sb.append(eol + "checkbox ");
+                if (checkBox.isChecked()) {
+                    sb.append("1");
+                } else {
+                    sb.append("0");
+                }
+                sb.append(eol + "bkg " + view.getDrawingCacheBackgroundColor());
+                Toast.makeText(getApplicationContext(), sb.toString(), Toast.LENGTH_LONG).show();
+                return false;
             }
         });
         String charset = config.retrieveCharset();
         SubtitleProcessorTask subtitleProcessor = new SubtitleProcessorTask(charset);
         subtitleProcessor.execute();
+        toggleButtons(0);
+    }
+
+    private void showDeleteDialog() {
+        if (!checkedPositions.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.dialog_delete_card_title));
+            String deleteMessage = getString(R.string.dialog_delete_card_message);
+            builder.setMessage(String.format(deleteMessage, checkedPositions.size()));
+            builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Collections.reverse(checkedPositions);
+                    Card card;
+                    for (Integer pos : checkedPositions) {
+                        card = adapter.getItem(pos);
+                        if (card != null) {
+                            list.setItemChecked(pos, false);
+                            card.setChecked(false);
+                            adapter.remove(card);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            });
+            builder.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            Dialog dialog = builder.create();
+            dialog.show();
+        }
+    }
+
+    private void serveMultipleChoice() {
+        SparseBooleanArray checkedItemPositions = list.getCheckedItemPositions();
+        int i, size = checkedItemPositions.size();
+        checkedPositions = new ArrayList<>();
+        for (i = 0; i < size; i++) {
+            if (checkedItemPositions.valueAt(i)) {
+                checkedPositions.add(checkedItemPositions.keyAt(i));
+            }
+        }
+        toggleButtons(checkedPositions.size());
+    }
+
+    private void toggleButtons(int length) {
+        if (length == 0) {
+            btnEdit.setEnabled(false);
+            btnMerge.setEnabled(false);
+            btnDelete.setEnabled(false);
+        }
+        if (length == 1) {
+            btnEdit.setEnabled(true);
+            btnMerge.setEnabled(false);
+            btnDelete.setEnabled(true);
+        } else if (length == 2) {
+            btnEdit.setEnabled(false);
+            if ((checkedPositions.get(0) + 1) == checkedPositions.get(1)) {
+                btnMerge.setEnabled(true);
+            } else {
+                btnMerge.setEnabled(false);
+            }
+            btnDelete.setEnabled(true);
+        } else if (length > 2) {
+            btnEdit.setEnabled(false);
+            btnMerge.setEnabled(false);
+            btnDelete.setEnabled(true);
+        }
+    }
+
+    private void startEditActivity() {
+        Card card = adapter.getItem(lastCheckedPosition);
+        if (card != null && card.isChecked()) {
+            Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+            intent.putExtra(POSITION, lastCheckedPosition);
+            intent.putExtra(EditActivity.QUESTION, card.getFront());
+            intent.putExtra(EditActivity.ANSWER, card.getBack());
+            startActivityForResult(intent, EDIT_REQUEST);
+        }
     }
 
     private void readParams(Bundle bundle) {
@@ -191,6 +308,7 @@ public class MarkedActivity extends ActionBarActivity {
             if (cards != null && !cards.isEmpty()) {
                 adapter = new CardAdapter(getApplicationContext(), cards);
                 list.setAdapter(adapter);
+                list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
             }
             super.onPostExecute(aVoid);
         }

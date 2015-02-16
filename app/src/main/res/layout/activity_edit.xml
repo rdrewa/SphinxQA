@@ -46,4 +46,24 @@
             android:ems="10"
             android:id="@+id/edtAnswer" />
     </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@android:string/cancel"
+            android:id="@+id/btnCancel" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@android:string/ok"
+            android:id="@+id/btnOk" />
+    </LinearLayout>
 </LinearLayout>

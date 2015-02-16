@@ -32,7 +32,11 @@
         </activity>
         <activity
             android:name=".gui.EditActivity"
-            android:label="@string/title_activity_edit">
+            android:label="@string/title_activity_edit" >
+        </activity>
+        <activity
+            android:name=".gui.HelpActivity"
+            android:label="@string/title_activity_help" >
         </activity>
     </application>
 

@@ -5,6 +5,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import pl.nemolab.sphinxqa.R;
@@ -17,6 +19,7 @@ public class EditActivity extends ActionBarActivity {
     private EditText edtQuestion, edtAnswer;
     private String question, answer;
     private int position;
+    private Button btnOk, btnCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,34 @@ public class EditActivity extends ActionBarActivity {
         edtAnswer = (EditText) findViewById(R.id.edtAnswer);
         edtQuestion.setText(question);
         edtAnswer.setText(answer);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doCancel();
+            }
+        });
+        btnOk = (Button) findViewById(R.id.btnOk);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doOk();
+            }
+        });
+    }
+
+    private void doCancel() {
+        setResult(RESULT_CANCELED, new Intent());
+        finish();
+    }
+
+    private void doOk() {
+        Intent data = new Intent();
+        data.putExtra(MarkedActivity.POSITION, position);
+        data.putExtra(QUESTION, edtQuestion.getText().toString());
+        data.putExtra(ANSWER, edtAnswer.getText().toString());
+        setResult(RESULT_OK, data);
+        finish();
     }
 
     private void readParams(Bundle bundle) {
@@ -35,16 +66,6 @@ public class EditActivity extends ActionBarActivity {
             answer = bundle.getString(ANSWER);
             position = bundle.getInt(MarkedActivity.POSITION);
         }
-    }
-
-    @Override
-    public void finish() {
-        Intent data = new Intent();
-        data.putExtra(MarkedActivity.POSITION, position);
-        data.putExtra(QUESTION, edtQuestion.getText().toString());
-        data.putExtra(ANSWER, edtAnswer.getText().toString());
-        setResult(RESULT_OK, data);
-        super.finish();
     }
 
     @Override

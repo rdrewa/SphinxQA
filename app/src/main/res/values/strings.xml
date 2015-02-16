@@ -55,5 +55,9 @@
     <string name="action_export">Export to file</string>
     <string name="action_email">Send by email</string>
     <string name="title_activity_edit">EditActivity</string>
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="action_help">Help</string>
+    <string name="dialog_delete_card_message">Do you really wan\'t to delete checked cards (%d)?</string>
+    <string name="dialog_delete_card_title">Delete cards</string>
 
 </resources>

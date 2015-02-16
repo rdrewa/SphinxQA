@@ -16,19 +16,22 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="@string/btn_edit"
             android:id="@+id/btnEdit" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="@string/btn_merge"
             android:id="@+id/btnMerge" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="@string/btn_delete"
             android:id="@+id/btnDelete" />

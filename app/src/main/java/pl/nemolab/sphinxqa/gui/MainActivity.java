@@ -241,6 +241,11 @@ public class MainActivity extends ActionBarActivity {
             startActivity(intent);
             return true;
         }
+        if (id == R.id.action_help) {
+            Intent intent = new Intent(this, HelpActivity.class);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
