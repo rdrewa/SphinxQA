@@ -59,5 +59,6 @@
     <string name="action_help">Help</string>
     <string name="dialog_delete_card_message">Do you really wan\'t to delete checked cards (%d)?</string>
     <string name="dialog_delete_card_title">Delete cards</string>
+    <string name="title_activity_merge">MergeActivity</string>
 
 </resources>

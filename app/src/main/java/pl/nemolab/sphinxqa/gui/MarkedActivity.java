@@ -41,6 +41,7 @@ public class MarkedActivity extends ActionBarActivity {
     public static final int EDIT_REQUEST = 1;
     public static final int MERGE_REQUEST = 2;
     public static final String POSITION = "POSITION";
+    public static final String POSITION2 = "POSITION2";
 
     public static final String APP_PATH = "SphinxQA";
     private static final String TAG = "SphinxQA:MARK";
@@ -78,19 +79,7 @@ public class MarkedActivity extends ActionBarActivity {
         btnMerge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SparseBooleanArray checked = list.getCheckedItemPositions();
-                StringBuilder sb = new StringBuilder("");
-                int size = checked.size();
-                for (int i = 0; i < size; i++ ) {
-                    String val;
-                    if (checked.valueAt(i)) {
-                        val = "1";
-                    } else {
-                        val = "0";
-                    }
-                    sb.append(i + ": " + checked.keyAt(i) + " = " + val + "\n");
-                }
-                Toast.makeText(getApplicationContext(), sb.toString(), Toast.LENGTH_LONG).show();
+                startMergeActivity();
             }
         });
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +133,24 @@ public class MarkedActivity extends ActionBarActivity {
         SubtitleProcessorTask subtitleProcessor = new SubtitleProcessorTask(charset);
         subtitleProcessor.execute();
         toggleButtons(0);
+    }
+
+    private void startMergeActivity() {
+        if (checkedPositions.size() != 2) {
+            return;
+        }
+        Card card = adapter.getItem(checkedPositions.get(0));
+        Card card2 = adapter.getItem(checkedPositions.get(1));
+        if (card != null && card.isChecked() && card2 != null && card2.isChecked()) {
+            Intent intent = new Intent(getApplicationContext(), MergeActivity.class);
+            intent.putExtra(POSITION, checkedPositions.get(0));
+            intent.putExtra(MergeActivity.QUESTION, card.getFront());
+            intent.putExtra(MergeActivity.ANSWER, card.getBack());
+            intent.putExtra(POSITION2, checkedPositions.get(1));
+            intent.putExtra(MergeActivity.QUESTION2, card2.getFront());
+            intent.putExtra(MergeActivity.ANSWER2, card2.getBack());
+            startActivityForResult(intent, MERGE_REQUEST);
+        }
     }
 
     private void showDeleteDialog() {
@@ -262,21 +269,43 @@ public class MarkedActivity extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "resultCode: '" + resultCode + "'");
+        int position, position2;
+        String front, back;
+        Card card, card2;
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case EDIT_REQUEST:
-                    int position = data.getExtras().getInt(POSITION);
-                    String front = data.getStringExtra(EditActivity.QUESTION);
-                    String back = data.getStringExtra(EditActivity.ANSWER);
-                    Card card = adapter.getItem(position);
+                    position = data.getExtras().getInt(POSITION);
+                    front = data.getStringExtra(EditActivity.QUESTION);
+                    back = data.getStringExtra(EditActivity.ANSWER);
+                    card = adapter.getItem(position);
                     if (card != null) {
                         card.setFront(front);
                         card.setBack(back);
                         adapter.notifyDataSetChanged();
                     }
                     break;
+                case MERGE_REQUEST:
+                    position = data.getExtras().getInt(POSITION);
+                    position2 = data.getExtras().getInt(POSITION2);
+                    front = data.getStringExtra(EditActivity.QUESTION);
+                    back = data.getStringExtra(EditActivity.ANSWER);
+                    card = adapter.getItem(position);
+                    if (card != null) {
+                        card.setFront(front);
+                        card.setBack(back);
+                        adapter.notifyDataSetChanged();
+                    }
+                    card2 = adapter.getItem(position2);
+                    if (card2 != null) {
+                        list.setItemChecked(position2, false);
+                        card2.setChecked(false);
+                        adapter.remove(card2);
+                    }
+                    break;
             }
         }
+        serveMultipleChoice();
     }
 
     private class SubtitleProcessorTask extends AsyncTask<Void, Void, Void> {

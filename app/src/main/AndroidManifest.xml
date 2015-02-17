@@ -38,6 +38,10 @@
             android:name=".gui.HelpActivity"
             android:label="@string/title_activity_help" >
         </activity>
+        <activity
+            android:name=".gui.MergeActivity"
+            android:label="@string/title_activity_merge" >
+        </activity>
     </application>
 
 </manifest>
