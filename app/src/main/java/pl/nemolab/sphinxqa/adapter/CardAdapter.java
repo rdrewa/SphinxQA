@@ -45,7 +45,7 @@ public class CardAdapter extends ArrayAdapter<Card> {
         holder.back.setText(Html.fromHtml(card.getBack()));
         holder.front.setText(card.getFront());
         holder.back.setText(card.getBack());
-        holder.nr.setText(String.valueOf(position) + " / " + String.valueOf(card.getNr()));
+        holder.nr.setText(String.valueOf(card.getNr()));
         holder.checked.setChecked(card.isChecked());
         holder.start.setText(start);
         holder.stop.setText(stop);

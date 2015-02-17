@@ -60,5 +60,8 @@
     <string name="dialog_delete_card_message">Do you really wan\'t to delete checked cards (%d)?</string>
     <string name="dialog_delete_card_title">Delete cards</string>
     <string name="title_activity_merge">MergeActivity</string>
+    <string name="mail_extra_text">File contains a deck of flashcards based on the movie</string>
+    <string name="pref_UserContact_title">User mail</string>
+    <string name="pref_UserContact_summary">Contact for sending by mail</string>
 
 </resources>

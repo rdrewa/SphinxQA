@@ -55,6 +55,13 @@
             android:key="prefStorageFolder"
             android:title="@string/pref_StorageUserFolder_title" />
 
+        <EditTextPreference
+            android:key="prefUserMail"
+            android:title="@string/pref_UserContact_title"
+            android:summary="@string/pref_UserContact_summary"
+            android:inputType="textWebEmailAddress"
+            android:defaultValue="" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

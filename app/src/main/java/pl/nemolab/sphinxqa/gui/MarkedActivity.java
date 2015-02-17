@@ -1,11 +1,12 @@
 package pl.nemolab.sphinxqa.gui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -262,6 +263,20 @@ public class MarkedActivity extends ActionBarActivity {
             new SaveFileTask().execute();
             return true;
         }
+        if (id == R.id.action_email) {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.putExtra(Intent.EXTRA_SUBJECT, "QA: " + titleVideo);
+
+            String userMail = config.retrieveUserMail();
+            if (userMail != null) {
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{userMail});
+            }
+//            String extraText = String.format(getString(R.string.mail_extra_text), titleVideo, adapter.getCount());
+            String extraText = getString(R.string.mail_extra_text) + " " + titleVideo;
+            intent.putExtra(Intent.EXTRA_TEXT, extraText);
+            new SaveFileTask(MarkedActivity.this, intent).execute();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -347,6 +362,17 @@ public class MarkedActivity extends ActionBarActivity {
 
         private String fileName;
         private boolean result;
+        private Intent intent;
+        private Activity activity;
+
+        public SaveFileTask() {
+            super();
+        }
+
+        private SaveFileTask(Activity activity, Intent intent) {
+            this.activity = activity;
+            this.intent = intent;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -358,6 +384,11 @@ public class MarkedActivity extends ActionBarActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
+            cards = new ArrayList<>();
+            int i, count = adapter.getCount();
+            for (i = 0; i < count; i++) {
+                cards.add(adapter.getItem(i));
+            }
             fileName = getOutputFile(titleVideo);
             QATextExporter exporter = new QATextExporter();
             result = exporter.export(cards, fileName);
@@ -368,13 +399,19 @@ public class MarkedActivity extends ActionBarActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
-            String text;
-            if (result) {
-                text = getString(R.string.save_file_final_message_ok) + fileName;
+            if (activity != null && intent != null) {
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(fileName)));
+                intent.setType("text/plain");
+                activity.startActivity(intent);
             } else {
-                text = getString(R.string.save_file_final_message_fail);
+                String text;
+                if (result) {
+                    text = getString(R.string.save_file_final_message_ok) + fileName;
+                } else {
+                    text = getString(R.string.save_file_final_message_fail);
+                }
+                Toast.makeText(MarkedActivity.this, text, Toast.LENGTH_LONG).show();
             }
-            Toast.makeText(MarkedActivity.this, text, Toast.LENGTH_LONG).show();
         }
 
         private File getPath() {

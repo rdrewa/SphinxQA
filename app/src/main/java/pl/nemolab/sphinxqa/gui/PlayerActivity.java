@@ -356,6 +356,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private void playVideo() {
         try {
             mediaController.setAnchorView(video);
+            mediaController.hide();
             video.setMediaController(mediaController);
             video.setVideoPath(fileVideo);
         } catch (Exception e) {
@@ -383,13 +384,13 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     }
 
     private void startMarkedActivity() {
-        marked = new ArrayList<>();
-        // @TODO! only for test
-        // @FIXME!
-        int size = 65;
-        for (int i = 45; i < size; i++) {
-            marked.add(i);
-        }
+//        marked = new ArrayList<>();
+//        // @TODO! only for test
+//        // @FIXME!
+//        int size = 65;
+//        for (int i = 45; i < size; i++) {
+//            marked.add(i);
+//        }
         Intent intent = new Intent(this, MarkedActivity.class);
         intent.putExtra(TITLE, titleVideo);
         intent.putExtra(SRC, fileSrc);

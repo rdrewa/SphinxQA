@@ -14,6 +14,7 @@ public class Config {
     public static final String KEY_STORAGE_FOLDER = "prefStorageFolder";
     public static final String KEY_STORAGE_USER_FOLDER = "prefStorageUserFolder";
     public static final String KEY_CHARSET = "prefCharset";
+    public static final String KEY_USER_MAIL = "prefUserMail";
     public static final int DEFAULT_MOVIE_MIN_SIZE = 100;
     public static final int DEFAULT_MOVIE_MIN_DURATION = 20;
     public static final String DEFAULT_PLAYER_SHOW_SUBTITLES = "never";
@@ -93,5 +94,9 @@ public class Config {
                 root + DEFAULT_STORAGE_FOLDER
         );
         return storageFolder;
+    }
+
+    public String retrieveUserMail() {
+        return settings.getString(KEY_USER_MAIL, "");
     }
 }

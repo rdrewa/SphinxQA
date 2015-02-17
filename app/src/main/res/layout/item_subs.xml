@@ -11,9 +11,9 @@
 
         <TextView
             android:id="@+id/txtStart"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginRight="10dp"
             android:gravity="start"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -21,7 +21,7 @@
             android:id="@+id/txtSrc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="1"
             android:ellipsize="end"
             android:gravity="end"
             android:singleLine="true"
