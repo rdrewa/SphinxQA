@@ -309,14 +309,16 @@ public class MarkedActivity extends ActionBarActivity {
                     if (card != null) {
                         card.setFront(front);
                         card.setBack(back);
-                        adapter.notifyDataSetChanged();
                     }
                     card2 = adapter.getItem(position2);
                     if (card2 != null) {
+                        card.setStop(card2.getStop());
+                        card.setStopMs(card2.getStopMs());
                         list.setItemChecked(position2, false);
                         card2.setChecked(false);
                         adapter.remove(card2);
                     }
+                    adapter.notifyDataSetChanged();
                     break;
             }
         }
