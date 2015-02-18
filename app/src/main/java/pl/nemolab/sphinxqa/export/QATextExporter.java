@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
-import pl.nemolab.sphinxqa.SubtitleOutput;
+import pl.nemolab.sphinxqa.subs.SubtitleOutput;
 import pl.nemolab.sphinxqa.model.Card;
 
 public class QATextExporter implements SubtitleOutput {

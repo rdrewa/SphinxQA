@@ -11,8 +11,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.nemolab.sphinxqa.SubtitleInput;
-
 public class SrtParser implements SubtitleInput {
 
     public static final String EOL = "\n";

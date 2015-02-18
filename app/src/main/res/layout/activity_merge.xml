@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Question:" />
+            android:text="@string/text_question" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Answer:" />
+            android:text="@string/text_answer" />
 
         <LinearLayout
             android:orientation="horizontal"

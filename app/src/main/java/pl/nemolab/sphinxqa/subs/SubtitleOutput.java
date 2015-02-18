@@ -1,4 +1,4 @@
-package pl.nemolab.sphinxqa;
+package pl.nemolab.sphinxqa.subs;
 
 import java.util.List;
 

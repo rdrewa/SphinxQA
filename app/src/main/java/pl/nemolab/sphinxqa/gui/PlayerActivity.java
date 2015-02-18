@@ -40,6 +40,7 @@ import pl.nemolab.sphinxqa.model.Subs;
 import pl.nemolab.sphinxqa.subs.CardCreator;
 import pl.nemolab.sphinxqa.subs.SrtParser;
 import pl.nemolab.sphinxqa.subs.Subtitle;
+import pl.nemolab.sphinxqa.subs.SubtitleInput;
 
 
 public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.Callback {
@@ -123,7 +124,8 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
             }
         });
         progressDialog = new ProgressDialog(PlayerActivity.this);
-        progressDialog.setTitle("PLAYER");
+        progressDialog.setTitle(getString(R.string.progress_player_title));
+        progressDialog.setMessage(getString(R.string.progress_player_message));
         progressDialog.setCancelable(false);
         progressDialog.show();
         showSecondLine = config.retrieveListShowSubtitles();
@@ -409,7 +411,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
 
         @Override
         protected Void doInBackground(Void... params) {
-            SrtParser parser = new SrtParser(charsetName);
+            SubtitleInput parser = new SrtParser(charsetName);
             try {
                 srcSubtitles = parser.parseFile(fileSrc);
                 dstSubtitles = parser.parseFile(fileDst);

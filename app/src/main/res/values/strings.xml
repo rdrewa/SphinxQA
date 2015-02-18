@@ -60,9 +60,18 @@
     <string name="dialog_delete_card_message">Do you really wan\'t to delete checked cards (%d)?</string>
     <string name="dialog_delete_card_title">Delete cards</string>
     <string name="title_activity_merge">MergeActivity</string>
-    <string name="mail_extra_text">File contains a deck of flashcards based on the movie</string>
+    <string name="mail_extra_text">File contains a deck of flashcards based on the movie:\n
+%1$s\n
+Number of cards: %2$d\n
+The deck has been created by SphinxQA application.\n</string>
     <string name="pref_UserContact_title">User mail</string>
     <string name="pref_UserContact_summary">Contact for sending by mail</string>
     <string name="merger_text">Merger</string>
+    <string name="text_question">Question:</string>
+    <string name="text_answer">Answer:</string>
+    <string name="progress_player_title">Player</string>
+    <string name="progress_player_message">Loading movie and subtitles...</string>
+    <string name="progress_cards_title">Cards</string>
+    <string name="progress_cards_message">Loading...</string>
 
 </resources>

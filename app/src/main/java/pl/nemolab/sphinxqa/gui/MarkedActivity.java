@@ -38,6 +38,8 @@ import pl.nemolab.sphinxqa.subs.SrtParser;
 import pl.nemolab.sphinxqa.model.Card;
 import pl.nemolab.sphinxqa.subs.CardCreator;
 import pl.nemolab.sphinxqa.subs.Subtitle;
+import pl.nemolab.sphinxqa.subs.SubtitleInput;
+import pl.nemolab.sphinxqa.subs.SubtitleOutput;
 
 public class MarkedActivity extends ActionBarActivity {
 
@@ -266,15 +268,15 @@ public class MarkedActivity extends ActionBarActivity {
             return true;
         }
         if (id == R.id.action_email) {
-            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            Intent intent = new Intent(Intent.ACTION_SEND);
             intent.putExtra(Intent.EXTRA_SUBJECT, "QA: " + titleVideo);
 
             String userMail = config.retrieveUserMail();
             if (userMail != null) {
                 intent.putExtra(Intent.EXTRA_EMAIL, new String[]{userMail});
             }
-//            String extraText = String.format(getString(R.string.mail_extra_text), titleVideo, adapter.getCount());
-            String extraText = getString(R.string.mail_extra_text) + " " + titleVideo;
+            String extraText = String.format(getString(R.string.mail_extra_text), titleVideo, adapter.getCount());
+//            String extraText = getString(R.string.mail_extra_text) + " " + titleVideo;
             intent.putExtra(Intent.EXTRA_TEXT, extraText);
             new SaveFileTask(MarkedActivity.this, intent).execute();
             return true;
@@ -330,14 +332,24 @@ public class MarkedActivity extends ActionBarActivity {
     private class SubtitleProcessorTask extends AsyncTask<Void, Void, Void> {
 
         private String charsetName;
+        private ProgressDialog progressDialog;
 
         public SubtitleProcessorTask(String charset) {
             charsetName = charset;
         }
 
         @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(MarkedActivity.this);
+            progressDialog.setTitle(getString(R.string.progress_cards_title));
+            progressDialog.setMessage(getString(R.string.progress_cards_message));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
         protected Void doInBackground(Void... params) {
-            SrtParser parser = new SrtParser(charsetName);
+            SubtitleInput parser = new SrtParser(charsetName);
             try {
                 subsSrc = parser.parseFile(fileSrc);
                 subsDst = parser.parseFile(fileDst);
@@ -358,6 +370,7 @@ public class MarkedActivity extends ActionBarActivity {
                 list.setAdapter(adapter);
                 list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
             }
+            progressDialog.dismiss();
             super.onPostExecute(aVoid);
         }
     }
@@ -394,7 +407,7 @@ public class MarkedActivity extends ActionBarActivity {
                 cards.add(adapter.getItem(i));
             }
             fileName = getOutputFile(titleVideo);
-            QATextExporter exporter = new QATextExporter();
+            SubtitleOutput exporter = new QATextExporter();
             result = exporter.export(cards, fileName);
             return null;
         }
@@ -405,7 +418,8 @@ public class MarkedActivity extends ActionBarActivity {
             progressDialog.dismiss();
             if (activity != null && intent != null) {
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(fileName)));
-                intent.setType("text/plain");
+//                intent.setType("text/plain");
+                intent.setType("message/rfc822");
                 activity.startActivity(intent);
             } else {
                 String text;
