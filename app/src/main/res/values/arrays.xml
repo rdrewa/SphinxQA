@@ -43,6 +43,12 @@
         <item>marked</item>
         <item>always</item>
     </string-array>
+    <string-array name="merger_entries">
+        <item>@string/merger_space</item>
+        <item>@string/merger_new_line</item>
+        <item>@string/merger_first</item>
+        <item>@string/merger_second</item>
+    </string-array>
     <string name="default_charset">Auto Detect</string>
     <string name="storage_type_default_folder">APP_FOLDER</string>
     <string name="storage_app_folder">App folder</string>
@@ -52,4 +58,8 @@
     <string name="subtitles_showing_never">never</string>
     <string name="subtitles_showing_marked">on marked</string>
     <string name="subtitles_showing_always">always</string>
+    <string name="merger_space">by space</string>
+    <string name="merger_new_line">by new line</string>
+    <string name="merger_first">only first</string>
+    <string name="merger_second">only second</string>
 </resources>

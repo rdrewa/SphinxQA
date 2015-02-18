@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import pl.nemolab.sphinxqa.R;
 
@@ -22,6 +25,7 @@ public class MergeActivity extends ActionBarActivity {
     private String question, answer, question2, answer2;
     private int position, position2;
     private Button btnOk, btnCancel;
+    private Spinner spinQuestion, spinAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,59 @@ public class MergeActivity extends ActionBarActivity {
                 doOk();
             }
         });
+        spinQuestion = (Spinner) findViewById(R.id.spinQuestion);
+        ArrayAdapter<CharSequence> adapterQuestion = ArrayAdapter.createFromResource(
+                this,
+                R.array.merger_entries,
+                android.R.layout.simple_spinner_item
+        );
+        adapterQuestion.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinQuestion.setAdapter(adapterQuestion);
+        spinQuestion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String value = selectValue(position, question, question2);
+                edtQuestion.setText(value);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinAnswer = (Spinner) findViewById(R.id.spinAnswer);
+        ArrayAdapter<CharSequence> adapterAnswer = ArrayAdapter.createFromResource(
+                this,
+                R.array.merger_entries,
+                android.R.layout.simple_spinner_item
+        );
+        adapterAnswer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinAnswer.setAdapter(adapterAnswer);
+        spinAnswer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String value = selectValue(position, answer, answer2);
+                edtAnswer.setText(value);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinQuestion.setSelection(0);
+        spinAnswer.setSelection(0);
+    }
+
+    private String selectValue(int position, String first, String second) {
+        String value = null;
+        switch (position) {
+            case 0: value = first + " " + second; break;
+            case 1: value = first + "\n" + second; break;
+            case 2: value = first; break;
+            case 3: value = second; break;
+        }
+        return value;
     }
 
     private void readParams(Bundle bundle) {
