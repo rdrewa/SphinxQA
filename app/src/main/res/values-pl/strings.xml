@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SphinxQA</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="hint_pick_a_file">Wybierz plik</string>
+    <string name="txt_play">Start</string>
+    <string name="pick_video_title">Wybierz plik video</string>
+    <string name="pick_src_title">Źródło</string>
+    <string name="pick_dst_title">Wynikowy</string>
+    <string name="dlg_src_title">Wybierz plik z napisami obcymi</string>
+    <string name="dlg_dst_title">Wybierz plik z napisami natywnymi</string>
+    <string name="title_activity_player">SphinxQA: Odtwarzacz</string>
+    <string name="sample_media_route_activity_presentation">Przykładowe media...</string>
+    <string name="title_activity_marked">SphinxQA: Zaznaczone napisy</string>
+    <string name="action_marked">Zaznaczone</string>
+    <string name="txt_welcome">Witamy w SphinxQA</string>
+    <string name="txt_app_desc">Rozpocznij korzystanie ze SphinxQA i zacznij tworzyć swoje własne fiszki z seriali i filmów</string>
+    <string name="the_same_files">Wybrano te same pliki</string>
+    <string name="btn_export">Export</string>
+    <string name="save_file_progress_title">Czekaj</string>
+    <string name="save_file_progress_info">Zapis pliku...</string>
+    <string name="save_file_final_message_ok">"Fiszki zostały zapisane do "</string>
+    <string name="save_file_final_message_fail">Coś poszło nie tak...</string>
+    <string name="pref_MovieMinSize_title">Większe niż [MB]</string>
+    <string name="pref_MovieMinSize_summary">Seriale są zwykłe plikami większymi niż 100 MB</string>
+    <string name="pref_MovieMinDuration_title">Większe niż [min]</string>
+    <string name="pref_MovieMinDuration_summary">Seriale są zwykle filmami dłuższymi niż 15 minut</string>
+    <string name="pref_cat_movie_searching">WYSZUKIWANIE FILMÓW</string>
+    <string name="pref_cat_subtitles">NAPISY</string>
+    <string name="title_activity_settings">SphinxQA: Ustawienia</string>
+    <string name="pref_cat_saving_data">ZAPIS DANYCH</string>
+    <string name="pref_StorageType_title">Wybierz folder wyjściowy do zaapisu danych</string>
+    <string name="pref_Charset_title">Wybierz kodowanie</string>
+    <string name="pref_PlayerShowSubtitles_title">Odtwarzacz: Pokaż drugie napisy</string>
+    <string name="pref_ListShowSubtitles_title">Lista: Pokaż drugie napisy</string>
+    <string name="pref_StorageAppFolder_title">Folder aplikacji</string>
+    <string name="pref_StorageUserFolder_title">Wybierz folder</string>
+    <string name="player_show_subtitles_never">nigdy</string>
+    <string name="storage_folder_created">"Folder został utworzony: "</string>
+    <string name="storage_folder_fail">"Folder nie istnieje, albo nie może zostać utworzony: "</string>
+    <string name="btn_delete">Usuń</string>
+    <string name="btn_edit">Edytuj</string>
+    <string name="btn_merge">Połacz</string>
+    <string name="action_export">Export do pliku</string>
+    <string name="action_email" translatable="false">Wyślij mailem</string>
+    <string name="title_activity_edit">SphinxQA: Edycja fiszki</string>
+    <string name="title_activity_help">SphinxQA: Pomoc</string>
+    <string name="action_help">Pomoc</string>
+    <string name="dialog_delete_card_message">Czy na pewno chcesz usunąć zaznaczone karty (%d)?</string>
+    <string name="dialog_delete_card_title">Delete cards</string>
+    <string name="title_activity_merge">SphinxQA: Połacz fiszki</string>
+    <string name="mail_extra_text">Plik zawiera  talię fiszek bazując na filmie:\n
+%1$s\n
+Ilośc fiszek: %2$d\n
+Talia została stworzona za pomocą aplikacji SphinxQA.\n</string>
+    <string name="pref_UserContact_title">Mail użytkownika</string>
+    <string name="pref_UserContact_summary">Kontakt do wysyłki mailem</string>
+    <string name="merger_text">Łącznik</string>
+    <string name="text_question">Odpowiedź:</string>
+    <string name="text_answer">Pytanie:</string>
+    <string name="progress_player_title">Odtwarzacz</string>
+    <string name="progress_player_message">Wczytywanie napisów i filmów...</string>
+    <string name="progress_cards_title">Fiszki</string>
+    <string name="progress_cards_message">Wczytywanie...</string>
+
+
+</resources>

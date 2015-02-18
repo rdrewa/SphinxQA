@@ -50,11 +50,11 @@
         <item>@string/merger_second</item>
     </string-array>
     <string name="default_charset">Auto Detect</string>
-    <string name="storage_type_default_folder">APP_FOLDER</string>
+    <string name="storage_type_default_folder" translatable="false">APP_FOLDER</string>
     <string name="storage_app_folder">App folder</string>
     <string name="storage_user_folder">User folder</string>
     <string name="storage_movie_folder">Movie folder</string>
-    <string name="storage_flashcards_app_folder">Flashcards app folder</string>
+    <string name="storage_flashcards_app_folder" translatable="false">Flashcards app folder</string>
     <string name="subtitles_showing_never">never</string>
     <string name="subtitles_showing_marked">on marked</string>
     <string name="subtitles_showing_always">always</string>

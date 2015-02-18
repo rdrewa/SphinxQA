@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_charset">Wykryj</string>
+    <string name="storage_app_folder">Folder aplikacji</string>
+    <string name="storage_user_folder">Folder użytkownika</string>
+    <string name="subtitles_showing_never">nigdy</string>
+    <string name="subtitles_showing_marked">po zaznaczeniu</string>
+    <string name="subtitles_showing_always">zawsze</string>
+    <string name="merger_space">w tej samej linii</string>
+    <string name="merger_new_line">w nowej linii</string>
+    <string name="merger_first">tylko pierwszy</string>
+    <string name="merger_second">tylko drugi</string>
+</resources>
