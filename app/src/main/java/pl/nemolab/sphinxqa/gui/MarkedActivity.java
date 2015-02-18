@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.SpannedString;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -291,24 +293,24 @@ public class MarkedActivity extends ActionBarActivity {
             switch (requestCode) {
                 case EDIT_REQUEST:
                     position = data.getExtras().getInt(POSITION);
-                    front = data.getStringExtra(EditActivity.QUESTION);
-                    back = data.getStringExtra(EditActivity.ANSWER);
+                    front = data.getStringExtra(EditActivity.QUESTION).replace("\n", "<br />");
+                    back = data.getStringExtra(EditActivity.ANSWER).replace("\n", "<br />");
                     card = adapter.getItem(position);
                     if (card != null) {
-                        card.setFront(front);
-                        card.setBack(back);
+                        card.setFront(Html.fromHtml(front).toString());
+                        card.setBack(Html.fromHtml(back).toString());
                         adapter.notifyDataSetChanged();
                     }
                     break;
                 case MERGE_REQUEST:
                     position = data.getExtras().getInt(POSITION);
                     position2 = data.getExtras().getInt(POSITION2);
-                    front = data.getStringExtra(EditActivity.QUESTION);
-                    back = data.getStringExtra(EditActivity.ANSWER);
+                    front = data.getStringExtra(EditActivity.QUESTION).replace("\n", "<br />");
+                    back = data.getStringExtra(EditActivity.ANSWER).replace("\n", "<br />");
                     card = adapter.getItem(position);
                     if (card != null) {
-                        card.setFront(front);
-                        card.setBack(back);
+                        card.setFront(Html.fromHtml(front).toString());
+                        card.setBack(Html.fromHtml(back).toString());
                     }
                     card2 = adapter.getItem(position2);
                     if (card2 != null) {

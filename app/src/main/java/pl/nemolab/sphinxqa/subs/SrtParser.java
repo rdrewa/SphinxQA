@@ -65,15 +65,6 @@ public class SrtParser implements SubtitleInput {
         return result;
     }
 
-    private String readLine(BufferedReader reader) throws IOException {
-        String line = reader.readLine();
-        if (line == null) {
-            return null;
-        }
-        byte[]  array = line.getBytes(Charset.forName("Cp1252"));
-        return new String(array, Charset.forName("UTF-8"));
-    }
-
     private String prepareText(BufferedReader reader) throws IOException {
         StringBuffer sb = new StringBuffer();
         String line = reader.readLine();
