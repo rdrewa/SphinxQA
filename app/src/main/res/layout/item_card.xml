@@ -5,25 +5,10 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBox"
-            android:focusable="false"
-            android:clickable="false"/>
-
-        <TextView
-            android:id="@+id/txtNr"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#000" />
 
         <TextView
             android:layout_width="0dp"
@@ -51,35 +36,64 @@
     </LinearLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="fill_parent">
 
-        <TextView
-            android:id="@+id/txtFront"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_margin="4dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/rounded_corners_front"
-            android:padding="2dp"
-            android:textColor="#F00"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_height="fill_parent">
 
-        <TextView
-            android:id="@+id/txtBack"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/txtNr"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#000" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox"
+                android:focusable="false"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_margin="4dp"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/rounded_corners_back"
-            android:padding="2dp"
-            android:textColor="#00F"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtFront"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_margin="4dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/rounded_corners_front"
+                android:padding="2dp"
+                android:textColor="#F00"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/txtBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="4dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/rounded_corners_back"
+                android:padding="2dp"
+                android:textColor="#00F"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

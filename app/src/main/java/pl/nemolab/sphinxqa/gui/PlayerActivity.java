@@ -30,7 +30,10 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import pl.nemolab.sphinxqa.Config;
 import pl.nemolab.sphinxqa.R;
@@ -77,6 +80,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     private Config config;
     private Context context;
     private Button btnMark;
+    private Set<Integer> usedSubs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +91,11 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         btnMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!subtitleSrcText.isEmpty()) {
+                if (!subtitleSrcText.isEmpty() && !usedSubs.contains(subtitleSrcIndex)) {
                     marked.add(subtitleSrcIndex);
                     adapter.insert(lastSubs, 0);
                     hasTouched = true;
+                    usedSubs.add(subtitleSrcIndex);
                 }
             }
         });
@@ -104,6 +109,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         });
         config = new Config(this);
         context = this;
+        usedSubs = new HashSet<>();
         playerShowSubs = config.retrievePlayerShowSubtitles();
         if (mediaController == null) {
             mediaController = new MediaController(PlayerActivity.this);
@@ -393,6 +399,7 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
 //        for (int i = 45; i < size; i++) {
 //            marked.add(i);
 //        }
+        Collections.sort(marked);
         Intent intent = new Intent(this, MarkedActivity.class);
         intent.putExtra(TITLE, titleVideo);
         intent.putExtra(SRC, fileSrc);
