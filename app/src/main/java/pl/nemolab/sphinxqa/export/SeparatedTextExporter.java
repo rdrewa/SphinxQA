@@ -6,10 +6,21 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
-import pl.nemolab.sphinxqa.subs.SubtitleOutput;
 import pl.nemolab.sphinxqa.model.Card;
+import pl.nemolab.sphinxqa.subs.SubtitleOutput;
 
-public class QATextExporter implements SubtitleOutput {
+/**
+ * Created by senator on 2015-02-20.
+ */
+public class SeparatedTextExporter implements SubtitleOutput {
+
+    private String separator;
+    private String extension;
+
+    public SeparatedTextExporter(String separator, String extension) {
+        this.separator = separator;
+        this.extension = extension;
+    }
 
     @Override
     public boolean export(List<Card> cards, String outputFile) {
@@ -38,14 +49,15 @@ public class QATextExporter implements SubtitleOutput {
 
     @Override
     public String getExtension() {
-        return ".qa.txt";
+        return extension;
     }
 
     private String prepareText(Card card) {
         StringBuilder sb = new StringBuilder();
-        String eol = "\n";
-        sb.append("Q: " + card.getFront() + eol);
-        sb.append("A: " + card.getBack() + eol);
+        String eol = "\n", br = "<br />";
+        sb.append("\"" + card.getFront().replace(eol, br) + "\"");
+        sb.append(separator);
+        sb.append("\"" + card.getBack().replace(eol, br) + "\"");
         sb.append(eol);
         return sb.toString();
     }

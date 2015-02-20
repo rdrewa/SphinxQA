@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.SpannedString;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -34,6 +33,7 @@ import pl.nemolab.sphinxqa.Config;
 import pl.nemolab.sphinxqa.R;
 import pl.nemolab.sphinxqa.adapter.CardAdapter;
 import pl.nemolab.sphinxqa.export.QATextExporter;
+import pl.nemolab.sphinxqa.export.SeparatedTextExporter;
 import pl.nemolab.sphinxqa.subs.SrtParser;
 import pl.nemolab.sphinxqa.model.Card;
 import pl.nemolab.sphinxqa.subs.CardCreator;
@@ -263,26 +263,60 @@ public class MarkedActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_export) {
-            new SaveFileTask().execute();
+        if (id == R.id.action_export_qa) {
+            new SaveFileTask(new QATextExporter()).execute();
             return true;
         }
-        if (id == R.id.action_email) {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_SUBJECT, "QA: " + titleVideo);
-
-            String userMail = config.retrieveUserMail();
-            if (userMail != null) {
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{userMail});
-            }
-            String extraText = String.format(getString(R.string.mail_extra_text), titleVideo, adapter.getCount());
-//            String extraText = getString(R.string.mail_extra_text) + " " + titleVideo;
-            intent.putExtra(Intent.EXTRA_TEXT, extraText);
-            new SaveFileTask(MarkedActivity.this, intent).execute();
+        if (id == R.id.action_export_csv) {
+            new SaveFileTask(new SeparatedTextExporter(",", ".qa.csv")).execute();
+            return true;
+        }
+        if (id == R.id.action_export_tab) {
+            new SaveFileTask(new SeparatedTextExporter("\t", ".qat.txt")).execute();
+            return true;
+        }
+        if (id == R.id.action_export_sem) {
+            new SaveFileTask(new SeparatedTextExporter(";", ".qas.csv")).execute();
+            return true;
+        }
+        if (id == R.id.action_email_qa) {
+            Intent intent = prepareEmailIntent();
+            new SaveFileTask(new QATextExporter(), MarkedActivity.this, intent).execute();
+            return true;
+        }
+        if (id == R.id.action_email_csv) {
+            Intent intent = prepareEmailIntent();
+            new SaveFileTask(new SeparatedTextExporter(",", ".qa.csv"),
+                    MarkedActivity.this, intent).execute();
+            return true;
+        }
+        if (id == R.id.action_email_tab) {
+            Intent intent = prepareEmailIntent();
+            new SaveFileTask(new SeparatedTextExporter("\t", ".qat.txt"),
+                    MarkedActivity.this, intent).execute();
+            return true;
+        }
+        if (id == R.id.action_email_sem) {
+            Intent intent = prepareEmailIntent();
+            new SaveFileTask(new SeparatedTextExporter(";", "qas.csv"),
+                    MarkedActivity.this, intent).execute();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private Intent prepareEmailIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "QA: " + titleVideo);
+
+        String userMail = config.retrieveUserMail();
+        if (userMail != null) {
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{userMail});
+        }
+        String extraText = String.format(getString(R.string.mail_extra_text), titleVideo, adapter.getCount());
+        intent.putExtra(Intent.EXTRA_TEXT, extraText);
+        return intent;
     }
 
     @Override
@@ -381,12 +415,14 @@ public class MarkedActivity extends ActionBarActivity {
         private boolean result;
         private Intent intent;
         private Activity activity;
+        private SubtitleOutput exporter;
 
-        public SaveFileTask() {
-            super();
+        public SaveFileTask(SubtitleOutput subtitleOutput) {
+            this.exporter = subtitleOutput;
         }
 
-        private SaveFileTask(Activity activity, Intent intent) {
+        private SaveFileTask(SubtitleOutput subtitleOutput, Activity activity, Intent intent) {
+            this.exporter = subtitleOutput;
             this.activity = activity;
             this.intent = intent;
         }
@@ -406,8 +442,7 @@ public class MarkedActivity extends ActionBarActivity {
             for (i = 0; i < count; i++) {
                 cards.add(adapter.getItem(i));
             }
-            fileName = getOutputFile(titleVideo);
-            SubtitleOutput exporter = new QATextExporter();
+            fileName = getOutputFile(titleVideo, exporter.getExtension());
             result = exporter.export(cards, fileName);
             return null;
         }
@@ -438,7 +473,7 @@ public class MarkedActivity extends ActionBarActivity {
             return folder;
         }
 
-        private String getOutputFile(String title) {
+        private String getOutputFile(String title, String extension) {
             String storageType = config.retrieveStorageType();
             String file = null;
             File dir;
@@ -448,7 +483,7 @@ public class MarkedActivity extends ActionBarActivity {
                 dir = getDir();
             }
             try {
-                file = dir.getCanonicalPath() + "/" + title + ".qa.txt";
+                file = dir.getCanonicalPath() + "/" + title + extension;
             } catch (IOException e) {
                 e.printStackTrace();
             }

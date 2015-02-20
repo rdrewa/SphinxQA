@@ -73,5 +73,8 @@ The deck has been created by SphinxQA application.\n</string>
     <string name="progress_player_message">Loading movie and subtitles...</string>
     <string name="progress_cards_title">Cards</string>
     <string name="progress_cards_message">Loading...</string>
-
+    <string name="action_export_qa">Questions and Answers</string>
+    <string name="action_export_csv">CSV</string>
+    <string name="action_export_tab">TAB separated</string>
+    <string name="action_export_sem">Semicolon separated</string>
 </resources>

@@ -6,4 +6,6 @@ import pl.nemolab.sphinxqa.model.Card;
 
 public interface SubtitleOutput {
     boolean export(List<Card> cards, String outputFile);
+
+    String getExtension();
 }

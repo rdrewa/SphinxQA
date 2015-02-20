@@ -64,6 +64,8 @@ Talia została stworzona za pomocą aplikacji SphinxQA.\n</string>
     <string name="progress_player_message">Wczytywanie napisów i filmów...</string>
     <string name="progress_cards_title">Fiszki</string>
     <string name="progress_cards_message">Wczytywanie...</string>
-
-
+    <string name="action_export_qa">Pytania i odpowiedzi</string>
+    <string name="action_export_csv">CSV</string>
+    <string name="action_export_tab">rozdzilony TAB\'ami</string>
+    <string name="action_export_sem">rozdzielony średnikiem</string>
 </resources>

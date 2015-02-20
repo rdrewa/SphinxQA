@@ -12,12 +12,64 @@
                 android:id="@+id/action_export"
                 android:orderInCategory="100"
                 android:title="@string/action_export"
-                app:showAsAction="never" />
+                app:showAsAction="never">
+                <menu>
+                    <item
+                        android:id="@+id/action_export_qa"
+                        android:orderInCategory="110"
+                        android:title="@string/action_export_qa"
+                        app:showAsAction="never" />
+                    <item
+                        android:id="@+id/action_export_csv"
+                        android:orderInCategory="120"
+                        android:title="@string/action_export_csv"
+                        app:showAsAction="never" />
+                    <item
+                        android:id="@+id/action_export_tab"
+                        android:orderInCategory="130"
+                        android:title="@string/action_export_tab"
+                        app:showAsAction="never" />
+
+                    <item
+                        android:id="@+id/action_export_sem"
+                        android:orderInCategory="140"
+                        android:title="@string/action_export_sem"
+                        app:showAsAction="never" />
+
+                </menu>
+            </item>
             <item
                 android:id="@+id/action_email"
                 android:orderInCategory="200"
                 android:title="@string/action_email"
-                app:showAsAction="never" />
+                app:showAsAction="never">
+
+                <menu>
+                    <item
+                        android:id="@+id/action_email_qa"
+                        android:orderInCategory="210"
+                        android:title="@string/action_export_qa"
+                        app:showAsAction="never" />
+                    <item
+                        android:id="@+id/action_email_csv"
+                        android:orderInCategory="220"
+                        android:title="@string/action_export_csv"
+                        app:showAsAction="never" />
+                    <item
+                        android:id="@+id/action_email_tab"
+                        android:orderInCategory="230"
+                        android:title="@string/action_export_tab"
+                        app:showAsAction="never" />
+
+                    <item
+                        android:id="@+id/action_email_sem"
+                        android:orderInCategory="240"
+                        android:title="@string/action_export_sem"
+                        app:showAsAction="never" />
+
+                </menu>
+
+            </item>
         </menu>
     </item>
 
