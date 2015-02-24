@@ -44,7 +44,7 @@
     <string name="btn_edit">Edytuj</string>
     <string name="btn_merge">Połacz</string>
     <string name="action_export">Export do pliku</string>
-    <string name="action_email" translatable="false">Wyślij mailem</string>
+    <string name="action_email">Wyślij mailem</string>
     <string name="title_activity_edit">SphinxQA: Edycja fiszki</string>
     <string name="title_activity_help">SphinxQA: Pomoc</string>
     <string name="action_help">Pomoc</string>
