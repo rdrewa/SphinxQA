@@ -2,24 +2,24 @@
 <resources>
     <string-array name="charset_entries">
         <item>@string/default_charset</item>
-        <item translatable="false">UTF-8</item>
-        <item translatable="false">windows-1250</item>
-        <item translatable="false">windows-1251</item>
-        <item translatable="false">windows-1252</item>
-        <item translatable="false">windows-1253</item>
-        <item translatable="false">windows-1254</item>
-        <item translatable="false">windows-1255</item>
-        <item translatable="false">windows-1256</item>
-        <item translatable="false">ISO-8859-1</item>
-        <item translatable="false">ISO-8859-2</item>
-        <item translatable="false">ISO-8859-5</item>
-        <item translatable="false">ISO-8859-6</item>
-        <item translatable="false">ISO-8859-7</item>
-        <item translatable="false">ISO-8859-8</item>
-        <item translatable="false">ISO-8859-9</item>
-        <item translatable="false">ISO-2022-JP</item>
-        <item translatable="false">ISO-2022-CN</item>
-        <item translatable="false">ISO-2022-KR</item>
+        <item>UTF-8</item>
+        <item>windows-1250</item>
+        <item>windows-1251</item>
+        <item>windows-1252</item>
+        <item>windows-1253</item>
+        <item>windows-1254</item>
+        <item>windows-1255</item>
+        <item>windows-1256</item>
+        <item>ISO-8859-1</item>
+        <item>ISO-8859-2</item>
+        <item>ISO-8859-5</item>
+        <item>ISO-8859-6</item>
+        <item>ISO-8859-7</item>
+        <item>ISO-8859-8</item>
+        <item>ISO-8859-9</item>
+        <item>ISO-2022-JP</item>
+        <item>ISO-2022-CN</item>
+        <item>ISO-2022-KR</item>
     </string-array>
     <string-array name="storage_type_entries">
         <item>@string/storage_app_folder</item>
@@ -39,9 +39,9 @@
         <item>@string/subtitles_showing_always</item>
     </string-array>
     <string-array name="player_show_subtitles_values">
-        <item translatable="false">never</item>
-        <item translatable="false">marked</item>
-        <item translatable="false">always</item>
+        <item>never</item>
+        <item>marked</item>
+        <item>always</item>
     </string-array>
     <string-array name="merger_entries">
         <item>@string/merger_space</item>
@@ -50,11 +50,11 @@
         <item>@string/merger_second</item>
     </string-array>
     <string name="default_charset">Auto Detect</string>
-    <string name="storage_type_default_folder" translatable="false">APP_FOLDER</string>
+    <string name="storage_type_default_folder">APP_FOLDER</string>
     <string name="storage_app_folder">App folder</string>
     <string name="storage_user_folder">User folder</string>
     <string name="storage_movie_folder">Movie folder</string>
-    <string name="storage_flashcards_app_folder" translatable="false">Flashcards app folder</string>
+    <string name="storage_flashcards_app_folder">Flashcards app folder</string>
     <string name="subtitles_showing_never">never</string>
     <string name="subtitles_showing_marked">on marked</string>
     <string name="subtitles_showing_always">always</string>

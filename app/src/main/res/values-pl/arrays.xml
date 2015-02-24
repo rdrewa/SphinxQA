@@ -1,8 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="charset_entries">
+        <item>@string/default_charset</item>
+        <item>UTF-8</item>
+        <item>windows-1250</item>
+        <item>windows-1251</item>
+        <item>windows-1252</item>
+        <item>windows-1253</item>
+        <item>windows-1254</item>
+        <item>windows-1255</item>
+        <item>windows-1256</item>
+        <item>ISO-8859-1</item>
+        <item>ISO-8859-2</item>
+        <item>ISO-8859-5</item>
+        <item>ISO-8859-6</item>
+        <item>ISO-8859-7</item>
+        <item>ISO-8859-8</item>
+        <item>ISO-8859-9</item>
+        <item>ISO-2022-JP</item>
+        <item>ISO-2022-CN</item>
+        <item>ISO-2022-KR</item>
+    </string-array>
+    <string-array name="storage_type_entries">
+        <item>@string/storage_app_folder</item>
+        <item>@string/storage_user_folder</item>
+        <item>@string/storage_movie_folder</item>
+        <!--<item>@string/storage_flashcards_app_folder</item>-->
+    </string-array>
+    <string-array name="storage_type_values">
+        <item>APP_FOLDER</item>
+        <item>USER_FOLDER</item>
+        <item>MOVIE_FOLDER</item>
+        <!--<item>FLASHCARDS_APP_FOLDER</item>-->
+    </string-array>
+    <string-array name="player_show_subtitles_entries">
+        <item>@string/player_show_subtitles_never</item>
+        <item>@string/subtitles_showing_marked</item>
+        <item>@string/subtitles_showing_always</item>
+    </string-array>
+    <string-array name="player_show_subtitles_values">
+        <item>never</item>
+        <item>marked</item>
+        <item>always</item>
+    </string-array>
+    <string-array name="merger_entries">
+        <item>@string/merger_space</item>
+        <item>@string/merger_new_line</item>
+        <item>@string/merger_first</item>
+        <item>@string/merger_second</item>
+    </string-array>
     <string name="default_charset">Wykryj</string>
+    <string name="storage_type_default_folder">APP_FOLDER</string>
     <string name="storage_app_folder">Folder aplikacji</string>
     <string name="storage_user_folder">Folder użytkownika</string>
+    <string name="storage_movie_folder">Folder z filmem</string>
+    <string name="storage_flashcards_app_folder">Folder aplikacji do fiszek</string>
     <string name="subtitles_showing_never">nigdy</string>
     <string name="subtitles_showing_marked">po zaznaczeniu</string>
     <string name="subtitles_showing_always">zawsze</string>
