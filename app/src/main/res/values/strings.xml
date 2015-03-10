@@ -80,4 +80,6 @@ The deck has been created by SphinxQA application.\n</string>
     <string name="hint_pick_video_file">Movie greater than %1$d MB and longer than %2$d min.</string>
     <string name="hint_pick_subs_file">File in a *.srt format</string>
     <string name="pick_video_file_fail">There is no any matched files</string>
+    <string name="pref_cat_main">MAIN</string>
+    <string name="pref_lang_title">Select your language</string>
 </resources>

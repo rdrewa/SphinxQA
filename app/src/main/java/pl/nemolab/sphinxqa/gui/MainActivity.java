@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,11 +43,17 @@ public class MainActivity extends ActionBarActivity {
     private List<Video> videos;
     private String videoFile, srcFile, dstFile, videoPath, videoDir, videoTitle;
     private Config config;
+    private String lang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        loadControls();
+        lang = getResources().getConfiguration().locale.getLanguage();
+    }
+
+    private void loadControls() {
         config = new Config(this);
         txtVideo = (TextView) findViewById(R.id.txtVideo);
         txtSrc = (TextView) findViewById(R.id.txtSrc);
@@ -235,12 +242,27 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (!getBaseContext().getResources().getConfiguration().locale.getLanguage().equals(lang)) {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+            return;
+        }
         if (config == null) {
             return;
         }
         String hintVideoFile = getString(R.string.hint_pick_video_file);
         hintVideoFile = String.format(hintVideoFile, config.getMinSize(), config.getMinDuration());
         txtVideo.setHint(hintVideoFile);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Configuration oldConfig = getBaseContext().getResources().getConfiguration();
+        if (!oldConfig.locale.getLanguage().equals(newConfig.locale.getLanguage())) {
+            setContentView(R.layout.activity_main);
+        }
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override

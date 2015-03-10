@@ -49,6 +49,14 @@
         <item>@string/merger_first</item>
         <item>@string/merger_second</item>
     </string-array>
+    <string-array name="lang_entries">
+        <item>angielski</item>
+        <item>polski</item>
+    </string-array>
+    <string-array name="lang_values">
+        <item>en</item>
+        <item>pl</item>
+    </string-array>
     <string name="default_charset">Wykryj</string>
     <string name="storage_type_default_folder">APP_FOLDER</string>
     <string name="storage_app_folder">Folder aplikacji</string>

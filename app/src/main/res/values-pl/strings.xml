@@ -71,4 +71,6 @@ Talia została stworzona za pomocą aplikacji SphinxQA.\n</string>
     <string name="hint_pick_video_file">Film większy niż %1$d MB i dłuższy niż %2$d min.</string>
     <string name="hint_pick_subs_file">Plik w formacie *.srt</string>
     <string name="pick_video_file_fail">Nie ma pasujących plików</string>
+    <string name="pref_cat_main">GŁÓWNE</string>
+    <string name="pref_lang_title">Wybierz język</string>
 </resources>

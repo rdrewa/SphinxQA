@@ -2,8 +2,12 @@ package pl.nemolab.sphinxqa;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+
+import java.util.Locale;
 
 public class Config {
     public static final String KEY_MOVIE_MIN_SIZE = "prefMovieMinSize";
@@ -14,6 +18,7 @@ public class Config {
     public static final String KEY_STORAGE_FOLDER = "prefStorageFolder";
     public static final String KEY_STORAGE_USER_FOLDER = "prefStorageUserFolder";
     public static final String KEY_CHARSET = "prefCharset";
+    public static final String KEY_LANG = "prefLang";
     public static final String KEY_USER_MAIL = "prefUserMail";
     public static final int DEFAULT_MOVIE_MIN_SIZE = 100;
     public static final int DEFAULT_MOVIE_MIN_DURATION = 20;
@@ -64,11 +69,15 @@ public class Config {
             DEFAULT_CHARSET
         );
         if (charset.equals(DEFAULT_CHARSET)) {
-            String language = context.getResources().getConfiguration().locale.getLanguage();
+            String language = getLang();
             CharsetDetector detector = new CharsetDetector();
             charset = detector.retrieve(language);
         }
         return charset;
+    }
+
+    private String getLang() {
+        return context.getResources().getConfiguration().locale.getLanguage();
     }
 
     public String retrievePlayerShowSubtitles() {

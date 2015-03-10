@@ -1,17 +1,21 @@
 package pl.nemolab.sphinxqa.gui;
 
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.Locale;
 
 import pl.nemolab.sphinxqa.Config;
 import pl.nemolab.sphinxqa.R;
@@ -20,6 +24,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     private Preference prefStorageFolder;
     private Preference prefStorageType;
+    private Preference prefLang;
     private PreferenceCategory prefCatSaving;
     private String defaultStorageFolder;
     private final static String TAG = "PREFS";
@@ -30,6 +35,22 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         addPreferencesFromResource(R.xml.settings);
         prefStorageFolder = findPreference(Config.KEY_STORAGE_FOLDER);
         prefStorageType = findPreference(Config.KEY_STORAGE_TYPE);
+        prefLang = findPreference(Config.KEY_LANG);
+        String lang = getLanguage();
+        prefLang.setDefaultValue(lang);
+        ((ListPreference) prefLang).setValue(lang);
+        prefLang.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String lang = (String) newValue;
+                Resources resources = getBaseContext().getResources();
+                Configuration configuration = resources.getConfiguration();
+                Locale locale = new Locale(lang);
+                configuration.locale = locale;
+                resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+                return true;
+            }
+        });
         String keyCatSaving = "prefCatSaving";
         String root = Environment.getExternalStorageDirectory().getAbsolutePath();
         defaultStorageFolder = root + Config.DEFAULT_STORAGE_FOLDER;
@@ -75,6 +96,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         serveStorage(sharedPreferences);
     }
 
+    private String getLanguage() {
+        return getResources().getConfiguration().locale.getLanguage();
+    }
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(Config.KEY_STORAGE_TYPE)) {
@@ -100,6 +125,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             prefStorageFolder.setTitle(R.string.storage_app_folder);
             prefStorageFolder.setDefaultValue(defaultStorageFolder);
             prefStorageFolder.setSummary(defaultStorageFolder);
+            ((EditTextPreference) prefStorageFolder).getEditText().setText(defaultStorageFolder);
         }
         if (storageType.equals("USER_FOLDER")) {
             prefCatSaving.addPreference(prefStorageFolder);
@@ -108,6 +134,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             prefStorageFolder.setTitle(R.string.storage_user_folder);
             prefStorageFolder.setDefaultValue(defaultStorageFolder);
             prefStorageFolder.setSummary(R.string.pref_StorageUserFolder_title);
+            ((EditTextPreference) prefStorageFolder).getEditText().setText(defaultStorageFolder);
         }
     }
 
