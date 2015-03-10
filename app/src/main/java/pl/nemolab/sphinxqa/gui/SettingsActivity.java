@@ -94,6 +94,15 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         prefCatSaving = (PreferenceCategory) findPreference(keyCatSaving);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         serveStorage(sharedPreferences);
+        ListPreference preference;
+        preference = (ListPreference) findPreference("prefCharset");
+        if (preference.getValue() == null) {
+            preference.setValueIndex(0);
+        }
+        preference = (ListPreference) findPreference("prefPlayerShowSubtitles");
+        if (preference.getValue() == null) {
+            preference.setValueIndex(0);
+        }
     }
 
     private String getLanguage() {

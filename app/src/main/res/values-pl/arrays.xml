@@ -21,6 +21,27 @@
         <item>ISO-2022-CN</item>
         <item>ISO-2022-KR</item>
     </string-array>
+    <string-array name="charset_values">
+        <item>AUTO_DETECT</item>
+        <item>UTF-8</item>
+        <item>windows-1250</item>
+        <item>windows-1251</item>
+        <item>windows-1252</item>
+        <item>windows-1253</item>
+        <item>windows-1254</item>
+        <item>windows-1255</item>
+        <item>windows-1256</item>
+        <item>ISO-8859-1</item>
+        <item>ISO-8859-2</item>
+        <item>ISO-8859-5</item>
+        <item>ISO-8859-6</item>
+        <item>ISO-8859-7</item>
+        <item>ISO-8859-8</item>
+        <item>ISO-8859-9</item>
+        <item>ISO-2022-JP</item>
+        <item>ISO-2022-CN</item>
+        <item>ISO-2022-KR</item>
+    </string-array>
     <string-array name="storage_type_entries">
         <item>@string/storage_app_folder</item>
         <item>@string/storage_user_folder</item>

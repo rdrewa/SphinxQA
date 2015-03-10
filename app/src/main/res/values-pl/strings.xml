@@ -73,4 +73,5 @@ Talia została stworzona za pomocą aplikacji SphinxQA.\n</string>
     <string name="pick_video_file_fail">Nie ma pasujących plików</string>
     <string name="pref_cat_main">GŁÓWNE</string>
     <string name="pref_lang_title">Wybierz język</string>
+    <string name="pref_lang_summary">Zmiany będą widoczne po wyjściu z Ustawień</string>
 </resources>

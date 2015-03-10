@@ -82,4 +82,5 @@ The deck has been created by SphinxQA application.\n</string>
     <string name="pick_video_file_fail">There is no any matched files</string>
     <string name="pref_cat_main">MAIN</string>
     <string name="pref_lang_title">Select your language</string>
+    <string name="pref_lang_summary">Changes will be seen after exit from Settings</string>
 </resources>

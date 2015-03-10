@@ -26,7 +26,7 @@ public class Config {
     public static final boolean DEFAULT_LIST_SHOW_SUBTITLES = false;
     public static final String DEFAULT_STORAGE_TYPE = "APP_FOLDER";
     public static final String DEFAULT_STORAGE_FOLDER = "/SphinxQA";
-    public static final String DEFAULT_CHARSET = "Auto Detect";
+    public static final String DEFAULT_CHARSET = "AUTO_DETECT";
     public static final String ALTERNATIVE_CHARSET = "UTF-8";
     public static final String PLAYER_SHOW_SUBTITLES_NEVER = "never";
     public static final String PLAYER_SHOW_SUBTITLES_MARKED = "marked";
