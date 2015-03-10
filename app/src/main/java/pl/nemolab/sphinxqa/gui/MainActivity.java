@@ -115,6 +115,10 @@ public class MainActivity extends ActionBarActivity {
             }
         }
         String[] arrVideoFiles = listVideoFiles.toArray(new String[listVideoFiles.size()]);
+        if (arrVideoFiles.length == 0) {
+            Toast.makeText(getApplicationContext(), getString(R.string.pick_video_file_fail), TOAST_LENGTH).show();
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.pick_video_title));
         builder.setItems(arrVideoFiles, new DialogInterface.OnClickListener() {
@@ -226,6 +230,17 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (config == null) {
+            return;
+        }
+        String hintVideoFile = getString(R.string.hint_pick_video_file);
+        hintVideoFile = String.format(hintVideoFile, config.getMinSize(), config.getMinDuration());
+        txtVideo.setHint(hintVideoFile);
     }
 
     @Override

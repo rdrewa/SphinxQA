@@ -31,7 +31,7 @@
     <string name="pref_MovieMinSize_title">Greater then [MB]</string>
     <string name="pref_MovieMinSize_summary">Series are usually file greater than 100 MB</string>
     <string name="pref_MovieMinDuration_title">Greater then [min]</string>
-    <string name="pref_MovieMinDuration_summary">Series are usually movies longer than 15 minutes</string>
+    <string name="pref_MovieMinDuration_summary">Series are usually movies longer than 20 minutes</string>
     <string name="pref_cat_movie_searching">MOVIE SEARCHING</string>
     <string name="pref_cat_subtitles">SUBTITLES</string>
     <string name="title_activity_settings">SphinxQA: Settings</string>
@@ -77,4 +77,7 @@ The deck has been created by SphinxQA application.\n</string>
     <string name="action_export_csv">CSV</string>
     <string name="action_export_tab">TAB separated</string>
     <string name="action_export_sem">Semicolon separated</string>
+    <string name="hint_pick_video_file">Movie greater than %1$d MB and longer than %2$d min.</string>
+    <string name="hint_pick_subs_file">File in a *.srt format</string>
+    <string name="pick_video_file_fail">There is no any matched files</string>
 </resources>

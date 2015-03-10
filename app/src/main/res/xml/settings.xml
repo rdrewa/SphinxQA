@@ -13,7 +13,7 @@
             app:min="25" />
         <pl.nemolab.sphinxqa.NumberPickerPreference
             android:defaultValue="20"
-            android:key="prefMovieMinSize"
+            android:key="prefMovieMinDuration"
             android:summary="@string/pref_MovieMinDuration_summary"
             android:title="@string/pref_MovieMinDuration_title"
             app:interval="5"

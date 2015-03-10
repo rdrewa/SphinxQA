@@ -26,7 +26,7 @@
     <string name="pref_MovieMinSize_title">Większe niż [MB]</string>
     <string name="pref_MovieMinSize_summary">Seriale są zwykłe plikami większymi niż 100 MB</string>
     <string name="pref_MovieMinDuration_title">Większe niż [min]</string>
-    <string name="pref_MovieMinDuration_summary">Seriale są zwykle filmami dłuższymi niż 15 minut</string>
+    <string name="pref_MovieMinDuration_summary">Seriale są zwykle filmami dłuższymi niż 20 minut</string>
     <string name="pref_cat_movie_searching">WYSZUKIWANIE FILMÓW</string>
     <string name="pref_cat_subtitles">NAPISY</string>
     <string name="title_activity_settings">SphinxQA: Ustawienia</string>
@@ -68,4 +68,7 @@ Talia została stworzona za pomocą aplikacji SphinxQA.\n</string>
     <string name="action_export_csv">CSV</string>
     <string name="action_export_tab">rozdzielony TAB\'ami</string>
     <string name="action_export_sem">rozdzielony średnikiem</string>
+    <string name="hint_pick_video_file">Film większy niż %1$d MB i dłuższy niż %2$d min.</string>
+    <string name="hint_pick_subs_file">Plik w formacie *.srt</string>
+    <string name="pick_video_file_fail">Nie ma pasujących plików</string>
 </resources>

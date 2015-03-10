@@ -53,6 +53,7 @@
 
             <TextView
                 android:id="@+id/txtVideo"
+                android:hint="@string/hint_pick_video_file"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -79,6 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:hint="@string/hint_pick_subs_file"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 
@@ -101,6 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:hint="@string/hint_pick_subs_file"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 

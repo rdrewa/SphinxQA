@@ -39,15 +39,23 @@ public class Config {
     }
 
     public String retrieveMinSize() {
-        int intSize = settings.getInt(KEY_MOVIE_MIN_SIZE, DEFAULT_MOVIE_MIN_SIZE);
+        int intSize = getMinSize();
         int minSize = 1000000 * intSize;
         return String.valueOf(minSize);
     }
 
+    public int getMinSize() {
+        return settings.getInt(KEY_MOVIE_MIN_SIZE, DEFAULT_MOVIE_MIN_SIZE);
+    }
+
     public String retrieveMinDuration() {
-        int intDuration = settings.getInt(KEY_MOVIE_MIN_DURATION, DEFAULT_MOVIE_MIN_DURATION);
+        int intDuration = getMinDuration();
         int minDuration = 60000 * intDuration;
         return String.valueOf(minDuration);
+    }
+
+    public int getMinDuration() {
+        return settings.getInt(KEY_MOVIE_MIN_DURATION, DEFAULT_MOVIE_MIN_DURATION);
     }
 
     public String retrieveCharset() {
