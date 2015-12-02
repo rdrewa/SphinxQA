@@ -24,7 +24,7 @@
     <string name="save_file_final_message_ok">"Fiszki zostały zapisane do "</string>
     <string name="save_file_final_message_fail">Coś poszło nie tak...</string>
     <string name="pref_MovieMinSize_title">Większe niż [MB]</string>
-    <string name="pref_MovieMinSize_summary">Seriale są zwykłe plikami większymi niż 100 MB</string>
+    <string name="pref_MovieMinSize_summary">Seriale są zwykle plikami większymi niż 100 MB</string>
     <string name="pref_MovieMinDuration_title">Większe niż [min]</string>
     <string name="pref_MovieMinDuration_summary">Seriale są zwykle filmami dłuższymi niż 20 minut</string>
     <string name="pref_cat_movie_searching">WYSZUKIWANIE FILMÓW</string>
@@ -74,4 +74,9 @@ Talia została stworzona za pomocą aplikacji SphinxQA.\n</string>
     <string name="pref_cat_main">GŁÓWNE</string>
     <string name="pref_lang_title">Wybierz język</string>
     <string name="pref_lang_summary">Zmiany będą widoczne po wyjściu z Ustawień</string>
+    <string name="subtitles_size_large">duże</string>
+    <string name="subtitles_size_medium">średnie</string>
+    <string name="subtitles_size_small">małe</string>
+    <string name="pref_FirstSubtitlesSize_title">Rozmiar pierwszych napisów</string>
+    <string name="pref_SecondSubtitlesSize_title">Rozmiar drugich napisów</string>
 </resources>

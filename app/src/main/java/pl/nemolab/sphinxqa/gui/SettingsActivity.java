@@ -103,6 +103,14 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         if (preference.getValue() == null) {
             preference.setValueIndex(0);
         }
+        preference = (ListPreference) findPreference("prefFirstSubtitlesSize");
+        if (preference.getValue() == null) {
+            preference.setValueIndex(0);
+        }
+        preference = (ListPreference) findPreference("prefSecondSubtitlesSize");
+        if (preference.getValue() == null) {
+            preference.setValueIndex(0);
+        }
     }
 
     private String getLanguage() {

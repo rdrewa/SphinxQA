@@ -49,6 +49,19 @@
             android:title="@string/pref_ListShowSubtitles_title"
             android:defaultValue="true" />
 
+        <ListPreference
+            android:entries="@array/subtitles_size_entries"
+            android:entryValues="@array/subtitles_size_values"
+            android:key="prefFirstSubtitlesSize"
+            android:title="@string/pref_FirstSubtitlesSize_title" />
+
+        <ListPreference
+            android:entries="@array/subtitles_size_entries"
+            android:entryValues="@array/subtitles_size_values"
+            android:key="prefSecondSubtitlesSize"
+            android:title="@string/pref_SecondSubtitlesSize_title" />
+
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_cat_saving_data" android:key="prefCatSaving">

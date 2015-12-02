@@ -43,12 +43,17 @@
     <string name="pref_Charset_title">Select your charset</string>
     <string name="pref_PlayerShowSubtitles_title">Player: Show second subtitles</string>
     <string name="pref_ListShowSubtitles_title">List: Show second subtitles</string>
+    <string name="pref_FirstSubtitlesSize_title">First subtitles size</string>
+    <string name="pref_SecondSubtitlesSize_title">Second subtitles size</string>
     <string name="pref_StorageAppFolder_title">Storage app folder</string>
     <string name="pref_StorageUserFolder_title">Choose storage folder</string>
     <string name="pref_StorageFolder_default" translatable="false">/sdcard/SphinxQA/</string>
     <string name="player_show_subtitles_never">never</string>
     <string name="storage_folder_created">"Folder has been created: "</string>
     <string name="storage_folder_fail">"Storage folder doesn't exists or cannot  be created: "</string>
+    <string name="subtitles_size_small">small</string>
+    <string name="subtitles_size_medium">medium</string>
+    <string name="subtitles_size_large">large</string>
     <string name="btn_delete">Delete</string>
     <string name="btn_edit">Edit</string>
     <string name="btn_merge">Merge</string>

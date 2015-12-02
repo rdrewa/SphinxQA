@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -32,12 +33,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import pl.nemolab.sphinxqa.Config;
 import pl.nemolab.sphinxqa.R;
 import pl.nemolab.sphinxqa.adapter.SubsAdapter;
+import pl.nemolab.sphinxqa.listener.SimpleSwipeListener;
 import pl.nemolab.sphinxqa.model.Card;
 import pl.nemolab.sphinxqa.model.Subs;
 import pl.nemolab.sphinxqa.subs.CardCreator;
@@ -87,10 +88,43 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         super.onCreate(savedInstanceState);
         prepareLayoutParams();
         setContentView(R.layout.activity_player);
+        context = this;
         btnMark = (Button) findViewById(R.id.btnMark);
-        btnMark.setOnClickListener(new View.OnClickListener() {
+        btnMark.setOnTouchListener(new SimpleSwipeListener() {
+            @Override
+            public void onSwipeTop() {
+                Log.d(TAG, "ON-SWIPE-TOP");
+            }
+
+            @Override
+            public void onSwipeBottom() {
+                Log.d(TAG, "ON-SWIPE-BOTTOM");
+                if (video.isPlaying()) {
+                    video.pause();
+                }
+            }
+
+            @Override
+            public void onSwipeLeft() {
+                Log.d(TAG, "ON-SWIPE-LEFT");
+                int newPosition = video.getCurrentPosition() + 5000;
+                video.seekTo(newPosition);
+            }
+
+            @Override
+            public void onSwipeRight() {
+                Log.d(TAG, "ON-SWIPE-RIGHT");
+                int newPosition = video.getCurrentPosition() - 5000;
+                video.seekTo(newPosition);
+            }
+
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "ON-SWIPE-CLICK");
+                if (!video.isPlaying()) {
+                    video.start();
+                    return;
+                }
                 if (!subtitleSrcText.isEmpty() && !usedSubs.contains(subtitleSrcIndex)) {
                     marked.add(subtitleSrcIndex);
                     adapter.insert(lastSubs, 0);
@@ -98,17 +132,15 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
                     usedSubs.add(subtitleSrcIndex);
                 }
             }
-        });
-        btnMark.setOnLongClickListener(new View.OnLongClickListener() {
+
             @Override
-            public boolean onLongClick(View v) {
+            protected void onLongClick(View v) {
+                Log.d(TAG, "ON-SWIPE-LONG-CLICK");
                 btnMark.setVisibility(View.GONE);
                 mediaController.show();
-                return false;
             }
         });
         config = new Config(this);
-        context = this;
         usedSubs = new HashSet<>();
         playerShowSubs = config.retrievePlayerShowSubtitles();
         if (mediaController == null) {
@@ -119,6 +151,8 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
         video.getHolder().addCallback(this);
         txtSrcSubtitles = (TextView) findViewById(R.id.txtSrcSubtitles);
         txtDstSubtitles = (TextView) findViewById(R.id.txtDstSubtitles);
+        txtSrcSubtitles.setTextSize(TypedValue.COMPLEX_UNIT_SP, config.retrieveFirstSubtitlesSize());
+        txtDstSubtitles.setTextSize(TypedValue.COMPLEX_UNIT_SP, config.retrieveSecondSubtitlesSize());
         listSubs = (ListView) findViewById(R.id.listSubs);
         marked = new ArrayList<>();
         video.setOnTouchListener(new View.OnTouchListener() {
@@ -389,13 +423,6 @@ public class PlayerActivity extends ActionBarActivity implements SurfaceHolder.C
     }
 
     private void startMarkedActivity() {
-//        marked = new ArrayList<>();
-//        // @TODO! only for test
-//        // @FIXME!
-//        int size = 65;
-//        for (int i = 45; i < size; i++) {
-//            marked.add(i);
-//        }
         Collections.sort(marked);
         Intent intent = new Intent(this, MarkedActivity.class);
         intent.putExtra(TITLE, titleVideo);

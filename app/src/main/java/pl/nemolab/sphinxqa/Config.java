@@ -14,6 +14,8 @@ public class Config {
     public static final String KEY_MOVIE_MIN_DURATION = "prefMovieMinDuration";
     public static final String KEY_PLAYER_SHOW_SUBTITLES = "prefPlayerShowSubtitles";
     public static final String KEY_LIST_SHOW_SUBTITLES = "prefListShowSubtitles";
+    public static final String KEY_FIRST_SUBTITLES_SIZE = "prefFirstSubtitlesSize";
+    public static final String KEY_SECOND_SUBTITLES_SIZE = "prefSecondSubtitlesSize";
     public static final String KEY_STORAGE_TYPE = "prefStorageType";
     public static final String KEY_STORAGE_FOLDER = "prefStorageFolder";
     public static final String KEY_STORAGE_USER_FOLDER = "prefStorageUserFolder";
@@ -24,6 +26,7 @@ public class Config {
     public static final int DEFAULT_MOVIE_MIN_DURATION = 20;
     public static final String DEFAULT_PLAYER_SHOW_SUBTITLES = "never";
     public static final boolean DEFAULT_LIST_SHOW_SUBTITLES = false;
+    public static final String DEFAULT_SUBTITLES_SIZE = "28";
     public static final String DEFAULT_STORAGE_TYPE = "APP_FOLDER";
     public static final String DEFAULT_STORAGE_FOLDER = "/SphinxQA";
     public static final String DEFAULT_CHARSET = "AUTO_DETECT";
@@ -74,6 +77,16 @@ public class Config {
             charset = detector.retrieve(language);
         }
         return charset;
+    }
+
+    public int retrieveFirstSubtitlesSize() {
+        String value = settings.getString(KEY_FIRST_SUBTITLES_SIZE, DEFAULT_SUBTITLES_SIZE);
+        return Integer.parseInt(value);
+    }
+
+    public int retrieveSecondSubtitlesSize() {
+        String value = settings.getString(KEY_SECOND_SUBTITLES_SIZE, DEFAULT_SUBTITLES_SIZE);
+        return Integer.parseInt(value);
     }
 
     private String getLang() {
